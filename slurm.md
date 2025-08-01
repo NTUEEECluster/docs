@@ -18,9 +18,9 @@ Generally speaking, for quicker access to a node, you can:
 ## Running a Program
 
 There are a few things to consider:
-- How do I use program X? We use [Lmod](#Lmod).
-- Why is `nvidia-smi` not working? You are on the login node, or you did not request GPU(s), see
-  [Submit a Job](#Submit-a-Job).
+- How do I use program X? We use [Lmod](#Use-Lmod-to-load-softwarepackages).
+- Why is `nvidia-smi` not working? You are on the login node, or you did not
+  request GPU(s), see [Submit a Job](#Submit-a-Job).
 
 ### Use Lmod to load software/packages
 
@@ -29,15 +29,20 @@ There are a few things to consider:
 
 We use Lmod to let you load the version of software that you request.
 This helps us satisfy everyone's needs as some software conflict with each
-other. We offer necessary packages/libraries such as CUDA, GCC, and Miniconda. 
-Please do not attempt to install them yourself as it might mess up your enivronment variables. 
-If you cannot resolve it on your own, our 
-solution to resolve this would be completely remove and recreate your home directory.
+other.
 
-Please do not hesitate to let us know what package you need but not present in `Lmod`. Your quickest way is to:
+We offer necessary packages/libraries such as CUDA, GCC, and Miniconda. Please
+do not attempt to install them yourself as it might mess up your environment
+variables. If you cannot resolve it on your own, our solution to resolve this
+would be completely remove and recreate your home directory.
+
+Please do not hesitate to let us know what package you need but not present in
+`Lmod`. Your quickest way is to:
 - Raise an issue that specifies the software and the version requirements.
-- Send an email to us, also specifying all the details for us to find the software you need.
-- Do not email or chatting the admin's personal email, etc. Requests like this is difficult to track and therefore will not be entertained.
+- Send an email to us, specifying all the details for us to find the software
+  you need.
+- Do not email or chatting the admin's personal email, etc. Requests like this
+  is difficult to track and therefore will not be entertained.
 
 Here are some quick commands to get you started:
 
@@ -95,24 +100,23 @@ default value**:
 | `--mem`      | `--mem 123M`             | Request 123MB of RAM.                                                                                                                      |
 | `--job-name` | `--job-name example`     | Set the name of the job in outputs such as `squeue` to make it easier to find.                                                             |
 
-## Check your job status  
-Use ```squeue``` in shell to check your job status.  
-| Code  | Status Name       | Description                                         |
-|-------|-------------------|-----------------------------------------------------|
-| PD    | PENDING           | Waiting for resources to become available          |
-| R     | RUNNING           | Currently executing                                |
-| CG    | COMPLETING        | Job is finishing execution (cleanup phase)         |
-| CD    | COMPLETED         | Finished successfully                              |
-| F     | FAILED            | Failed due to error (non-zero exit code)           |
-| CA    | CANCELLED         | Cancelled by user or administrator                 |
+You can see the [FAQ](troubleshooting.md#Slurm) for more details.
+
+## Job Status Check
+
+Use `squeue` in shell to check your job status.
+
+| Code | Status Name | Description                                |
+|------|-------------|--------------------------------------------|
+| PD   | PENDING     | Waiting for resources to become available  |
+| R    | RUNNING     | Currently executing                        |
+| CG   | COMPLETING  | Job is finishing execution (cleanup phase) |
+| CD   | COMPLETED   | Finished successfully                      |
+| F    | FAILED      | Failed due to error (non-zero exit code)   |
+| CA   | CANCELLED   | Cancelled by user or administrator         |
 
 There are more possible status and you can search them quickly.
 
-If you want to check your training progresses etc. We highly recommand you use 3rd party packages like `Weight and Bias`. Slurm's output tend to lag behind the real progress.
-
-## Why srun errors out, hang? Why sbtach fails?
-Common reasons:
-- The spec you requested exceed either the QoS' limit or what's physically possible.  
-- All nodes are running, you are in the queue.  
-
-You can see the [FAQ](troubleshooting.md#Slurm) for more details.
+If you want to check your training progresses, we highly recommend 3rd-party
+packages like `Weight and Bias`. Slurm's output tend to lag behind the real
+progress.

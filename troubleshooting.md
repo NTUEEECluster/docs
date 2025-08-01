@@ -64,8 +64,8 @@ If you have not done so, please follow the [login guide](login.md) carefully.
 1.  Q: Why is X not installed? Why am I getting "conda: command not found"?
 
     A: We use Lmod to manage software versions and you need to run
-       `module load` to load the correct version. See [here](slurm.md#Lmod) for
-       more details.
+       `module load` to load the correct version. See
+       [here](slurm.md#Use-Lmod-to-load-softwarepackages) for more details.
 
        If the program you need requires `sudo` to install and is NOT listed
        under `module spider`, send us an email and we will install it for you.
@@ -96,16 +96,25 @@ If you have not done so, please follow the [login guide](login.md) carefully.
     A: You can run `squeue`. If you want to see it update somewhat in realtime,
        you can run `watch squeue`.
 
-3.  Q: How much resources do I actually have access to?
+3.  Q: Why is `srun` not responding? Why is `sbatch` failing?
+
+    A: The cluster may not be able to fulfill your request at this time. This
+       may be because you requested too much resources (resources that the
+       cluster has) or the cluster is busy fulfilling other people's request.
+
+       You can run `sinfo` to see the status of the cluster and `squeue` in a
+       new terminal will show the reason your job is currently being postponed.
+
+4.  Q: How much resources do I actually have access to?
 
     A: See [Cluster Overview](cluster.md#Slurm).
 
-4.  Q: I made an error submitting my job. How do I cancel it?
+5.  Q: I made an error submitting my job. How do I cancel it?
 
     A: You can see the job ID by doing `squeue`. You can then use
        `scancel <job_id>` (e.g. `scancel 123`) to cancel the job.
 
-5.  Q: I cannot see any GPUs even when I run a job. How do I get access to GPU?
+6.  Q: I cannot see any GPUs even when I run a job. How do I get access to GPU?
 
     A: You can access a GPU by using the `--gpus` flag when submitting a job.
        You need to specify the type of GPU you want in the following format:
@@ -113,7 +122,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        number of GPU you want. You can view a list of available GPUs
        [here](cluster.md#Slurm).
 
-6.  Q: The number of GPUs assigned is not enough. How do I get access to more?
+7.  Q: The number of GPUs assigned is not enough. How do I get access to more?
 
     A: We allow users to access GPUs beyond their limits as long as you agree to
        allow your jobs to be killed. To acknowledge this, use
@@ -126,7 +135,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        You are recommended to save epochs and make your program check if there
        are previous epochs to resume from if you make use of this feature.
 
-7.  Q: Why do I see "slurmstepd-gpu-6000ada-1: error: Detected 1 oom_kill event
+8.  Q: Why do I see "slurmstepd-gpu-6000ada-1: error: Detected 1 oom_kill event
        in StepId=123.0. Some of the step tasks have been OOM Killed."? How do I
        request more memory?
 
