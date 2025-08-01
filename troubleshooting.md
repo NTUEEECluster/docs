@@ -27,7 +27,19 @@ If you have not done so, please follow the [login guide](login.md) carefully.
     [NTU VPN](https://vpngate-student.ntu.edu.sg). The cluster is not accessible
     outside the VPN.
 
-2.  Q: I am just getting "Connection to &lt;IP&gt; closed."
+2.  Q: How do I SSH into a GPU node? I am getting "ssh: connect to host
+       11.11.11.X port 22: Connection refused"
+
+    A: GPU nodes are not accessible from outside except via the login node. To
+       access a GPU node, ensure you have a running job at the GPU node and
+       route SSH through the login node using the following command:
+       `ssh -J <username>@<login_node_IP> <node_you_want_to_access>`
+
+       An example of the command is `ssh -J example@127.0.0.1 gpu-v100-1`.
+       Your connection will be refused if no jobs are running on the specified
+       node.
+
+3.  Q: I am just getting "Connection to &lt;IP&gt; closed."
 
     A: Check that you are entering the right IP. This typically means you do not
        have access to the node that you are trying to connect to.
@@ -35,14 +47,14 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        If you are connecting to a GPU node, make sure you have a running job on the
        node.
 
-3.  Q: I keep getting "Password expired. Change your password now." or "Password
+4.  Q: I keep getting "Password expired. Change your password now." or "Password
     change failed. Server message: Old password not accepted."
 
     A: You need to type your original password (the one sent to you) twice when
        logging in. The first time is to SSH and the second time is to start
        changing your password.
 
-4.  Q: I forgot my password. (Forgot Password)
+5.  Q: I forgot my password. (Forgot Password)
 
     A: Send us an email from your school email and we will reset it for you
        within 3 business days.

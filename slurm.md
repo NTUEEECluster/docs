@@ -73,10 +73,15 @@ do so using `srun`.
 Here is a list of helpful flags, **only specify them if you need to change the
 default value**:
 
-| Flag     | Example            | Description                                                                          |
-|----------|--------------------|--------------------------------------------------------------------------------------|
-| `--gpus` | `--gpus example:2` | Request `2` GPU of type `example`.                                                   |
-| `--qos`  | `--qos rose`       | Specify what policy to run your job under. See [Cluster Overview](cluster.md#Slurm). |
-| `--mem`  | `--mem 123M`       | Request 123MB of RAM.                                                                |
+| Flag         | Example                  | Description                                                                                                                                |
+|--------------|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| `--time`     | `--time 00:01:00`        | Set the time limit of your job. Your job will be killed if it takes longer than the specified time. The format is `hours:minutes:seconds`. |
+| `--pty`      | `--pty`                  | Typically used with `srun`. Create a terminal (helpful if you are running a shell).                                                        |
+| `--gpus`     | `--gpus example:2`       | Request `2` GPU of type `example`.                                                                                                         |
+| `--output`   | `--output output-%j.log` | Set the filename that Slurm should put your program's output in. `%j` is replaced with your job ID.                                        |
+| `--error`    | `--error output-%j.log`  | Set the filename that Slurm should put your program's error in.                                                                            |
+| `--qos`      | `--qos rose`             | Specify what policy to run your job under. See [Cluster Overview](cluster.md#Slurm).                                                       |
+| `--mem`      | `--mem 123M`             | Request 123MB of RAM.                                                                                                                      |
+| `--job-name` | `--job-name example`     | Set the name of the job in outputs such as `squeue` to make it easier to find.                                                             |
 
 You can see the [FAQ](troubleshooting.md#Slurm) for more details.
