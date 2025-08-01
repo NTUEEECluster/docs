@@ -21,13 +21,20 @@ If none of the above helps, send us an email with the following details:
 
 If you have not done so, please follow the [login guide](login.md) carefully.
 
-1.  Q: I am getting "ssh: connect to host &lt;IP&gt; port 22: Connection refused"
+1.  Q: What should I do with the default password sent to me?
+   
+    A: The default password sent to you is to help system recognize it is you login to your own account.
+    Typically, when you attempt to login the first time, you will be prompted to enter your password, and it is this default password.
+    Then, the system will prompt you to enter the `current password`, which is still the default password!!!
+    Next, the system will prompt you to enter the `new password` and let you confirm again.
+    Once all 4 steps are done, you will be logged out. Then you can try to login with your new password.
+2.  Q: I am getting "ssh: connect to host &lt;IP&gt; port 22: Connection refused"
 
     A: Please check that you are connected to the
     [NTU VPN](https://vpngate-student.ntu.edu.sg). The cluster is not accessible
     outside the VPN.
 
-2.  Q: How do I SSH into a GPU node? I am getting "ssh: connect to host
+3.  Q: How do I SSH into a GPU node? I am getting "ssh: connect to host
        11.11.11.X port 22: Connection refused"
 
     A: GPU nodes are not accessible from outside except via the login node. To
@@ -39,7 +46,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        Your connection will be refused if no jobs are running on the specified
        node.
 
-3.  Q: I am just getting "Connection to &lt;IP&gt; closed."
+4.  Q: I am just getting "Connection to &lt;IP&gt; closed."
 
     A: Check that you are entering the right IP. This typically means you do not
        have access to the node that you are trying to connect to.
@@ -47,14 +54,14 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        If you are connecting to a GPU node, make sure you have a running job on the
        node.
 
-4.  Q: I keep getting "Password expired. Change your password now." or "Password
+5.  Q: I keep getting "Password expired. Change your password now." or "Password
     change failed. Server message: Old password not accepted."
 
     A: You need to type your original password (the one sent to you) twice when
        logging in. The first time is to SSH and the second time is to start
        changing your password.
 
-5.  Q: I forgot my password. (Forgot Password)
+6.  Q: I forgot my password. (Forgot Password)
 
     A: Send us an email from your school email and we will reset it for you
        within 3 business days.
@@ -83,7 +90,8 @@ If you have not done so, please follow the [login guide](login.md) carefully.
     A: To help ensure the security of the cluster, we unfortunately cannot give
        sudo access to our users. Try running your command without `sudo` and let
        us know if you need something done and we will try to accommodate to your
-       request.
+       request. It is also preventing you from catastrophically destroy important
+       components of the cluster, e.g., others' important data.
 
 ## Slurm
 
