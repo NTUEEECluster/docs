@@ -70,8 +70,13 @@ do so using `srun`.
 - This is not recommended if you are leaving your computer unattended. Your
   connection dying may lead to your job getting killed.
 
-FAQ:
-- How do I know if my job is done? You can run `squeue`.
-- I submitted the wrong job, help! You can run `scancel <job ID>`.
-- Can I stop typing `squeue` over and over? You can run `watch squeue`.
-- Why can I not type a command after doing `srun bash`.
+Here is a list of helpful flags, **only specify them if you need to change the
+default value**:
+
+| Flag     | Example            | Description                                                                          |
+|----------|--------------------|--------------------------------------------------------------------------------------|
+| `--gpus` | `--gpus example:2` | Request `2` GPU of type `example`.                                                   |
+| `--qos`  | `--qos rose`       | Specify what policy to run your job under. See [Cluster Overview](cluster.md#Slurm). |
+| `--mem`  | `--mem 123M`       | Request 123MB of RAM.                                                                |
+
+You can see the [FAQ](troubleshooting.md#Slurm) for more details.

@@ -88,7 +88,20 @@ If you have not done so, please follow the [login guide](login.md) carefully.
 
     A: See [Cluster Overview](cluster.md#Slurm).
 
-4.  Q: The number of GPUs assigned is not enough. How do I get access to more?
+4.  Q: I made an error submitting my job. How do I cancel it?
+
+    A: You can see the job ID by doing `squeue`. You can then use
+       `scancel <job_id>` (e.g. `scancel 123`) to cancel the job.
+
+5.  Q: I cannot see any GPUs even when I run a job. How do I get access to GPU?
+
+    A: You can access a GPU by using the `--gpus` flag when submitting a job.
+       You need to specify the type of GPU you want in the following format:
+       `--gpus example:1` where `example` is the type of the GPU and `1` is the
+       number of GPU you want. You can view a list of available GPUs
+       [here](cluster.md#Slurm).
+
+6.  Q: The number of GPUs assigned is not enough. How do I get access to more?
 
     A: We allow users to access GPUs beyond their limits as long as you agree to
        allow your jobs to be killed. To acknowledge this, use
@@ -98,5 +111,17 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        we will kill your job when those resources are needed by someone else
        that is not using resources outside their limit.
 
-       You are recommended to save epochs and make your program check if there are
-       previous epochs to resume from if you make use of this feature.
+       You are recommended to save epochs and make your program check if there
+       are previous epochs to resume from if you make use of this feature.
+
+7.  Q: Why do I see "slurmstepd-gpu-6000ada-1: error: Detected 1 oom_kill event
+       in StepId=123.0. Some of the step tasks have been OOM Killed."? How do I
+       request more memory?
+
+    A: By default, we assign a certain amount of RAM according to CPU/GPU cores
+       that you have requested. If you run into this error, we recommend that
+       you first attempt to optimize your program to use less RAM. If it is not
+       possible to do so, you can request for more RAM by adding `--mem 123M` or
+       `--mem 1G` to your job submission. Note that RAM is still limited and you
+       are advised to split your workload across multiple loads if RAM is still
+       not sufficient after increasing it to our node's limit.
