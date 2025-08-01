@@ -7,6 +7,7 @@ Pick the most relevant guide:
 - Having trouble logging in? [Login Guide](login.md)
 - How do I access (more) GPUs? [Slurm Introduction](slurm.md)
 - What GPUs do I have access to? [Cluster Overview](cluster.md)
+- How to run IDEs and debug? [Debugging Guide](Debugging.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
 
 - I have used a HPC before. What's the tl;dr? [Cluster Overview](cluster.md)
