@@ -19,21 +19,32 @@ Generally speaking, for quicker access to a node, you can:
 
 There are a few things to consider:
 - How do I use program X? We use [Lmod](#Lmod).
-- Why is `nvidia-smi` not working? You are on the login node, see
+- Why is `nvidia-smi` not working? You are on the login node, or you did not request GPU(s), see
   [Submit a Job](#Submit-a-Job).
 
-### Lmod
+### Use Lmod to load software/packages
 
 > **TIP:** To use Conda, do `module load Miniconda3` or
 > `module load Miniforge3`.
 
 We use Lmod to let you load the version of software that you request.
 This helps us satisfy everyone's needs as some software conflict with each
-other.
+other. We offer necessary packages/libraries such as CUDA, GCC, and Miniconda. 
+Please do not attempt to install them yourself as it might mess up your enivronment variables. 
+If you cannot resolve it on your own, our 
+solution to resolve this would be completely remove and recreate your home directory.
+
+Please do not hesitate to let us know what package you need but not present in `Lmod`. Your quickest way is to:
+- Raise an issue that specifies the software and the version requirements.
+- Send an email to us, also specifying all the details for us to find the software you need.
+- Do not email or chatting the admin's personal email, etc. Requests like this is difficult to track and therefore will not be entertained.
 
 Here are some quick commands to get you started:
 
 ```sh
+# Show all installed packages
+$ module avail
+
 # Check if a version of something is installed.
 $ module spider <thing> # e.g. module spider Miniconda3
 
@@ -67,8 +78,8 @@ do so using `srun`.
 
 - Specify the flags like so: `srun <flags> <command>`.
 - An example might be `srun --gpus v100:1 nvidia-smi`.
-- This is not recommended if you are leaving your computer unattended. Your
-  connection dying may lead to your job getting killed.
+- NTU VPN and NTUSECURE can be unstable. For your own sake, please avoid using `srun` to
+  keep your job running.
 
 Here is a list of helpful flags, **only specify them if you need to change the
 default value**:
@@ -83,5 +94,25 @@ default value**:
 | `--qos`      | `--qos rose`             | Specify what policy to run your job under. See [Cluster Overview](cluster.md#Slurm).                                                       |
 | `--mem`      | `--mem 123M`             | Request 123MB of RAM.                                                                                                                      |
 | `--job-name` | `--job-name example`     | Set the name of the job in outputs such as `squeue` to make it easier to find.                                                             |
+
+## Check your job status  
+Use ```squeue``` in shell to check your job status.  
+| Code  | Status Name       | Description                                         |
+|-------|-------------------|-----------------------------------------------------|
+| PD    | PENDING           | Waiting for resources to become available          |
+| R     | RUNNING           | Currently executing                                |
+| CG    | COMPLETING        | Job is finishing execution (cleanup phase)         |
+| CD    | COMPLETED         | Finished successfully                              |
+| F     | FAILED            | Failed due to error (non-zero exit code)           |
+| CA    | CANCELLED         | Cancelled by user or administrator                 |
+
+There are more possible status and you can search them quickly.
+
+If you want to check your training progresses etc. We highly recommand you use 3rd party packages like `Weight and Bias`. Slurm's output tend to lag behind the real progress.
+
+## Why srun errors out, hang? Why sbtach fails?
+Common reasons:
+- The spec you requested exceed either the QoS' limit or what's physically possible.  
+- All nodes are running, you are in the queue.  
 
 You can see the [FAQ](troubleshooting.md#Slurm) for more details.
