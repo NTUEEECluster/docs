@@ -27,16 +27,44 @@ received your credentials from) with the following details:
 - What actually happens: What is the actual output?
 
 Please provide as much relevant information as you can to help us debug your
-issue.
+issue.  
 
-## Code of Conduct  
-EEE GPU cluster is currently maintained by a small group of people who are also very busy on their own studies/careers/life. Updates/Fixs/PasswordReset can be delayed.
-We do not and will not help you if you having issues with the code you wrote and only responsible for issues related to the cluster.
-We try out best to make sure your data is secure and available. However, this is not to be taken as a guarantee as we are limited by our storage 
-solutions for now. If you found yourself need to wait in the queue before your jobs can be run, please respect other users because they are assigned 
-with equal accessibility as you and therefore the Administrator will also respect their right to run their jobs. User should be avare that all these servers
-included in this cluster are costing millions and funded by different entities. The cluster admins fully respects the will of the owners and if that results in reduced 
-level of accessibility for certain model of GPUs, please respect such limitations or ask your supervisor to contribute more resource to us financially.
+## **Code of Conduct**
+
+The EEE GPU Cluster is maintained by a small group of administrators who also have their own academic, professional, and personal commitments.  
+While we strive to keep the cluster operational, please note that **updates, fixes, or password resets may be delayed**.
+
+### **1. Scope of Support**
+- Administrators are **only responsible for cluster-related issues** (hardware, system software, storage, scheduling, etc.).  
+- We will **not** provide support for debugging or fixing your own code.
+
+### **2. Data Availability & Security**
+- We make every reasonable effort to keep your data secure and available.  
+- **However, this is not guaranteed**, as our storage capacity and redundancy are limited.
+
+### **3. Fair Usage & Queueing**
+- If you need to wait in the job queue, please understand that **all users under the same organization have equal priority**.
+- Respect other users’ right to access resources.
+- Do **not** exploit bugs or loopholes. If you discover one, **report it immediately** to the administrators.  
+- **Repeated abuse without reporting will result in account suspension or permanent bans**.
+
+### **4. Permitted Use**
+- The cluster is for **research and project-related computing** only.
+- **Absolutely prohibited activities** include:
+  - Running **illegal, unlicensed, or pirated software**.
+  - Running **malicious software**, including viruses, worms, or denial-of-service scripts.
+- **If you run illegal or unlicensed software:**
+  - **You are solely and fully responsible** for any and all consequences, including but not limited to:
+    - Permanent loss of cluster access.
+    - Financial penalties, including damages claimed by copyright or IP owners.
+    - Disciplinary actions by your school, university, or relevant authorities.
+  - The administrators have **warned you in advance** and will **not bear any responsibility** for your actions.
+
+### **5. Resource Ownership & Access Levels**
+- The cluster hardware is funded by **multiple entities** at a cost of millions.
+- Some GPU models or nodes may have restricted access based on the funding source’s policies.
+- Please **respect these access limitations**, or discuss additional resource contributions with your supervisor.
+
 
 ---
 
