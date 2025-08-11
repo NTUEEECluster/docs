@@ -25,7 +25,8 @@ There are a few things to consider:
 ### Use Lmod to load software/packages
 
 > **TIP:** To use Conda, do `module load Miniconda3` or
-> `module load Miniforge3`.
+> `module load Miniforge3` followed by `source activate`. Do not skip `source activate`
+> or you cannot activate your env correctly.
 
 We use Lmod to let you load the version of software that you request.
 This helps us satisfy everyone's needs as some software conflict with each
@@ -33,8 +34,8 @@ other.
 
 We offer necessary packages/libraries such as CUDA, GCC, and Miniconda. Please
 do not attempt to install them yourself as it might mess up your environment
-variables. If you cannot resolve it on your own, our solution to resolve this
-would be completely remove and recreate your home directory.
+variables. *If you cannot resolve it on your own, our solution to resolve this
+would be completely remove and recreate your home directory.*
 
 Please do not hesitate to let us know what package you need but not present in
 `Lmod`. Your quickest way is to:
