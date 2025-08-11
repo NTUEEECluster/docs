@@ -92,15 +92,14 @@ default value**:
 | Flag         | Example                  | Description                                                                                                                                |
 |--------------|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
 | `--time`     | `--time 00:01:00`        | Set the time limit of your job. Your job will be killed if it takes longer than the specified time. The format is `hours:minutes:seconds`. |
-| `--pty`      | `--pty`                  | Typically used with `srun`. Create a terminal (helpful if you are running a shell).                                                        |
+| `--pty`      | `--pty`                  | Typically used with `srun`. Create a terminal (helpful if you are running a shell). Remember to put `bash` at the end.                     |
 | `--gpus`     | `--gpus example:2`       | Request `2` GPU of type `example`.                                                                                                         |
 | `--output`   | `--output output-%j.log` | Set the filename that Slurm should put your program's output in. `%j` is replaced with your job ID.                                        |
 | `--error`    | `--error output-%j.log`  | Set the filename that Slurm should put your program's error in.                                                                            |
 | `--qos`      | `--qos rose`             | Specify what policy to run your job under. See [Cluster Overview](cluster.md#Slurm).                                                       |
-| `--mem`      | `--mem 123M`             | Request 123MB of RAM.                                                                                                                      |
 | `--job-name` | `--job-name example`     | Set the name of the job in outputs such as `squeue` to make it easier to find.                                                             |
 
-You can see the [FAQ](troubleshooting.md#Slurm) for more details.
+You can see the [FAQ](troubleshooting.md#Slurm) for more details. If you still questions, kindly ask GPT for help, it is very familiar with Slurm.
 
 ## Job Status Check
 
@@ -117,6 +116,19 @@ Use `squeue` in shell to check your job status.
 
 There are more possible status and you can search them quickly.
 
+## Enforced CPU/RAM  
+Slurm treats CPU cores and RAM as consumable resources. This means if you over-request these two, you can potentially block other's requests even if there are idle GPUs. Therefore, we enforce how many CPUs and
+RAM you can get based on the number of GPUs you requested. This means `--mem` and `--cpus-per-task` no longer will take effects. So you don't have to specify these two parameters.
+
+## Do not request a generic GPU  
+We block requests that do not specify the GPU model because our cluster have various type of GPUs. By default Slurm will randomly assign you a GPU and this can result in consistency. Therefore, you must specify the 
+GPU model when you are calling `srun` and `sbatch`. If you don't specify, you might see an error message from Slurm and/or your job requesting is forever stuck.
+
+## Interactive Sessions no more than 12 hours  
+Since interactive sessions always lasts until the wall time or manually killed by users. We enforce a shorter walltime, i.e., 12h, for interactive sessions to free up the GPUs quicker in case you forget to kill your session(s). 
+For non-interactive `srun` and `sbatch`, the max wall time is 24 hours.
+
+## Monitoring a long training session
 If you want to check your training progresses, we highly recommend 3rd-party
 packages like `Weight and Bias`. Slurm's output tend to lag behind the real
 progress.
