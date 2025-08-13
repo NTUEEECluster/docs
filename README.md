@@ -2,10 +2,20 @@
 
 To keep things manageable, we have split this into multiple files.
 
+Here is the recommended workflow for you:
+- login to login node.
+- do simple setup on login node (create your conda env and install packages)
+- request GPU node(s) to debug/run your code.
+
+The main use case of this cluster is to run your python code based on conda and you can do this either 
+directly in shell, VSCode, or PyCharm. Other possibilities exist, but we cannot cover all of them, so please adapt.
+If you want to use the cluster for non-AI workloads, like CFD, simulation, etc. and require extra software we do not offer, 
+let us know to see if your demand can be met.
+
 Pick the most relevant guide:
 
 - Having trouble logging in? [Login Guide](login.md)
-- How do I access (more) GPUs? [Slurm Introduction](slurm.md)
+- How do I access GPU node(s)? [Slurm Introduction](slurm.md)
 - What GPUs do I have access to? [Cluster Overview](cluster.md)
 - How to run IDEs and debug? [Debugging Guide](Debugging.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
