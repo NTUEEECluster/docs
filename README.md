@@ -16,6 +16,7 @@ Pick the most relevant guide:
 
 - Having trouble logging in? [Login Guide](login.md)
 - How do I access GPU node(s)? [Slurm Introduction](slurm.md)
+- How to setup the environments? [Setup Conda](conda.md)
 - What GPUs do I have access to? [Cluster Overview](cluster.md)
 - How to run IDEs and debug? [Debugging Guide](Debugging.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
