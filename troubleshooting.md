@@ -158,10 +158,25 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        in StepId=123.0. Some of the step tasks have been OOM Killed."? How do I
        request more memory?
 
-    A: By default, we assign a certain amount of RAM according to CPU/GPU cores
-       that you have requested. If you run into this error, we recommend that
-       you first attempt to optimize your program to use less RAM. If it is not
-       possible to do so, you can request for more RAM by adding `--mem 123M` or
-       `--mem 1G` to your job submission. Note that RAM is still limited and you
-       are advised to split your workload across multiple loads if RAM is still
-       not sufficient after increasing it to our node's limit.
+    A: We currently tie how many GPUs you requested directly to CPU and RAM given to you.
+       Therefore, you cannot specify the number of CPU and RAM by yourself. While there are
+       limitations in this design, it comes with benefits that all GPUs in a node can be assigned
+       to users without idling. The current strategy is we will give you same amount of RAM compared
+       to the total VRAM of GPUs you requested. If that still OOM, it is likely your code have a memory leak.
+       For example, open a file in python and never close it will result in memory leak.
+    
+10. Q: Why my job is killed/aborted?
+
+    A: Most of the time it is because you are using `srun` or `salloc` to hold your
+       session on the compute node alive. If you close the SSH sessions that directly
+       invokes `srun` and/or `sallow`, the corresponding Slurm job will be closed. This
+       is how Slurm is supposed to do and therefore we recommend you use `sbatch` to run
+       your long training sessions because closing your SSH session won't kill jobs invoked
+       by `sbatch`.
+
+11. Q: Why I cannot specify more/less CPU/RAM?
+
+    A: We enforce how many CPU/RAM you can get based on the actual hardware of each server. The rule of
+       thumb is that if you request all the GPUs on one node, that you get all the CPU/RAM available to you.
+       Otherwise CPU/RAM is assigned to you proportionally. This prevents you consuming all the CPU/RAM on a GPU
+       node while there are still unassigned GPUs that no one can use.
