@@ -6,6 +6,10 @@ be seeing.
 If you are seeing an error, try doing Ctrl-F on this file to see if it has been
 asked before.
 
+Or you can through GPT this readme and let it figure out for you. We strongly encourage 
+you to do your research about your issue before ask us. It is totally normal that a HPC
+cluster have a steeper learning curve compared to using a private barebone server.
+
 If there are no specific errors that you are seeing, please choose the closest
 category:
 - [I cannot login, I do not see the "example@login-1$"](#Login)
@@ -16,6 +20,8 @@ If none of the above helps, send us an email with the following details:
 - What you have done: What commands have you ran?
 - What you expect to happen: What should you be seeing?
 - What actually happens: What is the actual output?
+
+More details help us fix your issue quicker, and we regret that we have to ignore user requests with few details.
 
 ## Login
 
@@ -77,14 +83,19 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        If the program you need requires `sudo` to install and is NOT listed
        under `module spider`, send us an email and we will install it for you.
 
-2.  Q: Why do I not see any GPUs? Why am I getting "Command 'nvidia-smi' not
+       Notice that we do not cover python packages using Lmod. You should
+       install your own python packages, like torch, by yourself. `pip install`
+       and `conda install` do not require sudo priviledge and you can install
+       whatever python package you want to your personal envs (not base env).
+
+3.  Q: Why do I not see any GPUs? Why am I getting "Command 'nvidia-smi' not
        found, but can be installed with: ..."
 
     A: By default, the machine you SSH into is a login node (medium-sized VM
        without GPUs). You will need to use Slurm to start a job. See
        [Slurm Introduction](slurm.md) for more details.
 
-3.  Q: Can I get `sudo`? Why am I getting "&lt;user&gt; is not allowed to run
+4.  Q: Can I get `sudo`? Why am I getting "&lt;user&gt; is not allowed to run
        sudo on login-1"?
 
     A: To help ensure the security of the cluster, we unfortunately cannot give
