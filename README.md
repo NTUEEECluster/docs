@@ -28,7 +28,7 @@ We expect all users to familiarize themselves with the
 ## Maintenance and Stability
 - We are still in beta testing. We do NOT guarantee 100% stability. 
 - We heavily rely on emails to inform you our maintenance events. We are not responsible for any loss due to missing our email.
-- We announced maintenance period from time X to time Y. Starting from time X, we will kill all running jobs sharply without exceptions.
+- Scheduled maintenance will be announced at least 3 days prior to the maintenance event. All running jobs will be killed once the maintenance event starts.
 
 ## Action that leads to warnings/account ban
 - Heavily use login node to run your code.
