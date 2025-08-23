@@ -9,6 +9,12 @@
 We expect all users to familiarize themselves with the
 [Usage Guidelines](guideline.md) and will act accordingly.
 
+## Action that leads to warnings/account ban
+- Heavily use login node to run your code.
+-   It is Okay to run IDE on the login node as long as you are only using it for text editing.
+-   Running your code that consumes all the CPU and RAM resource on login node is considered abusing the login node.
+- Running project-irrelevant code and virus.
+
 ## Table of Content
 
 To keep things manageable, we have split this into multiple files.
