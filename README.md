@@ -1,19 +1,21 @@
 # NTU EEE Cluster 02 Guide
 
+## Supported Workflow
+- Login to login node.
+- Do simple setup on login node
+  ([create your Conda env and install packages](conda.md))
+- [Request GPU node(s)](slurm.md) to debug/run your code.
+
+We expect all users to familiarize themselves with the
+[Usage Guidelines](guideline.md) and will act accordingly.
+
+## Table of Content
+
 To keep things manageable, we have split this into multiple files.
-
-Here is the recommended workflow for you:
-- login to login node.
-- do simple setup on login node (create your conda env and install packages)
-- request GPU node(s) to debug/run your code.
-
-The main use case of this cluster is to run your python code based on conda and you can do this either 
-directly in shell, VSCode, or PyCharm. Other possibilities exist, but we cannot cover all of them, so please adapt.
-If you want to use the cluster for non-AI workloads, like CFD, simulation, etc. and require extra software we do not offer, 
-let us know to see if your demand can be met.
 
 Pick the most relevant guide:
 
+- I have used a HPC before. What's the tl;dr? [Cluster Overview](cluster.md)
 - Having trouble logging in? [Login Guide](login.md)
 - How do I access GPU node(s)? [Slurm Introduction](slurm.md)
 - How to setup the environments? [Setup Conda](conda.md)
@@ -21,60 +23,31 @@ Pick the most relevant guide:
 - How to run IDEs and debug? [Debugging Guide](Debugging.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
 
-- I have used a HPC before. What's the tl;dr? [Cluster Overview](cluster.md)
-
 ## What is this?
 
 This repository serves as a simple knowledge base to help users get started in
 utilizing a GPU cluster.
+
+The main use case of this cluster is to run your Python code based on conda and
+you can do this either directly in shell, VSCode, or PyCharm. Other possibilities
+exist, but we cannot cover all of them, so please adapt as necessary. If you want
+to use the cluster for non-AI workloads, like CFD, simulation, etc. and require
+extra software that we currently do not offer, let us know to see if your demand
+can be met.
 
 ## Still need help?
 
 Send us an email from your email to our email (it should be the email that you
 received your credentials from) with the following details:
 
-- What you have done: What commands have you ran?
+- What you have done: What commands have you ran on what machine?
+    Please include the name of the node that you are connected to.
 - What you expect to happen: What should you be seeing?
 - What actually happens: What is the actual output?
 
 Please provide as much relevant information as you can to help us debug your
-issue.  
+issue.
 
-## **Code of Conduct**
-
-The EEE GPU Cluster is maintained by a small group of administrators who also have their own academic, professional, and personal commitments.  
-While we strive to keep the cluster operational, please note that **updates, fixes, or password resets may be delayed**.
-
-### **1. Scope of Support**
-- Administrators are **only responsible for cluster-related issues** (hardware, system software, storage, scheduling, etc.).  
-- We will **not** provide support for debugging or fixing your own code.
-
-### **2. Data Availability & Security**
-- We make every reasonable effort to keep your data secure and available.  
-- **However, this is not guaranteed**, as our storage capacity and redundancy are limited.
-
-### **3. Fair Usage & Queueing**
-- If you need to wait in the job queue, please understand that **all users under the same organization have equal priority**.
-- Respect other users’ right to access resources.
-- Do **not** exploit bugs or loopholes. If you discover one, **report it immediately** to the administrators.  
-- **Repeated abuse without reporting will result in account suspension or permanent bans**.
-
-### **4. Permitted Use**
-- The cluster is for **research and project-related computing** only.
-- **Absolutely prohibited activities** include:
-  - Running **illegal, unlicensed, or pirated software**.
-  - Running **malicious software**, including viruses, worms, or denial-of-service scripts.
-- **If you run illegal or unlicensed software:**
-  - **You are solely and fully responsible** for any and all consequences, including but not limited to:
-    - Permanent loss of cluster access.
-    - Financial penalties, including damages claimed by copyright or IP owners.
-    - Disciplinary actions by your school, university, or relevant authorities.
-  - The administrators have **warned you in advance** and will **not bear any responsibility** for your actions.
-
-### **5. Resource Ownership & Access Levels**
-- The cluster hardware is funded by **multiple entities** at a cost of millions.
-- Some GPU models or nodes may have restricted access based on the funding source’s policies.
-- Please **respect these access limitations**, or discuss additional resource contributions with your supervisor.
 
 
 ---
