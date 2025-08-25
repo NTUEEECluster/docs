@@ -42,6 +42,7 @@ To keep things manageable, we have split this into multiple files.
 
 Pick the most relevant guide:
 
+- What is a GPU cluster? What's different from running codes locally on my laptop/desktop? [Linux&Cluster Basics](basics.md)
 - I have used a HPC before. What's the tl;dr? [Cluster Overview](cluster.md)
 - Having trouble logging in? [Login Guide](login.md)
 - How do I access GPU node(s)? [Slurm Introduction](slurm.md)
