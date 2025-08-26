@@ -1,14 +1,17 @@
-##  Debugging
+# Debugging
 
-We are fully aware that users might want to run debugging sessions, either checking outputs in shell sessions or running a Python debugger and debug your code line-by-line.
+We are fully aware that users might want to run debugging sessions, either
+checking outputs in shell sessions or running a Python debugger and debug your
+code line-by-line.
 
-To debug directly on the cluster using IDEs (e.g., PyCharm, VSCode), set up an **SSH tunnel**. This tunnel runs on the **login node** and relays traffic to a GPU node, allowing you to “directly” interact with it.
+To debug directly on the cluster using IDEs (e.g., PyCharm, VSCode), set up an
+**SSH tunnel**. This tunnel runs on the **login node** and relays traffic to a
+GPU node, allowing you to “directly” interact with it.
 
-> 💡 **Tip:** If you're unfamiliar with configuring remote connections in PyCharm or VSCode, refer to their official documentation.
+> 💡 **Tip:** If you're unfamiliar with configuring remote connections in
+> PyCharm or VSCode, refer to their official documentation.
 
----
-
-###  Step-by-Step Instructions
+## Step-by-Step Instructions
 
 1. **Allocate a GPU node** with the resources you need:
    ```bash
@@ -43,11 +46,11 @@ To debug directly on the cluster using IDEs (e.g., PyCharm, VSCode), set up an *
 
 5. **Run your IDE** (e.g., PyCharm, VSCode) using this tunnel for remote debugging.
 
----
+## Direct Access to Compute Nodes via Jump Host
 
-### Direct Access to Compute Nodes via Jump Host
-
-If you just want to **SSH directly to a compute node** (e.g., for command-line interaction) without setting up a tunnel, you can use the `-J` (jump host) option:
+If you just want to **SSH directly to a compute node** (e.g., for command-line
+interaction) without setting up a tunnel, you can use the `-J` (jump host)
+option:
 
 ```bash
 ssh -J <username>@<login_node_ip> <username>@<allocated_node_name>
@@ -58,11 +61,12 @@ ssh -J <username>@<login_node_ip> <username>@<allocated_node_name>
   ssh -J user@0.0.0.0 user@lab999
   ```
 
-This tells SSH to go through the login node (`-J`) and connect directly to the compute node.
+This tells SSH to go through the login node (`-J`) and connect directly to the
+compute node.
 
----
-
-### After You're Done
+## After You're Done
 
 - **Close all terminals and SSH sessions properly.**
 - **⚠️ Do not leave SSH sessions hanging or unattended.**
+    **This will cause your priority to become lower** AND other users to be
+    unable to use the resources you are using.

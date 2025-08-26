@@ -6,39 +6,42 @@ be seeing.
 If you are seeing an error, try doing Ctrl-F on this file to see if it has been
 asked before.
 
-Or you can through GPT this readme and let it figure out for you. We strongly encourage 
-you to do your research about your issue before ask us. It is totally normal that a HPC
-cluster have a steeper learning curve compared to using a private barebone server.
+Or you can through GPT this readme and let it figure out for you. We strongly
+encourage you to do your research about your issue before ask us. It is totally
+normal that a HPC cluster have a steeper learning curve compared to using a
+private barebone server.
 
 If there are no specific errors that you are seeing, please choose the closest
 category:
 - [I cannot login, I do not see the "example@login-1$"](#Login)
 - [I cannot use commands that I expect to be able to use](#Shell)
 - [How do I get Slurm to do X](#Slurm)
-
-If none of the above helps, send us an email with the following details:
-- What you have done: What commands have you ran?
-- What you expect to happen: What should you be seeing?
-- What actually happens: What is the actual output?
-
-More details help us fix your issue quicker, and we regret that we have to ignore user requests with few details.
+- [Still need help?](#Still-need-help)
 
 ## Login
 
 If you have not done so, please follow the [login guide](login.md) carefully.
 
 1.  Q: What should I do with the default password sent to me?
-   
-    A: The default password sent to you is to help system recognize it is you login to your own account.
-    Typically, when you attempt to login the first time, you will be prompted to enter your password, and it is this default password.
-    Then, the system will prompt you to enter the `current password`, which is still the default password!!!
-    Next, the system will prompt you to enter the `new password` and let you confirm again.
-    Once all 4 steps are done, you will be logged out. Then you can try to login with your new password.
-2.  Q: I am getting "ssh: connect to host &lt;IP&gt; port 22: Connection refused"
+
+    A: The default password sent to you is to help system recognize it is you
+    logging into your own account. Typically, when you attempt to login the
+    first time, you will be prompted to enter your password, and it is this
+    default password. Then, the system will prompt you to enter the
+    `current password`, which is still the default password!!! Next, the system
+    will prompt you to enter the `new password` and let you confirm again. Once
+    all 4 steps are done, you will be logged out. Then you can try to login
+    with your new password.
+
+    For a more detailed guide, read the [login guide](login.md) where we
+    include examples.
+
+2.  Q: I am getting "ssh: connect to host &lt;IP&gt; port 22: Connection
+       refused".
 
     A: Please check that you are connected to the
-    [NTU VPN](https://vpngate-student.ntu.edu.sg). The cluster is not accessible
-    outside the VPN.
+    [NTU VPN](https://vpngate-student.ntu.edu.sg). The cluster is not
+    accessible outside the VPN.
 
 3.  Q: How do I SSH into a GPU node? I am getting "ssh: connect to host
        11.11.11.X port 22: Connection refused"
@@ -57,8 +60,8 @@ If you have not done so, please follow the [login guide](login.md) carefully.
     A: Check that you are entering the right IP. This typically means you do not
        have access to the node that you are trying to connect to.
 
-       If you are connecting to a GPU node, make sure you have a running job on the
-       node.
+       If you are connecting to a GPU node, make sure you have a running job on
+       the node.
 
 5.  Q: I keep getting "Password expired. Change your password now." or "Password
     change failed. Server message: Old password not accepted."
@@ -88,14 +91,14 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        and `conda install` do not require sudo priviledge and you can install
        whatever python package you want to your personal envs (not base env).
 
-3.  Q: Why do I not see any GPUs? Why am I getting "Command 'nvidia-smi' not
+2.  Q: Why do I not see any GPUs? Why am I getting "Command 'nvidia-smi' not
        found, but can be installed with: ..."
 
     A: By default, the machine you SSH into is a login node (medium-sized VM
        without GPUs). You will need to use Slurm to start a job. See
        [Slurm Introduction](slurm.md) for more details.
 
-4.  Q: Can I get `sudo`? Why am I getting "&lt;user&gt; is not allowed to run
+3.  Q: Can I get `sudo`? Why am I getting "&lt;user&gt; is not allowed to run
        sudo on login-1"?
 
     A: To help ensure the security of the cluster, we unfortunately cannot give
@@ -103,6 +106,9 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        us know if you need something done and we will try to accommodate to your
        request. It is also preventing you from catastrophically destroy important
        components of the cluster, e.g., others' important data.
+
+       Typically, [modules](slurm.md#Lmod) will have the program that you need
+       installed.
 
 ## Slurm
 
@@ -158,25 +164,51 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        in StepId=123.0. Some of the step tasks have been OOM Killed."? How do I
        request more memory?
 
-    A: We currently tie how many GPUs you requested directly to CPU and RAM given to you.
-       Therefore, you cannot specify the number of CPU and RAM by yourself. While there are
-       limitations in this design, it comes with benefits that all GPUs in a node can be assigned
-       to users without idling. The current strategy is we will give you same amount of RAM compared
-       to the total VRAM of GPUs you requested. If that still OOM, it is likely your code have a memory leak.
-       For example, open a file in python and never close it will result in memory leak.
-    
+    A: We currently tie how many GPUs you requested directly to CPU and RAM
+       given to you. Therefore, you cannot specify the number of CPU and RAM by
+       yourself. While there are limitations in this design, it comes with
+       benefits that all GPUs in a node can be assigned to users without idling.
+       The current strategy will give you the same amount of RAM as the total
+       VRAM of the GPUs that you have requested.
+
+       If that still OOMs, it is likely your code have a memory leak. For
+       example, opening a file in Python and never closing it will result in
+       a resource leak.
+
 10. Q: Why my job is killed/aborted?
 
-    A: Most of the time it is because you are using `srun` or `salloc` to hold your
-       session on the compute node alive. If you close the SSH sessions that directly
-       invokes `srun` and/or `sallow`, the corresponding Slurm job will be closed. This
-       is how Slurm is supposed to do and therefore we recommend you use `sbatch` to run
-       your long training sessions because closing your SSH session won't kill jobs invoked
-       by `sbatch`.
+    A: Most of the time it is because you are using `srun` or `salloc` to hold
+       your session on the compute node alive. If you close or get disconnected
+       from the SSH sessions that directly invokes `srun` and/or `sallow`, the
+       corresponding Slurm job will be closed. This is intentional and therefore
+       we recommend you use `sbatch` to run your long training sessions because
+       closing your SSH session won't kill jobs invoked by `sbatch`.
 
 11. Q: Why I cannot specify more/less CPU/RAM?
 
-    A: We enforce how many CPU/RAM you can get based on the actual hardware of each server. The rule of
-       thumb is that if you request all the GPUs on one node, that you get all the CPU/RAM available to you.
-       Otherwise CPU/RAM is assigned to you proportionally. This prevents you consuming all the CPU/RAM on a GPU
-       node while there are still unassigned GPUs that no one can use.
+    A: We enforce how many CPU/RAM you can get based on the actual hardware of
+       each server. The rule of thumb is that if you request all the GPUs on one
+       node, that you get all the CPU/RAM available to you. Otherwise, CPU/RAM
+       is assigned to you proportionally. This prevents you consuming all the
+       CPU/RAM on a GPU node while there are still unassigned GPUs that no one
+       can use.
+
+## Still need help?
+
+If you are sure nothing in this repository can help you, send us an email (to
+the addresses used to inform you the password):
+
+- What you have done: What commands have you ran on what machine?
+    Please include the name of the node that you are connected to. This should
+    be shown on the prompt (`username@THIS_IS_THE_THING_WE_NEED $`).
+- What you expect to happen: What should you be seeing? What are you attempting
+    to achieve?
+- What actually happens: What is the actual output? If possible, include
+    screenshots.
+
+Please provide as much relevant information as you can to help us debug your
+issue. **We need to be able to replicate the issue in order to fix it
+reliably.**
+
+If you simply tell us "X doesn't work" and nothing more, you leave us with
+nothing to work with and we cannot do anything to help you.

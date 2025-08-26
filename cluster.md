@@ -4,6 +4,14 @@
 - What are the available partitions and QoS? [Slurm](#Slurm)
 - What are the important file paths? [Directories](#Directories)
 
+## High-Level Policy
+
+Thanks to various generous entities, all GPUs are free to use, there is no hard
+GPU hour limit on you. By default, you will be limited by the number of GPUs you
+can use at any given time to ensure fair-share.
+
+See [Slurm](#Slurm) for more details.
+
 ## Nodes
 
 Most nodes that you interact with are VMs. As such, the actual hardware is not
@@ -12,7 +20,8 @@ listed. Specifications listed below are per node.
 When you connect through the IP provided in the email, you will automatically be
 routed to a login node. Nodes are expected to go down for maintenance but at
 least one login node should be up at all times. Please let us know if you are
-unable to connect.
+unable to connect or run into trouble requesting a compute node so we can
+investigate.
 
 - Login Nodes (login-1 to login-3)
   - **CPU:** 8 cores
@@ -32,7 +41,7 @@ unable to connect.
   - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
 
 To learn more about how to use the GPU nodes, check out
-[Slurm Introduction](slurm.md).
+[Introduction to Slurm CLI and Modules](slurm.md).
 
 ## Slurm
 

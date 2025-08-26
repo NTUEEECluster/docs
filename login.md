@@ -12,7 +12,7 @@ above.
 
 You must also be connected to NTUSECURE or
 [NTU VPN](https://vpngate-student.ntu.edu.sg). The cluster is not accessible
-outside NTU.
+outside NTU network.
 
 ## Logging In
 
