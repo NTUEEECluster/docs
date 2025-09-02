@@ -46,6 +46,7 @@ To keep things manageable, we have split this guide into multiple files.
 - Having trouble logging in? [Login Guide](login.md)
 - How do I access GPU node(s)? [Slurm Introduction](slurm.md)
     - What GPUs do I have access to? [Cluster Overview](cluster.md)
+- How to manage my storage space? [Storage Manager Usage](storaged.md)
 - How to setup the environments? [Setup Conda](conda.md)
 - How to run IDEs and debug? [Debugging Guide](debugging.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
