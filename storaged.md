@@ -15,6 +15,7 @@ Compared to a private server, we manage your storage space a bit differently. Pl
 - Through this UI, you can request **additional project directories** with higher disk quotas.
 - Based on your **account type**, storage manager will prompt your total disk quota.
 - Your overall quota is mainly determined by how much space do we have physically. We will update this actively if we have more storage.
+- Your project directories always appears under `/projects`. Note: it is `/projects` not `projects`.
 
 ---
 
