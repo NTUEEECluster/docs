@@ -83,7 +83,7 @@ Sometimes, it may be helpful to run a command and wait for the output. You can
 do so using `srun`.
 
 - Specify the flags like so: `srun <flags> <command>`.
-- An example might be `srun --gpus v100:1 nvidia-smi`.
+- An example might be `srun --gpus v100:1 --time 1:00:00 nvidia-smi`.
 - NTU VPN and NTUSECURE can be unstable. For your own sake, please avoid using `srun` to
   keep your job running.
 
@@ -106,16 +106,12 @@ You can see the [FAQ](troubleshooting.md#Slurm) for more details. If you still q
 
 Use `squeue` in shell to check your job status.
 
-| Code | Status Name | Description                                |
-|------|-------------|--------------------------------------------|
-| PD   | PENDING     | Waiting for resources to become available  |
-| R    | RUNNING     | Currently executing                        |
-| CG   | COMPLETING  | Job is finishing execution (cleanup phase) |
-| CD   | COMPLETED   | Finished successfully                      |
-| F    | FAILED      | Failed due to error (non-zero exit code)   |
-| CA   | CANCELLED   | Cancelled by user or administrator         |
-
-There are more possible status and you can search them quickly.
+Usually you will see status like: `mixed`, `idle`, `maint`, `down`, `drain`.
+- `mixed` means some GPUs are used on the node.
+- `idle` means no GPU on this node is used.
+- `maint` means we are going to put down this node soon.
+- `down` means we are experiencing issues with this node and it goes offline unexpectedly.
+- `drain` means we have put it down manually due to some issues.
 
 ## Enforced CPU/RAM  
 Slurm treats CPU cores and RAM as consumable resources. This means if you over-request these two, you can potentially block other's requests even if there are idle GPUs. Therefore, we enforce how many CPUs and
@@ -125,11 +121,10 @@ RAM you can get based on the number of GPUs you requested. This means `--mem` an
 We block requests that do not specify the GPU model because our cluster have various type of GPUs. By default Slurm will randomly assign you a GPU and this can result in consistency. Therefore, you must specify the 
 GPU model when you are calling `srun` and `sbatch`. If you don't specify, you might see an error message from Slurm and/or your job requesting is forever stuck.
 
-## Interactive Sessions no more than 12 hours  
-Since interactive sessions always lasts until the wall time or manually killed by users. We enforce a shorter walltime, i.e., 12h, for interactive sessions to free up the GPUs quicker in case you forget to kill your session(s). 
-For non-interactive `srun` and `sbatch`, the max wall time is 24 hours.
+## `srun` and `salloc` cannot exceed 12 hours.  
+We limit the hour limit on `srun` and `salloc` to stay below 12 hours. This is because both command does not auto exit even if your job is done. We want to release the nodes as fast as we can, so we enforce shorter time limit for these two commands. By default if you don't specify the time limit, it is the default time limit of the cluster, i.e., 48 hours. Meaning if you don't type `--time 12:00:00` or a lower number, your `srun` or `salloc` command will fail.
 
 ## Monitoring a long training session
 If you want to check your training progresses, we highly recommend 3rd-party
-packages like `Weight and Bias`. Slurm's output tend to lag behind the real
+packages like `Weight and Bias` or `tensorboard`. Slurm's output tend to lag behind the real
 progress.
