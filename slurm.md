@@ -83,7 +83,7 @@ Sometimes, it may be helpful to run a command and wait for the output. You can
 do so using `srun`.
 
 - Specify the flags like so: `srun <flags> <command>`.
-- An example might be `srun --gpus v100:1 nvidia-smi`.
+- An example might be `srun --gpus v100:1 --time 00:01:00 nvidia-smi`.
 - NTU VPN and NTUSECURE can be unstable. For your own sake, please avoid using `srun` to
   keep your job running.
 
