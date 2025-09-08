@@ -71,8 +71,9 @@ Group-specific Cards:
 
 To use within your limits, you do not have to specify anything.
 
-To **use more than the limit**, specify `--qos override-limits-but-killable`.
-You can learn more about submitting a job in [Slurm Introduction](slurm.md).
+To **use more than the limit** such as group-specific cards, specify
+`--qos override-limits-but-killable`. You can learn more about submitting a job
+in [Slurm Introduction](slurm.md).
 
 > **WARNING:** As the name implies, this makes your job killable. The cluster
 > will kill your job (and add it back to the queue for later) if someone else is
@@ -80,3 +81,66 @@ You can learn more about submitting a job in [Slurm Introduction](slurm.md).
 
 You are recommended to save epochs and make your program check if there are
 previous epochs to resume from if you make use of this feature.
+
+### CPU/RAM Enforcement
+
+Slurm treats CPU cores and RAM as consumable resources. As such, over-requesting
+these two will potentially block other's requests for GPUs. This has happened
+in the past and we now enforce the number of CPUs and RAM based on number of
+GPUs requested.
+
+As such, `--mem` and `--cpus-per-task` are overridden by our setup script.
+Setting them will not do anything.
+
+### GPU Type is Required
+
+All requests that do not specify the GPU model are blocked because our cluster
+has various type of GPUs and some GPUs significantly outperform other GPUs.
+
+You must specify the GPU model when you are calling `srun` and `sbatch`. If you
+don't specify, you might see an error message from Slurm and/or fail to run your
+job successfully.
+
+### `srun` and `salloc` 12-hour Time Limit
+
+We limit the hour limit on `srun` and `salloc` to stay below 12 hours. This is
+because both command does not auto exit even if your job is done.
+
+We want to release the nodes as fast as we can, so we enforce shorter time limit
+for these two commands. By default, if you don't specify the time limit, it is
+the default time limit of the cluster, i.e., 48 hours.
+
+As such, if you do not specify `--time 12:00:00` or a lower number, your `srun`
+or `salloc` command will fail.
+
+## Directories
+
+This cluster's storage are mostly network-backed and some directories are
+synchronized across all nodes. Notable examples are:
+
+- `/home/<username>` - All your configuration and home directory files are
+  synchronized. There is a **50 GB limit**.
+- `/projects/<project_name>` - These directories can be created with
+  [storaged](storaged.md). The aggregated limit is listed below.
+
+> **TIP:** Some legacy users may have larger quota on /home directories as part
+> of our migration strategy. If this applies to you, you are advised to get
+> below 50GB as soon as possible. We reserve the right to lower the quota at any
+> time which will cause all writes to your /home directory to fail until you
+> delete files. **This may cause your shell to not function correctly.**
+
+| Users     | SSD Quota (`ssd`) | HDD Quota (`hdd`) |
+|-----------|-------------------|-------------------|
+| rose      | 400 GB            | 5 TB              |
+| phd       | 400 GB            | 1 TB              |
+| msc       | 50 GB             | 300 GB            |
+| ug-proj   | 50 GB             | 300 GB            |
+| ug-course | 20 GB             | \-                |
+
+This table may lag behind actual configuration, please check the actual quota
+you are assigned using the `storagemgr` command in the cluster.
+
+> **TIP:** While HDDs are traditionally slower, our enterprise HDDs have been
+> configured in a RAID-like system and are able to serve multiple GB/s. We
+> recommend using the `hdd` tier for most use cases. **In our testing, `ssd`
+> tier is only helpful if you have 1000s or 10000s small files.**

@@ -88,3 +88,5 @@ issues attempting to use the cluster during the maintenance.**
     responsibility** for your actions.
 - Report any vulnerabilities to administrators immediately.
   - Usage of such vulnerabilities will lead to an immediate ban.
+- Please be professional when using the cluster. This includes but is not
+  limited to, using appropriate names for projects.

@@ -25,8 +25,8 @@ There are a few things to consider:
 ### Use Lmod to load software/packages
 
 > **TIP:** To use Conda, do `module load Miniconda3` or
-> `module load Miniforge3` followed by `source activate`. Do not skip `source activate`
-> or you cannot activate your env correctly.
+> `module load Miniforge3` followed by `source activate`. Skipping
+> `source activate` will cause errors while activating your environment.
 
 We use Lmod to let you load the version of software that you request.
 This helps us satisfy everyone's needs as some software conflict with each
@@ -34,8 +34,9 @@ other.
 
 We offer necessary packages/libraries such as CUDA, GCC, and Miniconda. Please
 do not attempt to install them yourself as it might mess up your environment
-variables. *If you cannot resolve it on your own, our solution to resolve this
-would be completely remove and recreate your home directory.*
+variables. *If you request for our help after making your home directory a weird
+state, we will not assist in debugging but completely remove and recreate your
+home directory on request.*
 
 Please do not hesitate to let us know what package you need but not present in
 `Lmod`. Your quickest way is to:
@@ -84,8 +85,11 @@ do so using `srun`.
 
 - Specify the flags like so: `srun <flags> <command>`.
 - An example might be `srun --gpus v100:1 --time 1:00:00 nvidia-smi`.
-- NTU VPN and NTUSECURE can be unstable. For your own sake, please avoid using `srun` to
-  keep your job running.
+- NTU VPN and NTUSECURE can be unstable. For your own sake, please avoid using
+  `srun` to keep your job running.
+
+Please note that we have some [cluster-specific quirks](cluster.md#Slurm). You
+are advised to check our documentation on it.
 
 Here is a list of helpful flags, **only specify them if you need to change the
 default value**:
@@ -100,7 +104,9 @@ default value**:
 | `--qos`      | `--qos rose`             | Specify what policy to run your job under. See [Cluster Overview](cluster.md#Slurm).                                                       |
 | `--job-name` | `--job-name example`     | Set the name of the job in outputs such as `squeue` to make it easier to find.                                                             |
 
-You can see the [FAQ](troubleshooting.md#Slurm) for more details. If you still questions, kindly ask GPT for help, it is very familiar with Slurm.
+You can see the [FAQ](troubleshooting.md#Slurm) for more details. If you still
+have other Slurm-specific questions, kindly ask the LLM of your choice for help.
+There are plenty of resources out there and LLMs are very familiar with Slurm.
 
 ## Job Status Check
 
@@ -110,21 +116,11 @@ Usually you will see status like: `mixed`, `idle`, `maint`, `down`, `drain`.
 - `mixed` means some GPUs are used on the node.
 - `idle` means no GPU on this node is used.
 - `maint` means we are going to put down this node soon.
-- `down` means we are experiencing issues with this node and it goes offline unexpectedly.
+- `down` means we are experiencing issues with this node and it goes offline
+  unexpectedly.
 - `drain` means we have put it down manually due to some issues.
-
-## Enforced CPU/RAM  
-Slurm treats CPU cores and RAM as consumable resources. This means if you over-request these two, you can potentially block other's requests even if there are idle GPUs. Therefore, we enforce how many CPUs and
-RAM you can get based on the number of GPUs you requested. This means `--mem` and `--cpus-per-task` no longer will take effects. So you don't have to specify these two parameters.
-
-## Do not request a generic GPU  
-We block requests that do not specify the GPU model because our cluster have various type of GPUs. By default Slurm will randomly assign you a GPU and this can result in consistency. Therefore, you must specify the 
-GPU model when you are calling `srun` and `sbatch`. If you don't specify, you might see an error message from Slurm and/or your job requesting is forever stuck.
-
-## `srun` and `salloc` cannot exceed 12 hours.  
-We limit the hour limit on `srun` and `salloc` to stay below 12 hours. This is because both command does not auto exit even if your job is done. We want to release the nodes as fast as we can, so we enforce shorter time limit for these two commands. By default if you don't specify the time limit, it is the default time limit of the cluster, i.e., 48 hours. Meaning if you don't type `--time 12:00:00` or a lower number, your `srun` or `salloc` command will fail.
 
 ## Monitoring a long training session
 If you want to check your training progresses, we highly recommend 3rd-party
-packages like `Weight and Bias` or `tensorboard`. Slurm's output tend to lag behind the real
-progress.
+packages like `Weight and Bias` or `tensorboard`. Slurm's output tend to lag
+behind the real progress.
