@@ -68,7 +68,6 @@ Group-specific Cards:
 | GPU Type | Group  | Per-User Limit |
 |----------|--------|----------------|
 | `v100`   | `rose` | 8              |
-| `a100`   | `rose` | Coming Soon    |
 
 To use within your limits, you do not have to specify anything.
 
