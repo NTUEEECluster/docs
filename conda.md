@@ -17,7 +17,7 @@ module avail
 Then load either Miniforge3 or Miniconda3 via
 
 ```bash
-module load miniforge3
+module load Miniforge3
 ```
 
 Do not load both at the same time.
