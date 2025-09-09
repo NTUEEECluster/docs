@@ -26,8 +26,11 @@ You *HAVE TO* run
 ```bash
 source activate
 ```
-after you load Miniforge or Miniconda. Then you can see there is a `(base)` in
-your shell session.
+ to activate the base environment or
+```bash
+source activate env_name
+```
+to directly start a certain environment.
 
 ## Create your environment if you want custom packages
 
