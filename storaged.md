@@ -24,7 +24,7 @@ If your quota on HDD storage is **5.0 TB**, you can either:
 - Request **1 project directory** that uses all 5.0 TB,  
   *or*
 - Create **5 project directories**, each with a 1.0 TB quota.
-- You need to define your own uniquely named project directory. Dumplicated name is not allowed.
+- You need to define your own uniquely named project directory. Duplicated name will result in failure to create your project directories.
 
 ---
 
