@@ -39,6 +39,7 @@ To keep things manageable, we have split this guide into multiple files.
 - [Request GPU node(s)](slurm.md) to debug/run your code.
 
 ### All Guides
+- I am super impatient. [Quick Start](quickstart.md)
 - What is a GPU cluster? How is it different from running codes locally on my
   laptop/desktop? [Linux & Cluster Basics](basics.md)
 - I have used a HPC before. What's the tl;dr? [Cluster Overview](cluster.md)
