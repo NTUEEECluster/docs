@@ -53,21 +53,13 @@ supports two modes of execution (different QoS):
 
 By default, you can use the GPUs as specified below. The numbers are per-user.
 
-EEE Cards:
-
-| Users     | `6000ada` |
-|-----------|-----------|
-| rose      | 4         |
-| phd       | 4         |
-| msc       | 2         |
-| ug-proj   | 2         |
-| ug-course | 1         |
-
-Group-specific Cards:
-
-| GPU Type | Group  | Per-User Limit |
-|----------|--------|----------------|
-| `v100`   | `rose` | 8              |
+| Users     | `6000ada` | `v100` (Provided by `rose`) |
+|-----------|-----------|-----------------------------|
+| rose      | 4         | 16                          |
+| phd       | 4         | QoS                         |
+| msc       | 2         | QoS                         |
+| ug-proj   | 2         | QoS                         |
+| ug-course | 1         | QoS                         |
 
 To use within your limits, you do not have to specify anything.
 
