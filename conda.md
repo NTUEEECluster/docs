@@ -1,6 +1,7 @@
 # Using Conda on the Cluster (with Lmod)
 
-Our cluster uses **Lmod** for managing software environments.  
+Our cluster uses **Lmod** for managing software environments.
+
 If you want to use Python packages via **Miniforge3** or **Miniconda3**, you
 must follow these steps.
 
@@ -22,14 +23,17 @@ module load Miniforge3
 
 Do not load both at the same time.
 
-You *HAVE TO* run 
+You *HAVE TO* run
 ```bash
 source activate
 ```
- to activate the base environment or
+
+to activate the base environment or
+
 ```bash
 source activate env_name
 ```
+
 to directly start a certain environment.
 
 ## Create your environment if you want custom packages

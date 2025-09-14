@@ -33,10 +33,12 @@ SHA256:AhYlWQBTsN/4GAzYTVTiZzrVhPhcurFMu1sBMglqvdM
 
 You should then see something similar to:
 ```
-Node: login-3
+Cluster 02
+Connecting to: login-3
 
-If you encounter errors, please send the commands you used and the output
-(including this message) to <email>.
+Relevant Guides:
+- https://github.com/NTUEEECluster/docs/blob/main/login.md
+- https://github.com/NTUEEECluster/docs/blob/main/troubleshooting.md
 (example@127.0.0.1) Password:
 ```
 
@@ -56,7 +58,7 @@ Password expired. Change your password now.
 (example@127.0.0.1) New password: <type new password once>
 (example@127.0.0.1) Retype new password: <type new password twice>
 
-Cluster02
+Cluster 02
 
 Message from Cluster Admin (2025-07-31):
   ...

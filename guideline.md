@@ -74,10 +74,12 @@ issues attempting to use the cluster during the maintenance.**
 ## 4. Permitted Use
 
 - The cluster is for **research and project-related computing** only.
+
 - **Absolutely prohibited activities** include:
   - Running **illegal, unlicensed, or pirated software**.
   - Running **malicious software**, including viruses, worms, or scripts that
     would otherwise prevent other users from accessing the service.
+
 - **If you run illegal or unlicensed software:**
   - **You are solely and fully responsible** for any and all consequences,
     including but not limited to:
@@ -86,7 +88,9 @@ issues attempting to use the cluster during the maintenance.**
     - Disciplinary actions by your school, university, or relevant authorities.
   - The administrators have **warned you in advance** and will **not bear any
     responsibility** for your actions.
+
 - Report any vulnerabilities to administrators immediately.
   - Usage of such vulnerabilities will lead to an immediate ban.
+
 - Please be professional when using the cluster. This includes but is not
   limited to, using appropriate names for projects.

@@ -24,20 +24,20 @@ unable to connect or run into trouble requesting a compute node so we can
 investigate.
 
 - Login Nodes (login-1 to login-3)
-  - **CPU:** 8 cores
-  - **RAM:** 32 GB
+  - **CPU:** 12 cores
+  - **RAM:** 64 GB
   - **GPU: NONE**
 - gpu-6000ada (gpu-6000ada-1 to gpu-6000ada-3)
-  - **CPU:** 20 cores
-  - **RAM:** 256 GiB (240000 MiB or 234 GiB requestable)
+  - **CPU:** 16 cores
+  - **RAM:** 264 GiB (256 GiB requestable)
   - **GPU:** 4x NVIDIA RTX6000 ADA Generation (48GB), `6000ada`
 - gpu-v100-1
-  - **CPU:** 20 cores
-  - **RAM:** 768 GiB (752000 MiB or 734 GiB requestable)
+  - **CPU:** 32 cores
+  - **RAM:** 264 GiB (256 GiB requestable)
   - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
 - gpu-v100-2
-  - **CPU:** 20 cores
-  - **RAM:** 384 GiB (368000 MiB or 359 GiB requestable)
+  - **CPU:** 32 cores
+  - **RAM:** 396 GiB (384 GiB requestable)
   - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
 
 To learn more about how to use the GPU nodes, check out
