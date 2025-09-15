@@ -192,6 +192,9 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        is assigned to you proportionally. This prevents you consuming all the
        CPU/RAM on a GPU node while there are still unassigned GPUs that no one
        can use.
+12. Q: Does the cluster have billing?
+
+    A: 
 
 ## Still need help?
 
