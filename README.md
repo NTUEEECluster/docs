@@ -3,6 +3,14 @@
 > **NOTE:** We are still in beta testing. We DO NOT provide any stability
 > guarantee. Check your emails frequently for updates.
 
+
+# Condition of Access
+
+By login to our cluster, you admit that you have fully read our guideline and 
+agree to our usage terms, such as fairshare, queuing policy, etc. If you ask us
+something directly violating our usage terms, you will be questioned on your understanding
+of our terms. This can lead to account suspension since you do not agree. [Usage Guidelines](guideline.md)
+
 ## What is this?
 
 This repository serves as a knowledge base to help users get started in
