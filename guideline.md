@@ -74,6 +74,16 @@ issues attempting to use the cluster during the maintenance.**
     To ensure fair share, users that have used less resources recently will get
     a small priority boost. As such, this will benefit not just other users but
     also you yourself.
+  
+- **Respect to cluster admins.**
+
+    Please consider your friendship with the cluster admins. We are mostly your peers.
+    We are fairly upset if your question is mostly about something already clearly indicated in
+    this documentation or in our update logs. And we can be quite thrilled if you are able to give constructive suggestions.
+    We appreciate users who are able to finish this document. If you expect a decent and detailed reply from us,
+    then be considerate. Similarly, if you drop us a random email full of ambiguity... what do you expect?
+
+    Under no circumstances you should email any of the system admins personally, btw.
 
 ## 4. Permitted Use
 
