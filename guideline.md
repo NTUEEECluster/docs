@@ -60,6 +60,10 @@ issues attempting to use the cluster during the maintenance.**
     Please **respect these access limitations**, or discuss additional resource
     contributions with your supervisor.
 
+    Sending us email requesting for more will only lead to questioning on if you
+    have read our terms. It might need to account suspension since you do not agree
+    our terms.
+
 - **Release resources as soon as possible.**
 
     It is highly likely that other users are queueing for the resources that
