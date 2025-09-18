@@ -39,6 +39,10 @@ investigate.
   - **CPU:** 32 cores
   - **RAM:** 396 GiB (384 GiB requestable)
   - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
+- cpu-1
+  - **CPU:** 24 cores
+  - **RAM:** 396 GiB (384 GiB requestable)
+  - **GPU: NONE**
 
 To learn more about how to use the GPU nodes, check out
 [Introduction to Slurm CLI and Modules](slurm.md).
@@ -93,17 +97,13 @@ You must specify the GPU model when you are calling `srun` and `sbatch`. If you
 don't specify, you might see an error message from Slurm and/or fail to run your
 job successfully.
 
-### `srun` and `salloc` 12-hour Time Limit
+### `srun` and `salloc` 2-hour Time Limit
 
-We limit the hour limit on `srun` and `salloc` to stay below 12 hours. This is
+We limit the hour limit on `srun` and `salloc` to stay below 2 hours. This is
 because both command does not auto exit even if your job is done.
 
 We want to release the nodes as fast as we can, so we enforce shorter time limit
-for these two commands. By default, if you don't specify the time limit, it is
-the default time limit of the cluster, i.e., 48 hours.
-
-As such, if you do not specify `--time 12:00:00` or a lower number, your `srun`
-or `salloc` command will fail.
+for these two commands.
 
 ## Directories
 

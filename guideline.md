@@ -17,6 +17,23 @@ due to cluster-specific reasons, we will attempt to assist you. To help save
 your time, check out the [FAQ](troubleshooting.md) before attempting to contact
 the administrators.
 
+You are expected to conduct yourself professionally when interacting with
+cluster administrators. Please do your due dilligence and attempt to look for
+solutions as maintaining the cluster is not our full-time job. You are expected
+to:
+
+- Search for answers in this repository
+- Read our update logs, as posted in the MOTD
+- Provide us with details on what you have tried to save everyone's time
+
+Please understand that not doing the above will simply waste everyone's time and
+resources.
+
+**DO NOT send emails directly to any administrator's personal email address.**
+This makes it impossible for us to track support requests and will simply cause
+longer response time as other administrators will not be able to answer. It is
+likely that your email will be ignored if you do so.
+
 ## 2. Availability & Security
 
 While we do make an effort, **we cannot guarantee that your data is secure and
@@ -48,6 +65,10 @@ issues attempting to use the cluster during the maintenance.**
     connection to NTUSECURE may not be completely stable and you may disconnect
     at any time. Consider yourself warned.
 
+    Currently, we enforce a hard 8 GB RAM per user limit on login nodes. Users
+    exceeding this limit may see their processes killed by the kernel. This
+    number may have changed and is only included here as a rough gauge.
+
 - **Respect other users' right to access resources**.
 
     If you need to wait in the job queue, please understand that **all users
@@ -71,19 +92,14 @@ issues attempting to use the cluster during the maintenance.**
     possible so other users can use resources. Leaving the resources idle is
     insufficient, please exit the job completely to release your resources.
 
+    This means that you should avoid running jobs that will not effectively use
+    resources, including but not limited to, a normal `bash` shell to "reserve"
+    resources. Run your individual scripts individually instead and keep your
+    shell on login nodes.
+
     To ensure fair share, users that have used less resources recently will get
-    a small priority boost. As such, this will benefit not just other users but
-    also you yourself.
-  
-- **Respect to cluster admins.**
-
-    Please consider your friendship with the cluster admins. We are mostly your peers.
-    We are fairly upset if your question is mostly about something already clearly indicated in
-    this documentation or in our update logs. And we can be quite thrilled if you are able to give constructive suggestions.
-    We appreciate users who are able to finish this document. If you expect a decent and detailed reply from us,
-    then be considerate. Similarly, if you drop us a random email full of ambiguity... what do you expect?
-
-    Under no circumstances you should email any of the system admins personally, btw.
+    a priority boost. As such, this will benefit not just other users but also
+    you yourself.
 
 ## 4. Permitted Use
 

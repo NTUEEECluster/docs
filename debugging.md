@@ -4,15 +4,41 @@
 > node successfully](login.md). Running an IDE directly without a first login
 > will not work as the first login will force you to change your password.
 
-# Use IDE as text enditor
-We support the case you want to use VSCode and/or PyCharm to edit your code on the login node.
-However, you should know these:
-- 1. Each and every user has a 150% CPU limit and 8GB memory limit on the each login node (there is a total of 3 login nodes)
-- 2. IDEs beyond VSCode and PyCharm can be more hungry on CPU and memory. This means either it initialize very slow, or it directly triggers OOM-killer.
-- 3. Most IDEs deploy a backend process on the login node so you can edit your code in real time. This also means this backend eats up your memory quota. Backends not closed gracefully can stay in the memory and eat your memory quota as well.
-- 4. If you have any enquiries regarding IDEs, please come to the office hour instead of sending emails. Ask yourself this question: if you were the admin and you see a support ticket about some weird bugs related to your IDE, what can you reply if only limited information is included?
- 
-# Use IDE to run code and debug
+## Running IDE as Text Editor
+
+To run your IDE (e.g., PyCharm, VSCode) on the login node, simply enter your
+credentials using the remote SSH functionality of your IDE.
+
+When you need to run your script with GPU, you may run Slurm in your IDE's
+terminal to start a job. More information on how to use `srun` and `sbatch` can
+be found in the [Slurm guide](slurm.md).
+
+> Note: You should avoid running too many extensions as there is a RAM limit
+> enforced on login nodes that may cause your IDE to be killed due to Out of
+> Memory. Ensure you exit your IDEs properly as we have been informed that some
+> users run into issues when they do not do so and two instances of their IDE
+> run simultaneously.
+
+Please take note of the following:
+
+1. Each and every user has a CPU and memory limit on the each login node (there
+   is a total of 3 login nodes).
+2. IDEs beyond VSCode and PyCharm can be more hungry on CPU and memory. This
+   means either it initialize very slow, or it directly triggers OOM-killer.
+3. Most IDEs deploy a backend process on the login node so you can edit your
+   code in real time. This also means this backend eats up your memory quota.
+   Backends not closed gracefully can stay in the memory and eat your memory
+   quota as well.
+4. If you have any enquiries regarding IDEs, please come to the office hour
+   instead of sending emails. We regret to say that we are unable to debug such
+   issues easily without being able to reproduce ourselves.
+
+## Running IDE on Compute Node to Debug
+
+> **IMPORTANT NOTE:** This guide should only be used if you specifically need
+> to be on the compute node running your processes. Following these steps will
+> hog up resources until you close your terminal.
+> **You are recommended to [run only your script](slurm.md) most of the time.**
 
 We are fully aware that users might want to run debugging sessions, either
 checking outputs in shell sessions or running a Python debugger and debug your
@@ -25,7 +51,7 @@ GPU node, allowing you to “directly” interact with it.
 > 💡 **Tip:** If you're unfamiliar with configuring remote connections in
 > PyCharm or VSCode, refer to their official documentation.
 
-## Step-by-Step Instructions
+### Step-by-Step Instructions
 
 1. **Allocate a GPU node** with the resources you need:
 
@@ -55,7 +81,7 @@ GPU node, allowing you to “directly” interact with it.
 
     This tells SSH to go through the login node (`-J`) and connect directly to
     the compute node.
-   
+
 5. **Tunneling into the assigned compute node.**
     For other IDE you might not be able to customize the ssh command see below:
     ```bash
