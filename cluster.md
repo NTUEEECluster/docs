@@ -47,6 +47,15 @@ investigate.
 To learn more about how to use the GPU nodes, check out
 [Introduction to Slurm CLI and Modules](slurm.md).
 
+### Auto-Termination of Processes on Login Nodes
+
+All your processes on login nodes will be terminated upon disconnection. This
+includes commands that are run with `tmux` or `nohup`.
+
+This feature has been implemented as there are no supported methods to reliably
+reconnect to a login node after disconnection and lingering processes have led
+to numerous issues for users.
+
 ## Slurm
 
 To ensure fair access to all users while minimizing idle resources, the cluster
