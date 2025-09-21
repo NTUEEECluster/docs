@@ -85,8 +85,9 @@ these two will potentially block other's requests for GPUs. This has happened
 in the past and we now enforce the number of CPUs and RAM based on number of
 GPUs requested.
 
-As such, `--mem` and `--cpus-per-task` are overridden by our setup script.
-Setting them will not do anything.
+Setting `--mem` will only give you a warning that your values are being
+overridden. Setting `--cpu-per-task` when you have GPUs specified will also
+be ignored with a warning only.
 
 ### GPU Type is Required
 
@@ -97,13 +98,17 @@ You must specify the GPU model when you are calling `srun` and `sbatch`. If you
 don't specify, you might see an error message from Slurm and/or fail to run your
 job successfully.
 
-### `srun` and `salloc` 2-hour Time Limit
+### Job Limits
 
-We limit the hour limit on `srun` and `salloc` to stay below 2 hours. This is
-because both command does not auto exit even if your job is done.
+We have added additional constraints on interactive jobs due to frequent
+under-utilization during an interactive job. Interactive jobs is only intended
+to be used if you need to debug a specific issue that only happens on GPU nodes.
 
-We want to release the nodes as fast as we can, so we enforce shorter time limit
-for these two commands.
+These constraints are:
+
+- Maximum of 2 hour per interactive job
+- Maximum of 1 node / 1 GPU in interactive job
+- Maximum of 1 jobs running at any point in time (including batch jobs)
 
 ## Directories
 
@@ -114,6 +119,8 @@ synchronized across all nodes. Notable examples are:
   synchronized. There is a **50 GB limit**.
 - `/projects/<project_name>` - These directories can be created with
   [storaged](storaged.md). The aggregated limit is listed below.
+- `/tmp` - Your temp directory is synchronized and each user has their own
+  isolated `/tmp`. There is a **2GB limit**.
 
 > **TIP:** Some legacy users may have larger quota on /home directories as part
 > of our migration strategy. If this applies to you, you are advised to get
