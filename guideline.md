@@ -60,7 +60,8 @@ examine your files. However, we don't add and modify your data. We however, will
 data under the following condition: your last login record is more than 6 months old. We will 
 send you a warning when you haven't login for 5 months. If you choose not to respond or agree that 
 we can remove your data, we will remove it after the 6 months deadline. If you are a course user, your
-data will be removed once next semester starts to release space for others.
+access will be terminated by the end of each semester. Your data maybe used for internal data 
+analysis and improving the course quality before we do the removal.
 
 ## 4. Fair Usage & Queueing
 
