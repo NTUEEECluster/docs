@@ -14,7 +14,7 @@ private barebone server.
 If there are no specific errors that you are seeing, please choose the closest
 category:
 - [I cannot login, I do not see the "example@login-1$"](#Login)
-- [I cannot use commands that I expect to be able to use](#Shell)
+- [I cannot use commands/applications that I expect to be able to use](#Shell)
 - [How do I get Slurm to do X](#Slurm)
 - [Still need help?](#Still-need-help)
 
@@ -110,6 +110,27 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        Typically, [modules](slurm.md#Lmod) will have the program that you need
        installed.
 
+4.  Q: Why does my IDE remote connection to the cluster not work?
+
+    A: We have seen the following reasons for IDEs not working in the cluster.
+       Please check whether each one applies to you before contacting the
+       administrator with the IDE's error log.
+
+       1. **Disk Quota Exceeded**: If your home directory is full, your IDE will
+          not be able to download its server companion application into your
+          home directory. This will cause the server to fail to launch.
+       2. **Memory Limit Exceeded**: PyCharm and VSCode indexes and/or watches
+          folders. This causes them to use significant RAM if you have a lot of
+          small files. Please configure your IDE to ignore these folders.
+
+5.  Q: Why do I keep getting `Disk quota exceeded` despite my home directory
+       having plenty of space?
+
+    A: Disk quota exceeded may also occur when your project directory or `/tmp`
+       fills up. This might happen if you are installing a big package using
+       `pip`. If the issue persists after clearing your `/tmp`, try setting your
+       `TMPDIR` to a directory with more space.
+
 ## Slurm
 
 1.  Q: How do I actually run my program using Slurm?
@@ -192,9 +213,16 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        is assigned to you proportionally. This prevents you consuming all the
        CPU/RAM on a GPU node while there are still unassigned GPUs that no one
        can use.
+
 12. Q: Does the cluster have billing?
 
-    A: 
+    A: No. You might notice `billing` if you look into the Slurm configuration
+       but we are only using it for reporting purposes currently. Thanks to the
+       generous sponsor of multiple organizations, we are running this service
+       free of charge for eligible users.
+
+       While there is a non-zero chance of this changing in the future, we will
+       inform you should that be the case.
 
 ## Still need help?
 
@@ -207,7 +235,8 @@ the addresses used to inform you the password):
 - What you expect to happen: What should you be seeing? What are you attempting
     to achieve?
 - What actually happens: What is the actual output? If possible, include
-    screenshots.
+    screenshots. If you are using an IDE, please include relevant logs from your
+    IDE.
 
 Please provide as much relevant information as you can to help us debug your
 issue. **We need to be able to replicate the issue in order to fix it
