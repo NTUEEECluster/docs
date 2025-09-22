@@ -69,16 +69,20 @@ By default, you can use the GPUs as specified below. The numbers are per-user.
 | Users     | `6000ada` | `v100` (Provided by `rose`) |
 |-----------|-----------|-----------------------------|
 | rose      | 4         | 16                          |
-| phd       | 4         | QoS                         |
-| msc       | 2         | QoS                         |
-| ug-proj   | 2         | QoS                         |
-| ug-course | 1         | QoS                         |
+| phd       | 4         | Best-Effort                 |
+| msc       | 2         | Best-Effort                 |
+| ug-proj   | 2         | Best-Effort                 |
+| ug-course | 1         | Best-Effort                 |
 
 To use within your limits, you do not have to specify anything.
 
 To **use more than the limit** such as group-specific cards, specify
 `--qos override-limits-but-killable`. You can learn more about submitting a job
 in [Slurm Introduction](slurm.md).
+
+Best-Effort means that we will tweak values depending on demand and the value
+may be as low as zero. `override-limits-but-killable` may still request
+resources under Best-Effort.
 
 > **WARNING:** As the name implies, this makes your job killable. The cluster
 > will kill your job (and add it back to the queue for later) if someone else is
