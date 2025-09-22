@@ -52,7 +52,17 @@ to the actual event. These events will be notified via email. **All jobs are
 subject to be killed when the maintenance window starts and you may run into
 issues attempting to use the cluster during the maintenance.**
 
-## 3. Fair Usage & Queueing
+## 3. Data Privacy & Removal
+
+Your home and project directories are only accessible by yourself and the admins.
+In cases like the admins need to reproduced the errors you encountered, we might need to 
+examine your files. However, we don't add and modify your data. We however, will remove your 
+data under the following condition: your last login record is more than 6 months old. We will 
+send you a warning when you haven't login for 5 months. If you choose not to respond or agree that 
+we can remove your data, we will remove it after the 6 months deadline. If you are a course user, your
+data will be removed once next semester starts to release space for others.
+
+## 4. Fair Usage & Queueing
 
 - **DO NOT USE LOGIN NODES FOR HEAVY WORKLOADS**.
 
@@ -102,7 +112,7 @@ issues attempting to use the cluster during the maintenance.**
     a priority boost. As such, this will benefit not just other users but also
     you yourself.
 
-## 4. Permitted Use
+## 5. Permitted Use
 
 - The cluster is for **research and project-related computing** only.
 
