@@ -79,11 +79,12 @@ issues attempting to use the cluster during the maintenance.**
     source's policies.
 
     Please **respect these access limitations**, or discuss additional resource
-    contributions with your supervisor.
+    contributions with your supervisor. Wherever possible, we have already
+    included ways for you to request more resources in ways that will not
+    disrupt other users' uses of the cluster.
 
-    Sending us email requesting for more will only lead to questioning on if you
-    have read our terms. It might need to account suspension since you do not agree
-    our terms.
+    We regret to inform that we will not reply favourably to emails requesting
+    for additional resources without contribution.
 
 - **Release resources as soon as possible.**
 

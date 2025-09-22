@@ -80,13 +80,18 @@ The recommended way is to use `sbatch` (an example file is available
 - When a node with GPU is ready, it will run your job.
 - The output will be saved into a file in the current directory.
 
+> **TIP:** Our cluster sees less utilization at night and over weekends. You may
+> queue multiple jobs using `sbatch` and they will be run sequentially, even
+> when you are not connected to the cluster.
+
 Sometimes, it may be helpful to run a command and wait for the output. You can
 do so using `srun`.
 
 - Specify the flags like so: `srun <flags> <command>`.
 - An example might be `srun --gpus v100:1 --time 1:00:00 nvidia-smi`.
 - NTU VPN and NTUSECURE can be unstable. For your own sake, please avoid using
-  `srun` to keep your job running.
+  `srun` for jobs that will take a lot of time. Disconnection will automatically
+  lead to `srun` jobs' cancellation.
 
 Please note that we have some [cluster-specific quirks](cluster.md#Slurm). You
 are advised to check our documentation on it.
@@ -114,13 +119,9 @@ Use `squeue` in shell to check your job status.
 
 Usually you will see status like: `mixed`, `idle`, `maint`, `down`, `drain`.
 - `mixed` means some GPUs are used on the node.
-- `idle` means no GPU on this node is used.
-- `maint` means we are going to put down this node soon.
+- `idle` means no GPU on this node is being used.
+- `maint` means there are active maintenance tasks and the node cannot be used.
 - `down` means we are experiencing issues with this node and it goes offline
   unexpectedly.
-- `drain` means we have put it down manually due to some issues.
-
-## Monitoring a long training session
-If you want to check your training progresses, we highly recommend 3rd-party
-packages like `Weight and Bias` or `tensorboard`. Slurm's output tend to lag
-behind the real progress.
+- `drain` means there are active issues with the node and the node cannot be
+  used.

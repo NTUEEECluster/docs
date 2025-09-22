@@ -76,21 +76,30 @@ GPU node, allowing you to “directly” interact with it.
 
     - **Example:**
       ```bash
-      ssh -J user@0.0.0.0 user@lab999
+      ssh -J user@0.0.0.0 user@gpu-example-1
       ```
 
     This tells SSH to go through the login node (`-J`) and connect directly to
     the compute node.
 
 5. **Tunneling into the assigned compute node.**
-    For other IDE you might not be able to customize the ssh command see below:
+
+    For IDEs where you are unable to customize the SSH command, please see
+    below.
+
+    Run the following command on **your** computer's terminal (NOT any terminals
+    that already has SSH running).
+
     ```bash
     ssh -L <port>:<allocated_node_name>:22 <username>@<login_node_ip>
     ```
-    run this command on your **laptop**'s terminal. This will open a ssh session and don't close it.
-    What this does is map a local port on your laptop to a remote port on the assigned compute node.
-    In this way, you can put `localhost:<port>` instead in your IDE as your remote host, i.e., your IDE is connecting to this
-    local port, the forwarding process is transparent to your IDE.
+
+    This will start an SSH session. Do not close this shell either. This SSH
+    session maps a local port on your computer to the SSH port on your allocated
+    node. In this way, you can put `localhost:<port>` instead in your IDE as
+    your remote host, i.e., your IDE is connecting to this local port, which is
+    being forwarded to the allocated node. This forwarding process is
+    transparent to your IDE.
 
 ## After You're Done
 

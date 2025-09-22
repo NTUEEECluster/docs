@@ -1,9 +1,10 @@
 # Quick Start
 
-> **⚠️ WARNING**: you are supposed to go through all contents of this
-> documentation. This quick start guide only lists basic commands. If you want
-> advanced features, like changing QoS, debug via IDEs, please read this
-> repository entirely.
+> **⚠️ WARNING**: You are expected to go through at least the
+> [Usage Guidelines](guideline.md) and [Cluster Overview](cluster.md).
+> This quick start guide only lists basic commands. In addition, if you want
+> advanced features, such as requesting more GPUs than default and connecting
+> via IDEs, please read the relevant part of the repository.
 
 - 1. Login
 
@@ -14,8 +15,6 @@
 - 2. Request an interactive session on a compute node
 
     `sinfo` to check what GPU we offer.
-
-    `srun --pty --gpus 6000ada:1 --time 08:00:00 bash` to request 1 GPU.
 
     `module load Miniforge3` to load conda. Then `source activate` to activate
     the base environment of conda.
@@ -47,10 +46,10 @@
 Another thing you MUST know:
 
 We **intentionally** limit your home disk quota to 50GB. However, you can have
-more by calling `storagemgr` in terminal. `storagemgr` has a very simple and
-self-explained UI, please follow the instructions in it to request more disk
-space.
+more by calling `storagemgr` in terminal. Please follow our instructions
+[here](storaged.md) if you need them.
 
-This quick start only serve as a cheatsheet. When you email us, we still assume
-you have checked the entire documentation and have full knowledge of how the
-cluster works and what the rules are.
+This quick start only serve as a cheatsheet. When you email us, we assume that
+you have checked the entire documentation for your question and have knowledge
+of all the relevant parts in this repository, including our rules as stated in
+[Usage Guidelines](guideline.md).

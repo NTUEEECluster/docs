@@ -51,13 +51,14 @@ example, 3.10.
 
 ## Scope of Support
 
-We do not and will not help you to resolve problems such as package conflicts,
-package version mismatch, etc. that are not caused by the cluster's setups.
+As a reminder of the [Usage Guidelines](guideline.md), we do not and will not
+help you to resolve problems that are not caused by the cluster's setups, such
+as package conflicts and package version mismatch.
 
-We provide a guides on
+We provide a guide on
 [how to start debugging your code on the cluster](debugging.md), BUT we do not
 help you debug any of your applications' specific errors.
 
-Before asking for help, take a close look at your error message and google it or
+Before asking for help, take a close look at your error message and Google it or
 ask GPT. This is to save both your and our time on trivial questions. If that
 fails, check our [troubleshooting guide](troubleshooting.md).

@@ -56,6 +56,9 @@ This feature has been implemented as there are no supported methods to reliably
 reconnect to a login node after disconnection and lingering processes have led
 to numerous issues for users.
 
+We are aware of possible bypasses of this feature but we will not provide
+support for users doing so.
+
 ## Slurm
 
 To ensure fair access to all users while minimizing idle resources, the cluster
