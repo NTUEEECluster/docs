@@ -34,34 +34,46 @@ This makes it impossible for us to track support requests and will simply cause
 longer response time as other administrators will not be able to answer. It is
 likely that your email will be ignored if you do so.
 
-## 2. Availability & Security
+## 2. Cluster Availability
 
-While we do make an effort, **we cannot guarantee that your data is secure and
-available at all times.**
-
-This means that despite our best effort, we cannot guarantee fully that any of
-the tasks that you are running will not be killed. We will attempt to inform you
-should we suspect that this has happened, but we cannot fully guarantee this
-either as we are not staring at the cluster 24/7.
-
-**Please make backups of important data regularly.** We may be unable to assist
-you in the case of data loss or if there are ongoing maintenance events.
+Despite our best effort, we cannot guarantee fully that any of the tasks that
+you are running will not be killed. We will attempt to inform you should we
+suspect that this has happened, but we cannot fully guarantee this either as we
+are not staring at the cluster 24/7.
 
 For scheduled maintenance events, we typically attempt to announce 3 days prior
 to the actual event. These events will be notified via email. **All jobs are
 subject to be killed when the maintenance window starts and you may run into
 issues attempting to use the cluster during the maintenance.**
 
-## 3. Data Privacy & Removal
+## 3. Data Privacy & Availability
 
-Your home and project directories are only accessible by yourself and the admins.
-In cases like the admins need to reproduced the errors you encountered, we might need to 
-examine your files. However, we don't add and modify your data. We however, will remove your 
-data under the following condition: your last login record is more than 6 months old. We will 
-send you a warning when you haven't login for 5 months. If you choose not to respond or agree that 
-we can remove your data, we will remove it after the 6 months deadline. If you are a course user, your
-access will be terminated by the end of each semester. Your data maybe used for internal data 
-analysis and improving the course quality before we do the removal.
+By default, your home and project directories are only accessible by you only
+with the following exceptions:
+
+- Users that you have granted permission via `storagemgr` may access those
+  project directories.
+- Admins may collect metadata on your directories including file names and file
+  sizes for cluster management purposes.
+- Admins may access your files and logs to assist in reproducing reported errors
+  and facilitating service requests submitted by you.
+- Your approver (e.g. supervisor or course coordinator) may request access to
+  your data at any time.
+
+While we do make an effort, **we cannot guarantee that your data is available at
+all times.**
+
+**Please make backups of important data regularly.** We may be unable to assist
+you in the case of data loss or if there are ongoing maintenance events.
+
+We will only deliberately remove your data after your account has not been
+logged into for 6 months or your GPU usage's approved timeframe comes to an end
+(e.g. course users during end of semester), whichever comes first. You will be
+sent a reminder if your account has not been logged into for 5 months.
+
+You are responsible for keeping your credentials secure. Any requests from your
+account will be considered to be coming from you and people with your
+credentials may access your data.
 
 ## 4. Fair Usage & Queueing
 
