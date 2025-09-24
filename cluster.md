@@ -142,7 +142,7 @@ synchronized across all nodes. Notable examples are:
 - `/projects/<project_name>` - These directories can be created with
   [storaged](storaged.md). The aggregated limit is listed below.
 - `/tmp` - Your temp directory is synchronized and each user has their own
-  isolated `/tmp`. There is a **2GB limit**.
+  isolated `/tmp`. There is a **4GB limit**.
 
 > **TIP:** Some legacy users may have larger quota on /home directories as part
 > of our migration strategy. If this applies to you, you are advised to get
