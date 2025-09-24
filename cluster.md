@@ -47,6 +47,8 @@ investigate.
 To learn more about how to use the GPU nodes, check out
 [Introduction to Slurm CLI and Modules](slurm.md).
 
+<a id="process-cleanup" />
+
 ### Auto-Termination of Processes on Login Nodes
 
 All your processes on login nodes will be terminated upon disconnection. This
@@ -58,6 +60,10 @@ to numerous issues for users.
 
 We are aware of possible bypasses of this feature but we will not provide
 support for users doing so.
+
+This does not clean up any of the files left behind by your processes. We kill
+your processes with SIGINT so they have a few seconds of opportunity to cleanup
+their own files but not every process does so.
 
 ## Slurm
 

@@ -14,6 +14,7 @@ private barebone server.
 If there are no specific errors that you are seeing, please choose the closest
 category:
 - [I cannot login, I do not see the "example@login-1$"](#Login)
+- [My IDE is not working!](#IDE)
 - [I cannot use commands/applications that I expect to be able to use](#Shell)
 - [How do I get Slurm to do X](#Slurm)
 - [Still need help?](#Still-need-help)
@@ -75,6 +76,50 @@ If you have not done so, please follow the [login guide](login.md) carefully.
     A: Send us an email from your school email and we will reset it for you
        within 3 business days.
 
+## IDE
+
+1.  Q: Why does my IDE remote connection to the cluster not work?
+
+    A: We have seen the following reasons for IDEs not working in the cluster.
+       Please check whether each one applies to you before contacting the
+       administrator with the IDE's error log.
+
+       - **Disk Quota Exceeded**: Your IDE is not able to install itself because
+         your home directory is full. See [this entry](#home-quota-cleanup) for
+         more details.
+       - **Memory Limit Exceeded**: If you have multiple instances of your IDE
+         running, you may run out of memory. This sometimes apply even if you
+         have closed your IDE as some IDEs do not clean up properly. See the
+         question below for more details.
+       - **Corrupted IDE Files**: Your IDE files might be corrupted due to any
+         of the above happening or just bad network connection. You can
+         typically delete your `.cache` folder with `rm` to get your IDE to
+         reinstall itself. Note that this may delete your IDE settings so use
+         with caution.
+
+2.  Q: I am triggering out-of-memory even though I am not using too many
+       extensions!
+
+    A: Out of memory issues can be triggered by a few reasons:
+
+       - You have lingering IDE backends that did not terminate when you
+         disconnected. You may use commands like `htop` and `bpytop` to see the
+         processes that are running. If this applies to you, a question below
+         covers how to clean it up.
+       - You might be running too many extensions. Each extension takes up some
+         RAM.
+       - PyCharm and VSCode indexes and/or watches folders. This causes them to
+         use significant RAM if you have a lot of small files or a few big
+         files. Please configure your IDE to ignore these folders. In VSCode,
+         this can be done using the File Watcher: Exclude setting.
+
+3.  Q: How do I clean up all my running IDEs?
+
+    A: You can try to kill your IDE related processes by manually SSH-ing into
+       the login node and using commands like `pkill -u your_name -f ide_name`.
+       This kills processes under your name and has the keyword `ide_name`. For
+       pycharm, it can be `pycharm`.
+
 ## Shell
 
 1.  Q: Why is X not installed? Why am I getting "conda: command not found"?
@@ -110,26 +155,37 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        Typically, [modules](slurm.md#Lmod) will have the program that you need
        installed.
 
-4.  Q: Why does my IDE remote connection to the cluster not work?
-
-    A: We have seen the following reasons for IDEs not working in the cluster.
-       Please check whether each one applies to you before contacting the
-       administrator with the IDE's error log.
-
-       1. **Disk Quota Exceeded**: If your home directory is full, your IDE will
-          not be able to download its server companion application into your
-          home directory. This will cause the server to fail to launch.
-       2. **Memory Limit Exceeded**: PyCharm and VSCode indexes and/or watches
-          folders. This causes them to use significant RAM if you have a lot of
-          small files. Please configure your IDE to ignore these folders.
-
-5.  Q: Why do I keep getting `Disk quota exceeded` despite my home directory
+4.  Q: Why do I keep getting `Disk quota exceeded` despite my home directory
        having plenty of space?
 
     A: Disk quota exceeded may also occur when your project directory or `/tmp`
        fills up. This might happen if you are installing a big package using
        `pip`. If the issue persists after clearing your `/tmp`, try setting your
        `TMPDIR` to a directory with more space.
+
+<a id="home-quota-cleanup" />
+
+5.  Q: I actually ran out of disk quota in my home directory. How do I solve
+       this?
+
+    A: You can do `ls -a` to see all your files and run `du -sh ./* ./.*` to
+       view the sizes of individual directory/file.
+
+       You are then advised to either delete them or move them into a
+       [project folder](storaged.md).
+
+6.  Q: Why is my tmux session getting killed when I disconnect?
+
+    A: We have deployed [automatic process cleanup](cluster.md#process-cleanup).
+
+       It is triggered when all your connections to a login node is closed. We
+       have done so as we found that users often leave lingering processes
+       without realizing and causing issues for themselves.
+
+       This can be worked around but doing so is unsupported and cluster admins
+       will ignore support requests that arise from doing so. You are advised to
+       start a Slurm job instead if you need a task to continue running even
+       after you disconnect.
 
 ## Slurm
 
@@ -196,7 +252,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        example, opening a file in Python and never closing it will result in
        a resource leak.
 
-10. Q: Why my job is killed/aborted?
+9.  Q: Why my job is killed/aborted?
 
     A: Most of the time it is because you are using `srun` or `salloc` to hold
        your session on the compute node alive. If you close or get disconnected
@@ -205,7 +261,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        we recommend you use `sbatch` to run your long training sessions because
        closing your SSH session won't kill jobs invoked by `sbatch`.
 
-11. Q: Why I cannot specify more/less CPU/RAM?
+10. Q: Why I cannot specify more/less CPU/RAM?
 
     A: We enforce how many CPU/RAM you can get based on the actual hardware of
        each server. The rule of thumb is that if you request all the GPUs on one
@@ -214,7 +270,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        CPU/RAM on a GPU node while there are still unassigned GPUs that no one
        can use.
 
-12. Q: Does the cluster have billing?
+11. Q: Does the cluster have billing?
 
     A: No. You might notice `billing` if you look into the Slurm configuration
        but we are only using it for reporting purposes currently. Thanks to the

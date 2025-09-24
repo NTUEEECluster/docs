@@ -21,8 +21,7 @@ be found in the [Slurm guide](slurm.md).
 
 Please take note of the following:
 
-1. Each and every user has a CPU and memory limit on the each login node (there
-   is a total of 3 login nodes).
+1. Each and every user has a CPU and memory limit on the each login node.
 2. IDEs beyond VSCode and PyCharm can be more hungry on CPU and memory. This
    means either it initialize very slow, or it directly triggers OOM-killer.
 3. Most IDEs deploy a backend process on the login node so you can edit your
@@ -68,59 +67,45 @@ GPU node, allowing you to “directly” interact with it.
 
 3. **SSH into your allocated GPU node.**
 
-    This is the command to provide your IDE if you want to use an IDE.
+    1. Via SSH command (VSCode)
 
-    ```bash
-    ssh -J <username>@<login_node_ip> <username>@<allocated_node_name>
-    ```
+        This is the command to provide your IDE if you want to use an IDE.
+        If you are a PyCharm user
 
-    - **Example:**
-      ```bash
-      ssh -J user@0.0.0.0 user@gpu-example-1
-      ```
+        ```bash
+        ssh -J <username>@<login_node_ip> <username>@<allocated_node_name>
+        ```
 
-    This tells SSH to go through the login node (`-J`) and connect directly to
-    the compute node.
+        - **Example:**
+          ```bash
+          ssh -J user@0.0.0.0 user@gpu-example-1
+          ```
 
-5. **Tunneling into the assigned compute node.** (if you use PyCharm use this one)
+        This tells SSH to go through the login node (`-J`) and connect directly
+        to the compute node.
 
-    For IDEs where you are unable to customize the SSH command, please see
-    below.
+    2. Create an SSH tunnel (PyCharm)
 
-    Run the following command on **your** computer's terminal (NOT any terminals
-    that already has SSH running).
+        For IDEs where you are unable to customize the SSH command, please see
+        below.
 
-    ```bash
-    ssh -L <port>:<allocated_node_name>:22 <username>@<login_node_ip>
-    ```
+        Run the following command on **your** computer's terminal (NOT any
+        terminals that already has SSH running).
 
-    This will start an SSH session. Do not close this shell either. This SSH
-    session maps a local port on your computer to the SSH port on your allocated
-    node. In this way, you can put `localhost:<port>` instead in your IDE as
-    your remote host, i.e., your IDE is connecting to this local port, which is
-    being forwarded to the allocated node. This forwarding process is
-    transparent to your IDE.
+        ```bash
+        ssh -L <port>:<allocated_node_name>:22 <username>@<login_node_ip>
+        ```
+
+        This will start an SSH session. Do not close this shell either. This SSH
+        session maps a local port on your computer to the SSH port on your
+        allocated node. In this way, you can put `localhost:<port>` instead in
+        your IDE as your remote host, i.e., your IDE is connecting to this local
+        port, which is being forwarded to the allocated node. This forwarding
+        process is transparent to your IDE.
 
 ## My IDE doesn't want to connect.
 
-Connecting IDEs sometimes can be frustrating mostly because of these reasons:
--  Your network connection is unstable.  
--  When trying to install itself, your IDE consumes all your home directory disk quota.  
--  When trying to launch itself, your IDE triggers out-of-memory killer on the login node.  
--  Your IDE leaves lingering processes in the background and this reduce the amount of free memory you can use. If you launch it again, it will encounter the second case above.
-
-Here are some methods to manually cleanup so your IDE can connect:
-- Try to kill your IDE related processes, you can use command like `pkill -u your_name -f ide_name`. This kills processes under your name and has the keyword `ide_name`. For pycharm, it can be `pycharm`.  
-- Try to remove your IDE backend files. VSCode and PyCharm usually install the backend under `~/.cache`. Just remove it with `rm` command. (This might also remove your IDE settings, be careful)
-- Call `htop`, `bpytop`, or whatever commands that show what processes you have. Try to find anything that is consuming your memory quota badly, like a accidently executed python script.
-- Try to remove large files under your home directory. Call `ls -a` to view all directories and files, call `ncdu` or `du -sh ./*` to view the directory/file sizes to determine what to remove/migrate.
-
-Since recent update, we have deployed process auto-cleanup:
-- It is triggered when all your SSH connection to a certain login node is closed.
-- It kills all the processes belonging to you. This should kill any lingering VSCode and PyCharm backend processes.
-- This also kills any tmux sessions.
-- This auto-cleanup can be workaround, but we don't support it and don't recommend it. The auto-cleanup exists for good reasons.
-- This does not clean up files on disks, just processes in the memory. If you are seeing disk quota related errors, you still need to manually remove/migrate your files.
+We have a section dedicated to IDEs in the [FAQ here](troubleshooting.md#IDE).
 
 ## After You're Done
 
