@@ -27,7 +27,7 @@ investigate.
   - **CPU:** 12 cores
   - **RAM:** 64 GB
   - **GPU: NONE**
-- gpu-6000ada (gpu-6000ada-1 to gpu-6000ada-3)
+- gpu-6000ada-\[1-3\]
   - **CPU:** 16 cores
   - **RAM:** 264 GiB (256 GiB requestable)
   - **GPU:** 4x NVIDIA RTX6000 ADA Generation (48GB), `6000ada`
@@ -39,6 +39,10 @@ investigate.
   - **CPU:** 32 cores
   - **RAM:** 396 GiB (384 GiB requestable)
   - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
+- gpu-a5000-\[1-7\]
+  - **CPU:** 16 cores
+  - **RAM:** 112 GiB (96 GiB requestable)
+  - **GPU:** 4x NVIDIA RTX A5000 (24GB), `a5000`
 - cpu-1
   - **CPU:** 24 cores
   - **RAM:** 396 GiB (384 GiB requestable)
@@ -75,13 +79,13 @@ supports two modes of execution (different QoS):
 
 By default, you can use the GPUs as specified below. The numbers are per-user.
 
-| Users     | `6000ada` | `v100` (Provided by `rose`) |
-|-----------|-----------|-----------------------------|
-| rose      | 4         | 16                          |
-| phd       | 4         | Best-Effort                 |
-| msc       | 2         | Best-Effort                 |
-| ug-proj   | 2         | Best-Effort                 |
-| ug-course | 1         | Best-Effort                 |
+| Users     | `6000ada` \[EEE\] | `a5000` \[ROSE\] | `v100` \[ROSE\] |
+|-----------|-------------------|------------------|-----------------|
+| rose      | 4                 | 8                | 16              |
+| phd       | 4                 | Best-Effort (4)  | Best-Effort (8) |
+| msc       | 2                 | Best-Effort (2)  | Best-Effort (4) |
+| ug-proj   | 2                 | Best-Effort (2)  | Best-Effort (4) |
+| ug-course | 1                 | Best-Effort (1)  | Best-Effort (1) |
 
 To use within your limits, you do not have to specify anything.
 
@@ -89,13 +93,15 @@ To **use more than the limit** such as group-specific cards, specify
 `--qos override-limits-but-killable`. You can learn more about submitting a job
 in [Slurm Introduction](slurm.md).
 
-Best-Effort means that we will tweak values depending on demand and the value
-may be as low as zero. `override-limits-but-killable` may still request
-resources under Best-Effort.
-
 > **WARNING:** As the name implies, this makes your job killable. The cluster
 > will kill your job (and add it back to the queue for later) if someone else is
-> requesting for the same resources within their limit.
+> requesting for the same resources within their limit and it can only be
+> fulfilled by terminating your job.
+
+Best-Effort means that we will tweak values depending on demand and the value
+may be as low as zero. As such, the table above is not guaranteed and might not
+be up-to-date. `override-limits-but-killable` may still request resources under
+Best-Effort with the same caveats.
 
 You are recommended to save epochs and make your program check if there are
 previous epochs to resume from if you make use of this feature.
