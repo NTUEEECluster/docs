@@ -51,6 +51,16 @@ investigate.
 To learn more about how to use the GPU nodes, check out
 [Introduction to Slurm CLI and Modules](slurm.md).
 
+### Constraints
+
+The valid constraints are:
+
+- `gpu`: Any GPU available
+- `gpu_16g`: Any GPU with at least 16GB of VRAM
+- `gpu_32g`: Any GPU with at least 32GB of VRAM
+- `gpu_48g`: Any GPU with at least 48GB of VRAM
+- `<gpu_name>`: Only matches the GPU, useful for combining (e.g. `v100|a5000`)
+
 <a id="process-cleanup" />
 
 ### Auto-Termination of Processes on Login Nodes
@@ -126,6 +136,10 @@ You must specify the GPU model when you are calling `srun` and `sbatch`. If you
 don't specify, you might see an error message from Slurm and/or fail to run your
 job successfully.
 
+This can be done by specifying `--gpus example:1` or through constraints
+(`-C 'example|(another&more)'`). The list of constraints can be found above with
+the node list.
+
 ### Job Limits
 
 We have added additional constraints on interactive jobs due to frequent
@@ -149,12 +163,6 @@ synchronized across all nodes. Notable examples are:
   [storaged](storaged.md). The aggregated limit is listed below.
 - `/tmp` - Your temp directory is synchronized and each user has their own
   isolated `/tmp`. There is a **4GB limit**.
-
-> **TIP:** Some legacy users may have larger quota on /home directories as part
-> of our migration strategy. If this applies to you, you are advised to get
-> below 50GB as soon as possible. We reserve the right to lower the quota at any
-> time which will cause all writes to your /home directory to fail until you
-> delete files. **This may cause your shell to not function correctly.**
 
 | Users     | SSD Quota (`ssd`) | HDD Quota (`hdd`) |
 |-----------|-------------------|-------------------|

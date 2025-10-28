@@ -256,7 +256,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
 
     A: Most of the time it is because you are using `srun` or `salloc` to hold
        your session on the compute node alive. If you close or get disconnected
-       from the SSH sessions that directly invokes `srun` and/or `sallow`, the
+       from the SSH sessions that directly invokes `srun` and/or `salloc`, the
        corresponding Slurm job will be closed. This is intentional and therefore
        we recommend you use `sbatch` to run your long training sessions because
        closing your SSH session won't kill jobs invoked by `sbatch`.
