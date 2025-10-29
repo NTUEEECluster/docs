@@ -300,3 +300,11 @@ reliably.**
 
 If you simply tell us "X doesn't work" and nothing more, you leave us with
 nothing to work with and we cannot do anything to help you.
+
+For emails request more resources. Simple answer is No unless you can buy us the actual hardware to
+upgrade our servers. And, the more honest version is, your system admins are trying quite hard to buy
+you these "free lunch" you can enjoy right now. We understand you have your personal project or whatever, then,
+again, we have another few hundred people having the same needs as you. Why are you superior than others?
+
+While we try to stay nice to whoever email us and be helpful and timely. The system admin, 
+around 2-3 people, will have their temper on you if you keep asking simple and already-answered questions.
