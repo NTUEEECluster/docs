@@ -34,6 +34,11 @@ This makes it impossible for us to track support requests and will simply cause
 longer response time as other administrators will not be able to answer. It is
 likely that your email will be ignored if you do so.
 
+In general you need to wait 1-2 working days before we reply. Truth is, we see your
+email once you send it. Emails reporting valid bugs and formatted nicely will
+be entartained ASAP but for emails that is a result of not reading the document or 
+some simple user error, you shall wait for 1-2 working days. 
+
 ## 2. Cluster Availability
 
 Despite our best effort, we cannot guarantee fully that any of the tasks that
