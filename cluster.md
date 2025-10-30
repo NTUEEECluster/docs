@@ -3,6 +3,11 @@
 - What are the hardware? [Nodes](#Nodes)
 - What are the available partitions and QoS? [Slurm](#Slurm)
 - What are the important file paths? [Directories](#Directories)
+- What are the limitations that are in place?
+  - [Login Node Resource Limits](#Login-Node-Resource-Limitation)
+  - [Auto-Termination of Login Node Processes](#process-cleanup)
+  - [Slurm Submission Limits](#Job-Limits)
+  - [Storage Limits](#Directories)
 
 ## High-Level Policy
 
@@ -51,15 +56,14 @@ investigate.
 To learn more about how to use the GPU nodes, check out
 [Introduction to Slurm CLI and Modules](slurm.md).
 
-### Constraints
+### Login Node Resource Limitation
 
-The valid constraints are:
+You are reminded that each user is only allowed a small share of resources on
+login nodes as mentioned in the [Usage Guidelines](guideline.md).
 
-- `gpu`: Any GPU available
-- `gpu_16g`: Any GPU with at least 16GB of VRAM
-- `gpu_32g`: Any GPU with at least 32GB of VRAM
-- `gpu_48g`: Any GPU with at least 48GB of VRAM
-- `<gpu_name>`: Only matches the GPU, useful for combining (e.g. `v100|a5000`)
+Currently, we enforce a hard 8 GB RAM per user limit on login nodes. Users
+exceeding this limit may see their processes killed by the kernel. This number
+may have changed and is only included here as a rough gauge.
 
 <a id="process-cleanup" />
 
@@ -87,35 +91,6 @@ supports two modes of execution (different QoS):
 - Default Fair-share
 - Preemption (Override Limits)
 
-By default, you can use the GPUs as specified below. The numbers are per-user.
-
-| Users     | `6000ada` \[EEE\] | `a5000` \[ROSE\] | `v100` \[ROSE\] |
-|-----------|-------------------|------------------|-----------------|
-| rose      | 4                 | 8                | 16              |
-| phd       | 4                 | Best-Effort (4)  | Best-Effort (8) |
-| msc       | 2                 | Best-Effort (2)  | Best-Effort (4) |
-| ug-proj   | 2                 | Best-Effort (2)  | Best-Effort (4) |
-| ug-course | 1                 | Best-Effort (1)  | Best-Effort (1) |
-
-To use within your limits, you do not have to specify anything.
-
-To **use more than the limit** such as group-specific cards, specify
-`--qos override-limits-but-killable`. You can learn more about submitting a job
-in [Slurm Introduction](slurm.md).
-
-> **WARNING:** As the name implies, this makes your job killable. The cluster
-> will kill your job (and add it back to the queue for later) if someone else is
-> requesting for the same resources within their limit and it can only be
-> fulfilled by terminating your job.
-
-Best-Effort means that we will tweak values depending on demand and the value
-may be as low as zero. As such, the table above is not guaranteed and might not
-be up-to-date. `override-limits-but-killable` may still request resources under
-Best-Effort with the same caveats.
-
-You are recommended to save epochs and make your program check if there are
-previous epochs to resume from if you make use of this feature.
-
 ### CPU/RAM Enforcement
 
 Slurm treats CPU cores and RAM as consumable resources. As such, over-requesting
@@ -137,8 +112,17 @@ don't specify, you might see an error message from Slurm and/or fail to run your
 job successfully.
 
 This can be done by specifying `--gpus example:1` or through constraints
-(`-C 'example|(another&more)'`). The list of constraints can be found above with
-the node list.
+(`-C 'example|(another&more)'`).
+
+### Constraints
+
+The valid constraints are:
+
+- `gpu`: Any GPU available
+- `gpu_16g`: Any GPU with at least 16GB of VRAM
+- `gpu_32g`: Any GPU with at least 32GB of VRAM
+- `gpu_48g`: Any GPU with at least 48GB of VRAM
+- `<gpu_name>`: Only matches the GPU, useful for combining (e.g. `v100|a5000`)
 
 ### Job Limits
 
@@ -148,9 +132,35 @@ to be used if you need to debug a specific issue that only happens on GPU nodes.
 
 These constraints are:
 
-- Maximum of 2 hour per interactive job
-- Maximum of 1 node / 1 GPU in interactive job
-- Maximum of 1 jobs running at any point in time (including batch jobs)
+|            | Interactive Jobs (`srun`)      | Batch Jobs (`sbatch`) |
+|------------|--------------------------------|-----------------------|
+| Time Limit | 2 hours/job                    | 48 hours/job          |
+| Job Limit  | 1 job total (incl. batch jobs) |                       |
+| GPU Limit  | 1 GPU                          | See table below       |
+
+Here are the details of GPU usage limit:
+
+| Users     | `6000ada` \[EEE\] | `a5000` \[ROSE\]    | `v100` \[ROSE\]     |
+|-----------|-------------------|---------------------|---------------------|
+| rose      | 4                 | 8                   | 16                  |
+| phd       | 4                 | Best-Effort[^1] (4) | Best-Effort[^1] (8) |
+| msc       | 2                 | Best-Effort[^1] (2) | Best-Effort[^1] (4) |
+| ug-proj   | 2                 | Best-Effort[^1] (2) | Best-Effort[^1] (4) |
+| ug-course | 1                 | Best-Effort[^1] (1) | Best-Effort[^1] (1) |
+
+[^1]: Best-Effort means that we will tweak values depending on demand and the
+      value may be as low as zero. As such, the value bracketed is not
+      guaranteed and might not be up-to-date. `override-limits-but-killable` may
+      still request resources under Best-Effort with the same caveats.
+
+The job limit and GPU limit can be overridden by using the
+`override-limits-but-killable` QoS. When you enable the QoS, your job may be
+killed (and later restarted) to make space for other user's jobs if required. As
+such, this effectively means that jobs with the QoS may only use idle GPUs. You
+can learn more about submitting a job in [Slurm Introduction](slurm.md).
+
+You are recommended to save epochs and make your program check if there are
+previous epochs to resume from if you make use of this feature.
 
 ## Directories
 

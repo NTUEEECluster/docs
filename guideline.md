@@ -12,32 +12,23 @@ encountered by users in the past.
 **Administrators are only responsible for cluster-related issues**. We will
 not provide support for debugging or fixing your own code.
 
-Generally speaking, if your code works locally on your machine and doesn't work
-due to cluster-specific reasons, we will attempt to assist you. To help save
-your time, check out the [FAQ](troubleshooting.md) before attempting to contact
-the administrators.
+Generally speaking, we will attempt to assist you if your code works locally on
+your machine and doesn't work due to cluster-specific reasons.
+
+Valid bug reports are responded to ASAP but user queries or questions currently
+have a response time of **up to 3 working days** due to the sheer volume. Here
+is a quick checklist to help save your time:
+
+- Check out the [FAQ](troubleshooting.md) as it contains questions that were
+  previously asked by other users.
+- Check the relevant portion in this repository.
+- Check the recent update logs.
+- Format your support request as described in the [FAQ](troubleshooting.md).
+- Ensure you send your support request to the correct email.
 
 You are expected to conduct yourself professionally when interacting with
 cluster administrators. Please do your due dilligence and attempt to look for
-solutions as maintaining the cluster is not our full-time job. You are expected
-to:
-
-- Search for answers in this repository
-- Read our update logs, as posted in the MOTD
-- Provide us with details on what you have tried to save everyone's time
-
-Please understand that not doing the above will simply waste everyone's time and
-resources.
-
-**DO NOT send emails directly to any administrator's personal email address.**
-This makes it impossible for us to track support requests and will simply cause
-longer response time as other administrators will not be able to answer. It is
-likely that your email will be ignored if you do so.
-
-In general you need to wait 1-2 working days before we reply. Truth is, we see your
-email once you send it. Emails reporting valid bugs and formatted nicely will
-be entartained ASAP but for emails that is a result of not reading the document or 
-some simple user error, you shall wait for 1-2 working days. 
+solutions as maintaining the cluster is not our full-time job.
 
 ## 2. Cluster Availability
 

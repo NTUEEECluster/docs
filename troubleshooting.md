@@ -270,6 +270,8 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        CPU/RAM on a GPU node while there are still unassigned GPUs that no one
        can use.
 
+<a id="cluster-billing" />
+
 11. Q: Does the cluster have billing?
 
     A: No. You might notice `billing` if you look into the Slurm configuration

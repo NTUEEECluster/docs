@@ -3,6 +3,8 @@
 - Why is Conda not installed? [Running a Program](#Running-a-Program)
 - How do I just run my training script? [Running a Program](#Running-a-Program)
 - I just want the example sh file to copy. [Here](sbatch-example.sh)
+- What is the job limit? See the relevant part of
+  [Cluster Information](cluster.md#Slurm)
 
 ## Why Slurm
 
@@ -112,13 +114,6 @@ default value**:
 You can see the [FAQ](troubleshooting.md#Slurm) for more details. If you still
 have other Slurm-specific questions, kindly ask the LLM of your choice for help.
 There are plenty of resources out there and LLMs are very familiar with Slurm.
-
-## Job Limits  
-
-Your job will be mainly limit in following ways:
-- You can only submit a interactive job that is within 2 hours and 1 GPU.
-- You shall be able to run your `sbatch` or non-interactive `srun` job up to 48 hours. The max number of GPU you can use depends on the GPU model and your account category.
-- `tmux` will be killed if you logout from the login nodes. We discourage usage of `tmux` to hold occupation of GPUs.
 
 ## Job Status Check
 
