@@ -71,7 +71,17 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        logging in. The first time is to SSH and the second time is to start
        changing your password.
 
-6.  Q: I forgot my password. (Forgot Password)
+6.  Q: Why have I been prompted to reset my password?
+
+    A: There are two main reasons you may be requested to reset your password:
+
+       - **Your password has been provided by the admin**. As we send your
+         password through email, it is not considered safe and we require you to
+         reset your password.
+       - **Your password has expired.** We have a password expiry policy that
+         requires you to reset your password every few months.
+
+7.  Q: I forgot my password. (Forgot Password)
 
     A: Send us an email from your school email and we will reset it for you
        within 3 business days.
@@ -300,13 +310,14 @@ Please provide as much relevant information as you can to help us debug your
 issue. **We need to be able to replicate the issue in order to fix it
 reliably.**
 
-If you simply tell us "X doesn't work" and nothing more, you leave us with
-nothing to work with and we cannot do anything to help you.
+Here are a few themes of emails that we cannot help with:
+- If you simply tell us "X doesn't work" and nothing more, you leave us with
+  nothing to work with and we cannot do anything to help you.
+- We are also unable to entertain emails requesting for more resources, as our
+  constraints are due to hardware limitation. Please only contact us if you are
+  able to contribute hardware. We are almost constantly in the process of
+  procuring more hardware so please be patient.
 
-For emails request more resources. Simple answer is No unless you can buy us the actual hardware to
-upgrade our servers. And, the more honest version is, your system admins are trying quite hard to buy
-you these "free lunch" you can enjoy right now. We understand you have your personal project or whatever, then,
-again, we have another few hundred people having the same needs as you. Why are you superior than others?
-
-While we try to stay nice to whoever email us and be helpful and timely. The system admin, 
-around 2-3 people, will have their temper on you if you keep asking simple and already-answered questions.
+We try to stay nice, professional, helpful, and timely to emails. However,
+we may not respond kindly to emails asking questions that are easily answered
+online or already answered in this document.
