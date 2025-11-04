@@ -44,7 +44,7 @@ investigate.
   - **CPU:** 32 cores
   - **RAM:** 396 GiB (384 GiB requestable)
   - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
-- gpu-a5000-\[1-7\]
+- gpu-a5000-\[1-5\]
   - **CPU:** 16 cores
   - **RAM:** 112 GiB (96 GiB requestable)
   - **GPU:** 4x NVIDIA RTX A5000 (24GB), `a5000`
