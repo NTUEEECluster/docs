@@ -28,7 +28,11 @@ is a quick checklist to help save your time:
 
 You are expected to conduct yourself professionally when interacting with
 cluster administrators. Please do your due dilligence and attempt to look for
-solutions as maintaining the cluster is not our full-time job.
+solutions as maintaining the cluster is not our full-time job. We do not support
+cases related to basic programming knowledge and does not provide tutorials on
+how to interact with Linux-based systems, because it is your responsibility to
+learn these basics. Please note that cases deemed out-of-the-scope with not be 
+replied.
 
 ## 2. Cluster Availability
 
