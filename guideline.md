@@ -10,14 +10,30 @@ encountered by users in the past.
 ## 1. Scope of Support
 
 **Administrators are only responsible for cluster-related issues**. We will
-not provide support for debugging or fixing your own code.
+not provide support for debugging or fixing your own code. However, we will 
+attempt to assist you if your code works locally on your machine and doesn't 
+work due to cluster-specific reasons given that you are able to send us complete
+and detailed error logs.
 
-Generally speaking, we will attempt to assist you if your code works locally on
-your machine and doesn't work due to cluster-specific reasons.
+Below is a more detailed version of what you can expect from us:
+- Valid bug reports with be responded as soon as we see your email. We will notify you
+once it is resolved. Please note we only respond to cases that are directly caused
+by the cluster itself, e.g., you meet an NVML error, Slurm controller is not reachable,
+etc.
+- General service requests, such as password reset, cleanup of stuck login sessions,
+etc. can take up to **3 working days** due to the sheer volume.
+- Invalid requests that are direct results of not reading and following the
+documentation will not be replied, e.g., asking shell basics, clearly
+violating this guideline, never read how to submit jobs to a Slurm cluster.
+- Asking for more resources will not be replied. Generally, your disk quota will be
+expanded if we have new storage drives delierved. Same for GPU. The only exception
+is that if you contribute the hardware directly, then you shall have privileged
+disk/GPU quota.
+- Repetitively sending invalid requests will make the cluster team no choice but
+escalate your case to administrative level. This can lead to warnings, followed by
+account suspension, account removal, etc.
 
-Valid bug reports are responded to ASAP but user queries or questions currently
-have a response time of **up to 3 working days** due to the sheer volume. Here
-is a quick checklist to help save your time:
+Here is a quick checklist to help save your time:
 
 - Check out the [FAQ](troubleshooting.md) as it contains questions that were
   previously asked by other users.
@@ -28,11 +44,7 @@ is a quick checklist to help save your time:
 
 You are expected to conduct yourself professionally when interacting with
 cluster administrators. Please do your due dilligence and attempt to look for
-solutions as maintaining the cluster is not our full-time job. We do not support
-cases related to basic programming knowledge and does not provide tutorials on
-how to interact with Linux-based systems, because it is your responsibility to
-learn these basics. Please note that cases deemed out-of-the-scope with not be 
-replied.
+solutions as maintaining the cluster is not our full-time job.
 
 ## 2. Cluster Availability
 
@@ -41,7 +53,7 @@ you are running will not be killed. We will attempt to inform you should we
 suspect that this has happened, but we cannot fully guarantee this either as we
 are not staring at the cluster 24/7.
 
-For scheduled maintenance events, we typically attempt to announce 3 days prior
+For scheduled maintenance events, we typically attempt to announce 2-3 days prior
 to the actual event. These events will be notified via email. **All jobs are
 subject to be killed when the maintenance window starts and you may run into
 issues attempting to use the cluster during the maintenance.**
@@ -148,3 +160,10 @@ credentials may access your data.
 
 - Please be professional when using the cluster. This includes but is not
   limited to, using appropriate names for projects.
+
+- Respect the idea of Fair Use.
+  With current policies, we fully realize it is possible for you to take over
+  many more GPU than you are entitled to. But please be aware whenever you do
+  so, the admin will likely double check you are doing things that is relevant
+  to your research and project. Should you be caught misusing the cluster,
+  we might immediately suspend your account.
