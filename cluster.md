@@ -48,6 +48,18 @@ investigate.
   - **CPU:** 16 cores
   - **RAM:** 112 GiB (96 GiB requestable)
   - **GPU:** 4x NVIDIA RTX A5000 (24GB), `a5000`
+- gpu-a40-1
+  - **CPU:** 40 cores
+  - **RAM:** 496 GiB (≈478 GiB requestable)
+  - **GPU:** 10x NVIDIA A40 (48GB), `a40`
+- gpu-a40-2
+  - **CPU:** 32 cores
+  - **RAM:** 392 GiB (≈378 GiB requestable)
+  - **GPU:** 8x NVIDIA A40 (48GB), `a40`
+- gpu-l40-\[1-2\]
+  - **CPU:** 16 cores
+  - **RAM:** 208 GiB (≈201 GiB requestable)
+  - **GPU:** 4x NVIDIA L40 (48GB), `l40`
 - cpu-1
   - **CPU:** 24 cores
   - **RAM:** 396 GiB (384 GiB requestable)
@@ -134,19 +146,19 @@ These constraints are:
 
 |            | Interactive Jobs (`srun`)      | Batch Jobs (`sbatch`) |
 |------------|--------------------------------|-----------------------|
-| Time Limit | 2 hours/job                    | 48 hours/job          |
+| Time Limit | 2 hours/job                    | 7 days/job            |
 | Job Limit  | 1 job total (incl. batch jobs) |                       |
 | GPU Limit  | 1 GPU                          | See table below       |
 
 Here are the details of GPU usage limit:
 
-| Users        | `6000ada` \[EEE\] | `a5000` \[ROSE\]    | `v100` \[ROSE\]     |
-|--------------|-------------------|---------------------|---------------------|
-| rose         | 4                 | 8                   | 16                  |
-| phd          | 4                 | Best-Effort[^1] (4) | Best-Effort[^1] (8) |
-| msc          | 2                 | Best-Effort[^1] (2) | Best-Effort[^1] (4) |
-| ug-proj      | 2                 | Best-Effort[^1] (2) | Best-Effort[^1] (4) |
-| Course Users | 1                 | Best-Effort[^1] (1) | Best-Effort[^1] (1) |
+| Users        | `6000ada` \[EEE\] | `a5000` \[ROSE\]    | `v100` \[ROSE\]     | `a40`             | `l40`             |
+|--------------|-------------------|---------------------|---------------------|-------------------|-------------------|
+| rose         | 4                 | 8                   | 16                  | 8                 | 4                 |
+| phd          | 4                 | Best-Effort[^1] (4) | Best-Effort[^1] (8) | Best-Effort[^1] (4) | Best-Effort[^1] (4) |
+| msc          | 2                 | Best-Effort[^1] (2) | Best-Effort[^1] (4) | Best-Effort[^1] (2) | Best-Effort[^1] (2) |
+| ug-proj      | 2                 | Best-Effort[^1] (2) | Best-Effort[^1] (4) | Best-Effort[^1] (2) | Best-Effort[^1] (2) |
+| Course Users | 1                 | Best-Effort[^1] (1) | Best-Effort[^1] (1) | Best-Effort[^1] (1) | Best-Effort[^1] (1) |
 
 [^1]: Best-Effort means that we will tweak values depending on demand and the
       value may be as low as zero. As such, the value bracketed is not
