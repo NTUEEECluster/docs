@@ -1,5 +1,11 @@
 # The Big List of Questions
 
+We assume you are familiar with basic Linux commands, operations, and concepts.
+Do not email us for Linux basics; use a simple Google search or GPT query.
+Support emails must be about cluster-specific issues after you have tried to
+debug and consulted the documentation. We do not reply to emails that ignore
+the documentation.
+
 This file consists of a lot of checklists to help resolve issues that you might
 be seeing.
 
@@ -23,13 +29,13 @@ category:
 
 If you have not done so, please follow the [login guide](login.md) carefully.
 
-1.  Q: What should I do with the default password sent to me?
+1.  Q: What should I do with the activation password sent to me?
 
-    A: The default password sent to you is to help system recognize it is you
+    A: The activation password sent to you is to help system recognize it is you
     logging into your own account. Typically, when you attempt to login the
     first time, you will be prompted to enter your password, and it is this
-    default password. Then, the system will prompt you to enter the
-    `current password`, which is still the default password!!! Next, the system
+    activation password. Then, the system will prompt you to enter the
+    `current password`, which is still the activation password!!! Next, the system
     will prompt you to enter the `new password` and let you confirm again. Once
     all 4 steps are done, you will be logged out. Then you can try to login
     with your new password.
@@ -94,9 +100,12 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        Please check whether each one applies to you before contacting the
        administrator with the IDE's error log.
 
-       - **Disk Quota Exceeded**: Your IDE is not able to install itself because
-         your home directory is full. See [this entry](#home-quota-cleanup) for
-         more details.
+       - **Disk Quota Exceed**: Your IDE is not able to install itself because
+         either your home or your `/tmp` directory is full, or it is because
+         the installation directory (if you customize it to somewhere else) is
+         full. The Disk Quota Exceeded error might not appear directly in your
+         VSCode UI; you will have to check relevant logs. See [this entry](#home-quota-cleanup)
+         for more details.
        - **Memory Limit Exceeded**: If you have multiple instances of your IDE
          running, you may run out of memory. This sometimes apply even if you
          have closed your IDE as some IDEs do not clean up properly. See the
@@ -106,6 +115,13 @@ If you have not done so, please follow the [login guide](login.md) carefully.
          typically delete your `.cache` folder with `rm` to get your IDE to
          reinstall itself. Note that this may delete your IDE settings so use
          with caution.
+       - **Reinstall IDE Files**: We suggest you to remove your IDE's
+         installation directory entirely if you are really lost on this.
+         However, please be aware that the `rm` command in linux are dangerous
+         so please make sure you only remove the relevant directories. For
+         example, for VSCode, the remote installation path is USUALLY
+         `~/.vscode-server`. Note that this can change so please do your own
+         search to determine where is the true installation path.
 
 2.  Q: I am triggering out-of-memory even though I am not using too many
        extensions!
@@ -129,6 +145,12 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        the login node and using commands like `pkill -u your_name -f ide_name`.
        This kills processes under your name and has the keyword `ide_name`. For
        pycharm, it can be `pycharm`.
+
+4.  Q: Is it guaranteed that IDE related issues will be resolved?
+
+    A: Sadly, no. It is at our best effort. But due to the diversity nature of
+       IDE-related bugs and issues. It is not quite possible for us to guarantee
+       that such issues can be resolved.
 
 ## Shell
 
@@ -197,6 +219,22 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        start a Slurm job instead if you need a task to continue running even
        after you disconnect.
 
+7.  Q: Does the cluster support MATLAB?
+
+    A: No. We have no plans to support it, and it is not an intended use case
+       of the cluster. We primarily support AI training and inference based on
+       the PyTorch ecosystem. It is possible to use TensorFlow or other
+       frameworks, but in those cases we assume you know what you are doing
+       because frameworks such as TensorFlow and Caffe depend heavily on CUDA
+       libraries and other advanced packages.
+
+8.  Q: Can I compile my own packages?
+
+    A: Yes. This is fully allowed and supported. Please check the available
+       software list with `module avail`; some software may only be visible via
+       `module spider`. All software is locally compiled and has dependencies,
+       so you may need to load items such as `GCCcore` via Lmod.
+
 ## Slurm
 
 1.  Q: How do I actually run my program using Slurm?
@@ -208,7 +246,16 @@ If you have not done so, please follow the [login guide](login.md) carefully.
     A: You can run `squeue`. If you want to see it update somewhat in realtime,
        you can run `watch squeue`.
 
-3.  Q: Why is `srun` not responding? Why is `sbatch` failing?
+3.  Q: Why is my job not running but pending?
+
+    A: There are several reasons Slurm may not allocate resources immediately,
+       and the `REASON` field in `squeue` usually explains it. For example, if
+       you hit the MaxJobs=1 limit, only one job will run and the rest will be
+       pending with `QOSMaxJobsPerUserLimit`. Another common case is low
+       priority due to FairShare after heavy usage; your job can be held
+       temporarily even when there are idle nodes.
+
+4.  Q: Why is `srun` not responding? Why is `sbatch` failing?
 
     A: The cluster may not be able to fulfill your request at this time. This
        may be because you requested too much resources (resources that the
@@ -217,16 +264,27 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        You can run `sinfo` to see the status of the cluster and `squeue` in a
        new terminal will show the reason your job is currently being postponed.
 
-4.  Q: How much resources do I actually have access to?
+5.  Q: Why are certain nodes in "weird" states different from idle, alloc, or
+       mix?
+
+    A: Minor maintenance, such as powering down a single compute node or
+       rebooting machines due to NVIDIA driver updates, will not be announced
+       to keep troubleshooting fast. These minor fixes should not affect your
+       jobs, and if you have running jobs on those nodes, we will wait until
+       they complete. For major maintenance events, we reserve nodes in
+       advance. If your job overlaps with a major maintenance window, Slurm
+       will automatically place it on hold until maintenance is completed.
+
+6.  Q: How much resources do I actually have access to?
 
     A: See [Cluster Overview](cluster.md#Slurm).
 
-5.  Q: I made an error submitting my job. How do I cancel it?
+7.  Q: I made an error submitting my job. How do I cancel it?
 
     A: You can see the job ID by doing `squeue`. You can then use
        `scancel <job_id>` (e.g. `scancel 123`) to cancel the job.
 
-6.  Q: I cannot see any GPUs even when I run a job. How do I get access to GPU?
+8.  Q: I cannot see any GPUs even when I run a job. How do I get access to GPU?
 
     A: You can access a GPU by using the `--gpus` flag when submitting a job.
        You need to specify the type of GPU you want in the following format:
@@ -234,7 +292,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        number of GPU you want. You can view a list of available GPUs
        [here](cluster.md#Slurm).
 
-7.  Q: The number of GPUs assigned is not enough. How do I get access to more?
+9.  Q: The number of GPUs assigned is not enough. How do I get access to more?
 
     A: We allow users to access GPUs beyond their limits as long as you agree to
        allow your jobs to be killed. To acknowledge this, use
@@ -247,7 +305,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        You are recommended to save epochs and make your program check if there
        are previous epochs to resume from if you make use of this feature.
 
-8.  Q: Why do I see "slurmstepd-gpu-6000ada-1: error: Detected 1 oom_kill event
+10. Q: Why do I see "slurmstepd-gpu-6000ada-1: error: Detected 1 oom_kill event
        in StepId=123.0. Some of the step tasks have been OOM Killed."? How do I
        request more memory?
 
@@ -262,7 +320,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        example, opening a file in Python and never closing it will result in
        a resource leak.
 
-9.  Q: Why my job is killed/aborted?
+11. Q: Why my job is killed/aborted?
 
     A: Most of the time it is because you are using `srun` or `salloc` to hold
        your session on the compute node alive. If you close or get disconnected
@@ -271,7 +329,17 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        we recommend you use `sbatch` to run your long training sessions because
        closing your SSH session won't kill jobs invoked by `sbatch`.
 
-10. Q: Why I cannot specify more/less CPU/RAM?
+12. Q: Can I occupy a node via `sbatch` to workaround the interactive job time
+       limit?
+
+    A: No. This is strictly prohibited. If you request a node via `sbatch`, you
+       are expected to run GPU-intensive compute (this includes LLM servers).
+       It is okay if your server is actively using GPUs; it is not okay to keep
+       a job running with near-zero utilization for extended periods. We
+       monitor for this behavior. Repeated violations after warnings may result
+       in temporary GPU quota revocation.
+
+13. Q: Why I cannot specify more/less CPU/RAM?
 
     A: We enforce how many CPU/RAM you can get based on the actual hardware of
        each server. The rule of thumb is that if you request all the GPUs on one
@@ -282,7 +350,7 @@ If you have not done so, please follow the [login guide](login.md) carefully.
 
 <a id="cluster-billing" />
 
-11. Q: Does the cluster have billing?
+14. Q: Does the cluster have billing?
 
     A: No. You might notice `billing` if you look into the Slurm configuration
        but we are only using it for reporting purposes currently. Thanks to the
