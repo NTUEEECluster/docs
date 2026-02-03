@@ -48,6 +48,10 @@ investigate.
   - **CPU:** 16 cores
   - **RAM:** 112 GiB (96 GiB requestable)
   - **GPU:** 4x NVIDIA RTX A5000 (24GB), `a5000`
+- gpu-a6000-1
+  - **CPU:** 32 cores
+  - **RAM:** 256 GB (232 GiB requestable)
+  - **GPU:** NVIDIA RTX A6000 (48GB), `a6000`
 - gpu-a40-1
   - **CPU:** 40 cores
   - **RAM:** 496 GiB (≈478 GiB requestable)
@@ -150,20 +154,20 @@ These constraints are:
 | Job Limit  | 1 job total (incl. batch jobs) |                       |
 | GPU Limit  | 1 GPU                          | See table below       |
 
-Here are the details of GPU usage limit:
+Here are the details of GPU usage limit (from `sacctmgr`):
 
-| Users        | `6000ada` \[EEE\] | `a5000` \[ROSE\]    | `v100` \[ROSE\]     | `a40`             | `l40`             |
-|--------------|-------------------|---------------------|---------------------|-------------------|-------------------|
-| rose         | 4                 | 8                   | 16                  | 8                 | 4                 |
-| phd          | 4                 | Best-Effort[^1] (4) | Best-Effort[^1] (8) | Best-Effort[^1] (4) | Best-Effort[^1] (4) |
-| msc          | 2                 | Best-Effort[^1] (2) | Best-Effort[^1] (4) | Best-Effort[^1] (2) | Best-Effort[^1] (2) |
-| ug-proj      | 2                 | Best-Effort[^1] (2) | Best-Effort[^1] (4) | Best-Effort[^1] (2) | Best-Effort[^1] (2) |
-| Course Users | 1                 | Best-Effort[^1] (1) | Best-Effort[^1] (1) | Best-Effort[^1] (1) | Best-Effort[^1] (1) |
+| Users        | `6000ada` \[EEE\] | `a5000` \[ROSE\] | `v100` \[ROSE\] | `a6000` \[ROSE\] | `a40` \[ROSE\] | `l40` \[ROSE\] |
+|--------------|-------------------|-----------------|----------------|------------------|---------------|---------------|
+| rose         | 4                 | 16              | 16             | 8                | 8             | 4             |
+| phd          | 4                 | 4               | 8              | 4                | 4             | 4             |
+| msc          | 2                 | 2               | 4              | 2                | 2             | 2             |
+| ug-proj      | 2                 | 2               | 4              | 2                | 2             | 2             |
+| Course Users | 1                 | 1               | 1              | 1                | 1             | 1             |
 
-[^1]: Best-Effort means that we will tweak values depending on demand and the
-      value may be as low as zero. As such, the value bracketed is not
-      guaranteed and might not be up-to-date. `override-limits-but-killable` may
-      still request resources under Best-Effort with the same caveats.
+We may occasionally tweak limits based on current usage. In general, we adjust
+values in favor of the server's owner (i.e., owner requests are considered
+first). Check `sacctmgr show qos -P format=Name,MaxTRESPerUser` for the live
+configuration.
 
 The job limit and GPU limit can be overridden by using the
 `override-limits-but-killable` QoS. When you enable the QoS, your job may be
