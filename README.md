@@ -60,6 +60,7 @@ To keep things manageable, we have split this guide into multiple files.
     - How do I run IDEs and debug? [Debugging Guide](debugging.md)
     - How do I access GPU node(s)? [Slurm Introduction](slurm.md)
     - How do I setup my environments? [Setup Conda](conda.md)
+    - How do I load/compile software with Lmod? [Lmod Compile Guide](compile_setup.md)
     - What GPUs do I have access to? [Cluster Overview](cluster.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
 
