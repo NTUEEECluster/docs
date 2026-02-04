@@ -1,9 +1,9 @@
 # NTU EEE Cluster 02 Guide
 
 > **NOTE:** We are constantly sourcing new hardware to support our users.
-> For now, we DO NOT provide any stability
-> guarantee. Check your emails frequently for updates. We are sorry for strong
-> words in some parts of our guide, but please bare with us.
+> For now, we DO NOT provide any stability guarantee. Check your emails
+> frequently for updates. We are sorry for strong words in some parts of our
+guide, but please bear with us.
 
 # Condition of Access
 
@@ -11,6 +11,9 @@ By login to our cluster, you agree that you have fully read our guidelines and
 agree to our usage terms, including but not limited to our fairshare and queuing
 policy. Violating our [Usage Guidelines](guideline.md) with or without knowledge
 will lead to account suspension and/or disciplinary actions.
+
+If you still do not have access, please take a quick look through our
+[Application Process](application.md).
 
 ## What is this?
 
@@ -60,7 +63,8 @@ To keep things manageable, we have split this guide into multiple files.
     - How do I run IDEs and debug? [Debugging Guide](debugging.md)
     - How do I access GPU node(s)? [Slurm Introduction](slurm.md)
     - How do I setup my environments? [Setup Conda](conda.md)
-    - How do I load/compile software with Lmod? [Lmod Compile Guide](compile_setup.md)
+    - How do I load/compile software with Lmod?
+      [Lmod Compile Guide](compile_setup.md)
     - What GPUs do I have access to? [Cluster Overview](cluster.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
 

@@ -27,7 +27,8 @@
     ```
     #!/bin/bash
     #SBATCH --job-name=job_name
-    #SBATCH --gpus=6000ada:1
+    #SBATCH --gpus=1
+    #SBATCH --constraint=gpu
     #SBATCH --time=1:00:00
     #SBATCH --output=job-%j.out
     #SBATCH --error=job-%j.err

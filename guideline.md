@@ -1,46 +1,38 @@
 # Usage Guidelines
 
-The EEE GPU Cluster is maintained by a small group of administrators who also
-have their own academic, professional, and personal commitments. While we
-strive to keep the cluster operational, please note that **any form of support
-requests, updates and/or fixes may be delayed**. As such, you are recommended
-to check [troubleshooting guide](troubleshooting.md) where we list some issues
+The EEE GPU Cluster is maintained on a best-effort basis by a small group of
+administrators who also have their own academic and professional commitments.
+**Support requests, updates and/or fixes may be delayed**. Always check the
+[troubleshooting guide](troubleshooting.md) before contacting us.
 encountered by users in the past.
+
+Liability Disclaimer:
+
+THE CLUSTER IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE CLUSTER OR THE USE OR OTHER DEALINGS IN THE CLUSTER.
 
 ## 1. Scope of Support
 
-**Administrators are only responsible for cluster-related issues**. We will
-not provide support for debugging or fixing your own code. However, we will 
-attempt to assist you if your code works locally on your machine and doesn't 
-work due to cluster-specific reasons given that you are able to send us complete
-and detailed error logs.
+**We only support cluster infrastructure**. We do not debug user code.
+
+- We WILL help if: Your code works locally but fails on the cluster (see
+  [FAQ](troubleshooting.md)).
+- We WILL NOT help if: Your code has logic issues, integration issues, or bugs.
 
 Below is a more detailed version of what you can expect from us:
-- Valid bug reports with be responded as soon as we see your email. We will notify you
-once it is resolved. Please note we only respond to cases that are directly caused
-by the cluster itself, e.g., you meet an NVML error, Slurm controller is not reachable,
-etc.
-- General service requests, such as password reset, cleanup of stuck login sessions,
-etc. can take up to **3 working days** due to the sheer volume.
-- Invalid requests that are direct results of not reading and following the
-documentation will not be replied, e.g., asking shell basics, clearly
-violating this guideline, never read how to submit jobs to a Slurm cluster.
-- Asking for more resources will not be replied. Generally, your disk quota will be
-expanded if we have new storage drives delierved. Same for GPU. The only exception
-is that if you contribute the hardware directly, then you shall have privileged
-disk/GPU quota.
-- Repetitively sending invalid requests will make the cluster team no choice but
-escalate your case to administrative level. This can lead to warnings, followed by
-account suspension, account removal, etc.
 
-Here is a quick checklist to help save your time:
+| Type | Response | Examples |
+|----|----|----|
+| Bug Reports (issues in cluster components) | ASAP | NVML errors, unresponsive Slurm |
+| Service Requests | Up to 3 working days, best-effort basis | Password reset, account reactivation |
+| Guideline-Violating Requests | Ignored; Escalation on repeated offense | Additional resource request, Expedition requests |
 
-- Check out the [FAQ](troubleshooting.md) as it contains questions that were
-  previously asked by other users.
-- Check the relevant portion in this repository.
-- Check the recent update logs.
-- Format your support request as described in the [FAQ](troubleshooting.md).
-- Ensure you send your support request to the correct email.
+We have a [Support Checklist](troubleshooting.md#Support-Checklist) to help save
+both our and your time.
 
 You are expected to conduct yourself professionally when interacting with
 cluster administrators. Please do your due dilligence and attempt to look for
@@ -48,122 +40,88 @@ solutions as maintaining the cluster is not our full-time job.
 
 ## 2. Cluster Availability
 
-Despite our best effort, we cannot guarantee fully that any of the tasks that
-you are running will not be killed. We will attempt to inform you should we
-suspect that this has happened, but we cannot fully guarantee this either as we
-are not staring at the cluster 24/7.
+### No Uptime Guarantee
 
-For scheduled maintenance events, we typically attempt to announce 2-3 days prior
-to the actual event. These events will be notified via email. **All jobs are
-subject to be killed when the maintenance window starts and you may run into
-issues attempting to use the cluster during the maintenance.**
+The cluster is maintained on a best-effort basis. There are no 24/7 on-calls
+monitoring the cluster. Jobs may be killed unexpectedly.
+
+### Maintenance
+
+We aim to notify users 2-3 days prior to scheduled maintenance events via email.
+**All jobs are subject to be killed when the maintenance window starts and you
+may run into issues attempting to use the cluster during the maintenance.**
 
 ## 3. Data Privacy & Availability
 
-By default, your home and project directories are only accessible by you only
-with the following exceptions:
+Your data is NOT backed up by us. You are responsible for your own backups. Your
+data is not retrievable when the cluster is unavailable.
 
-- Users that you have granted permission via `storagemgr` may access those
-  project directories.
-- Admins may collect metadata on your directories including file names and file
-  sizes for cluster management purposes.
-- Admins may access your files and logs to assist in reproducing reported errors
-  and facilitating service requests submitted by you.
-- Your approver (e.g. supervisor or course coordinator) may request access to
-  your data at any time.
+Your files are private, unless you have granted permission to other people. Your
+files may be accessed by admins and your approver (e.g. supervisor or course
+coordinator) for troubleshooting, auditing, or compliance.
 
-While we do make an effort, **we cannot guarantee that your data is available at
-all times.**
+We delete your data if:
+- You have not logged in for 6 months (with a reminder before this happens)
+- Your applied usage period has expired (e.g. course users during end of
+  semester)
 
-**Please make backups of important data regularly.** We may be unable to assist
-you in the case of data loss or if there are ongoing maintenance events.
-
-We will only deliberately remove your data after your account has not been
-logged into for 6 months or your GPU usage's approved timeframe comes to an end
-(e.g. course users during end of semester), whichever comes first. You will be
-sent a reminder if your account has not been logged into for 5 months.
-
-You are responsible for keeping your credentials secure. Any requests from your
-account will be considered to be coming from you and people with your
-credentials may access your data.
+You are responsible for activities that have been conducted using your
+credentials. Keep them secure. Sharing accounts with other people will still
+make you liable.
 
 ## 4. Fair Usage & Queueing
 
 - **DO NOT USE LOGIN NODES FOR HEAVY WORKLOADS**.
 
-    To provide everyone with as much computational power as possible, we have
-    deliberately made the login nodes low-powered. As such, they are very
-    easily overwhelmed. Use compute nodes instead for any heavy-lifting.
+    Login nodes are low-power. There is an enforced CPU and RAM limit for every
+    user. Running heavy tasks may result in:
 
-    **We WILL terminate any processes that are putting an excessive load on
-    login nodes and may restart them as necessary.** In addition, the cluster's
-    connection to NTUSECURE may not be completely stable and you may disconnect
-    at any time. Consider yourself warned.
+    - Your shell/IDE being unusable due to CPU caps.
+    - Your processes being killed as they hit the RAM limit.
 
-    Currently, we enforce a hard 8 GB RAM per user limit on login nodes. Users
-    exceeding this limit may see their processes killed by the kernel. This
-    number may have changed and is only included here as a rough gauge.
+    You are recommended to use [Slurm](slurm.md) for any heavy tasks, even if
+    they do not require GPUs.
 
 - **Respect other users' right to access resources**.
 
-    If you need to wait in the job queue, please understand that **all users
-    under the same organization have equal priority**.
+    - Least Recently Used First: In the same organization, users that have used
+      the least resources recently have the highest priority.
 
-    Cluster hardware is funded by **multiple entities** at a cost of millions.
-    Some GPU models or nodes may have restricted access based on the funding
-    source's policies.
+    - No Hoarding: Do not run idle jobs (e.g., leaving a shell open inside a GPU
+      node) just to "reserve" it. **Ensure you exit the job fully** when the
+      resources are not being used. This is currently being actively audited.
 
-    Please **respect these access limitations**, or discuss additional resource
-    contributions with your supervisor. Wherever possible, we have already
-    included ways for you to request more resources in ways that will not
-    disrupt other users' uses of the cluster.
-
-    We regret to inform that we will not reply favourably to emails requesting
-    for additional resources without contribution.
-
-- **Release resources as soon as possible.**
-
-    It is highly likely that other users are queueing for the resources that
-    you are currently using, please be a good user and release as soon as
-    possible so other users can use resources. Leaving the resources idle is
-    insufficient, please exit the job completely to release your resources.
-
-    This means that you should avoid running jobs that will not effectively use
-    resources, including but not limited to, a normal `bash` shell to "reserve"
-    resources. Run your individual scripts individually instead and keep your
-    shell on login nodes.
-
-    To ensure fair share, users that have used less resources recently will get
-    a priority boost. As such, this will benefit not just other users but also
-    you yourself.
+    - Resource Limits: Access depends on funding sources and costs for the
+      cluster is currently on the million scale. Do not email us asking for more
+      resources unless your group is contributing hardware and you are the point
+      of contact.
 
 ## 5. Permitted Use
 
-- The cluster is for **research and project-related computing** only.
+The cluster is strictly for **research and project-related computing** only.
 
-- **Absolutely prohibited activities** include:
-  - Running **illegal, unlicensed, or pirated software**.
-  - Running **malicious software**, including viruses, worms, or scripts that
-    would otherwise prevent other users from accessing the service.
+- **Strictly prohibited activities**:
+  - Crypto-mining or commercial use.
+  - Malicious Software: Viruses, worms, or scripts that would disrupt cluster
+    service for other users.
+  - Illegal Software: Pirated or unlicensed software.
+  - Vulnerabilities: Vulnerabilities or exploits that abuse the cluster in
+    unintended ways.
 
-- **If you run illegal or unlicensed software:**
-  - **You are solely and fully responsible** for any and all consequences,
-    including but not limited to:
-    - Permanent loss of cluster access.
+- **Likely Consequences**:
+  - Immediate Ban: Your access will be revoked immediately when we receive such
+    reports.
+  - You are liable for all the damages incurred to the cluster as a result of
+    your activities, including but not limited to:
     - Financial penalties, including damages claimed by copyright or IP owners.
     - Disciplinary actions by your school, university, or relevant authorities.
-  - The administrators have **warned you in advance** and will **not bear any
-    responsibility** for your actions.
 
-- Report any vulnerabilities to administrators immediately.
-  - Usage of such vulnerabilities will lead to an immediate ban.
+Please also be professional when using the cluster. This includes but is not
+limited to, using appropriate names for projects.
 
-- Please be professional when using the cluster. This includes but is not
-  limited to, using appropriate names for projects.
+## 6. Fair Use Policy
 
-- Respect the idea of Fair Use.
-  With current policies, we fully realize it is possible for you to take over
-  many more GPU than you are entitled to. But please be aware whenever you do
-  so, the admin will likely double check you are doing things that is relevant
-  to your research and project. Should you be caught misusing the cluster,
-  we might immediately suspend your account.
+We have in good faith made the access for GPUs in the cluster available for
+everyone as much as we can, subject to funding source restrictions. You are
+expected to uphold your part by only requesting resources that you need. You may
+be subjected to more auditing if you have higher than normal usage.
