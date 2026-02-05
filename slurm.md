@@ -111,9 +111,10 @@ default value**:
 | `--qos`      | `--qos rose`             | Specify what policy to run your job under. See [Cluster Overview](cluster.md#Slurm).                                                       |
 | `--job-name` | `--job-name example`     | Set the name of the job in outputs such as `squeue` to make it easier to find.                                                             |
 
-You can see the [FAQ](troubleshooting.md#Slurm) for more details. If you still
-have other Slurm-specific questions, kindly ask the LLM of your choice for help.
-There are plenty of resources out there and LLMs are very familiar with Slurm.
+You can see the [FAQ](troubleshooting.md#Starting-a-Job) for more details. If
+you still have other Slurm-specific questions, kindly ask the LLM of your choice
+for help. There are plenty of resources out there and LLMs are very familiar
+with Slurm.
 
 ## Job Status Check
 
