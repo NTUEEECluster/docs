@@ -375,50 +375,74 @@ If you have not done so, please read the [Slurm guide](slurm.md).
 
 Here is an important checklist of things to check before sending us an email:
 
-- You have checked this page to ensure that nothing here can help you.
-- You have ensured that this issue is due to the cluster (i.e. it works on my
-  computer!)
-- You have confirmed this is a cluster-specific issue and not a general Linux
-  one. Please attempt to resolve it yourself with the help of the internet or
-  LLM of your choice.
-- You have confirmed that this is not related to recent issues that are already
-  known. (This will only add on to our workload when it is already known.)
-  - Check MOTD (the message when you login using SSH)
-  - Check your email for service announcements
-- You are not just requesting for more resources. This repository contains
-  all the ways to do so that we support, due to funding sources' constraints.
-  - Storage: See [Directories in cluster.md](cluster.md#Directories)
-  - GPUs: See [Slurm in cluster.md](cluster.md#Slurm)
-  - If you are the point of contact for an entity contributing hardware, we can
-    help in negotiating more resources on your behalf. Please send us an email.
+1. **No relevant questions** in this troubleshooting guide, or answer not
+   applicable (state why).
+2. **Cluster-specific problem**, i.e. it works on another machine.
+3. **Not Linux question**.
+4. **Not known issue**.
+   - Check MOTD (the message when you login using SSH)
+   - Check for service announcement issues
+5. **Not requesting for more resources**.
+   - Point of Contact for Funding Source: We can help in negotiating more
+     resources on your behalf. Please send us an email.
+   - Storage: See [Directories in cluster.md](cluster.md#Directories)
+   - GPUs: See [Slurm in cluster.md](cluster.md#Slurm)
 
 ### Email Checklist
 
 If you have gone through the above checklist, send us an email (to the addresses
 used to inform you the password):
 
-- What you have done: What commands have you ran on what machine?
-    Please include the name of the node that you are connected to. This should
-    be shown on the prompt (`username@THIS_IS_THE_THING_WE_NEED $`).
-    Please also include debugging steps that you have taken so we do not suggest
-    what you have already tried.
-- What you expect to happen: What should you be seeing? What are you attempting
-    to achieve?
-- What actually happens: What is the actual output? If possible, include
-    screenshots. If you are using an IDE, please include relevant logs from your
-    IDE.
+1. Write about **what was done**. Include the following:
+   - Screenshot of the command being run on the machine and their output.
+   - Name of the node that this issue is on.
+     This should be shown on the prompt (`username@THIS_IS_THE_THING_WE_NEED $`).
+   - Log files from your IDE, if the issue only appears in your IDE.
+   - Debugging steps taken (not just final command)
+     This provides us with context as to what you have tried so we do not repeat
+     what is already known.
+2. Write about **Expected Outcome**. Include the following:
+   - Expected output in the terminal.
+   - Intended goal.
 
-Please provide as much relevant information as you can to help us debug your
-issue. **We need to be able to replicate the issue in order to fix it
-reliably.**
+Please provide as much relevant information as possible to help us pinpoint the
+issue. **We need to be able to identify the issue in order to fix it reliably.**
+
+A good email should look similar to this:
+
+```
+Dear EEE GPU Cluster Admin,
+
+I have not been able to request a compute node for my job (intended goal). The
+job is requesting for a 6000ada and when I run `sbatch` with my script (what was
+being done), it reports back "unable to contact slurm controller" (what was
+the actual output).
+
+Here is the screenshot of me executing the command:
+[screenshot, includes command, its output and node being run on]
+
+I have attempted to run `sinfo` and I have received the same error message. I
+have also tried pinging the address mentioned in the message and it has timed
+out (debugging steps taken). As such, I believe that the issue is with the Slurm
+controller machine and that is outside my control.
+
+Thank you for your help.
+
+
+Best Regards,
+Ideal User Example
+```
 
 Here are a few themes of emails that we cannot help with:
-- If you simply tell us "X doesn't work" and nothing more, you leave us with
-  nothing to work with and we cannot do anything to help you.
-- We are also unable to entertain emails requesting for more resources, as our
-  constraints are due to hardware limitation. Please only contact us if you are
-  able to contribute hardware. We are almost constantly in the process of
-  procuring more hardware so please be patient.
+
+- **"X doesn't work"**: This provides us with no information that we can use to
+  pinpoint the issue. If the issue is obvious, we would have run into the issue
+  ourselves and not required user reports.
+- **Requesting for more resources**: Some options for these have been listed in
+  [Support Checklist](#support-checklist), please check them. We are unable to
+  provide resources beyond that due to funding sources constraint. Please
+  contact us only if you are able to help us in procuring more hardware. See
+  [Application Process](application.md) for more details.
 
 We try to stay nice, professional, helpful, and timely to emails. However,
 we may not respond kindly to emails asking questions that are easily answered
