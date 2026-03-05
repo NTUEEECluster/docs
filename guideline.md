@@ -4,7 +4,10 @@ The EEE GPU Cluster is maintained on a best-effort basis by a small group of
 administrators who also have their own academic and professional commitments.
 **Support requests, updates and/or fixes may be delayed**. Always check the
 [troubleshooting guide](troubleshooting.md) before contacting us.
-encountered by users in the past.
+encountered by users in the past. Also, be kind to the admins, they bring you 
+this free source at the cost of their personal time and great efforts. As of 
+March 2026, this cluster is entirely free for use and this also means violation
+of our rules may face heavy penalties!
 
 Liability Disclaimer:
 
@@ -125,3 +128,16 @@ We have in good faith made the access for GPUs in the cluster available for
 everyone as much as we can, subject to funding source restrictions. You are
 expected to uphold your part by only requesting resources that you need. You may
 be subjected to more auditing if you have higher than normal usage.
+
+## 7. Usage of AI Agents and requesting nodes as inference backends
+
+We have noticed many users are starting to use AI agents such as Claude Code, Codex,
+OpenClaw, Cursor, and so on. While we are generally supportive, the cluster admin team
+has no bandwidth to attend to issues such as installation issues, network issues, permission
+issues, etc. We also bare absolutely no responsibility should your AI agent stuck your login sessions
+or accidentally removed your data. Please use AI agents are your own risk.
+
+Regarding requesting compute nodes for inference service. This is highly case by case,
+and the rule of thumb is we are strongly unsupportive of requesting compute nodes
+for your personal chatbot inference. If found, you will face immediate warning followed by
+account ban.
