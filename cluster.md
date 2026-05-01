@@ -150,11 +150,14 @@ nodes. Additional constraints apply:
 
 These constraints are:
 
-|            | Interactive Jobs (`srun`)      | Batch Jobs (`sbatch`) |
-|------------|--------------------------------|-----------------------|
-| Time Limit | 2 hours/job                    | 3 days/job            |
-| Job Limit  | 1 job total (incl. batch jobs) |                       |
-| GPU Limit  | 1 GPU                          | See table below       |
+|            | Interactive (`srun` / `salloc`) | Batch Jobs (`sbatch`) |
+|------------|---------------------------------|-----------------------|
+| Time Limit | 2 hours/job                     | 3 days/job            |
+| Job Limit  | 1 job total (incl. batch jobs)  |                       |
+| GPU Limit  | 1 GPU                           | See table below       |
+
+The 2 h / 1 GPU interactive cap applies to **both** `srun` and `salloc` —
+including the IDE-on-compute-node flow in [debugging.md](debugging.md).
 
 Here are the details of GPU usage limits:
 
@@ -183,6 +186,11 @@ override-killable jobs are **requeued** (not killed outright — Slurm puts
 them back in the queue with their existing state) so the within-limit job
 can run.
 
+`override-limits-but-killable` jobs do **not** preempt each other. Two
+override-killable jobs competing for the same idle GPUs are scheduled by
+the cluster's normal priority calculation (fairshare + age + job-size
+weights), so over time both users get fair access to leftover capacity.
+
 You are recommended to save epochs and make your program check if there are
 previous epochs to resume from if you make use of this feature.
 
@@ -199,6 +207,38 @@ matching account by their PI.
 If you don't know whether you have a project QoS, check
 `sacctmgr show assoc where user=$USER format=Account,QOS,DefaultQOS` —
 your `DefaultQOS` is what runs when you don't pass `--qos=`.
+
+To inspect a project QoS's compute-hour budget and current usage:
+
+```sh
+# the budget itself (TRES-minutes — divide by 60 for hours):
+sacctmgr show qos <qos_name> -P format=Name,GrpTRESMins
+
+# your fair-share usage under the project's account:
+sshare -A <account_name>
+```
+
+If your project is on a TRES-minute budget and you've exhausted it, jobs
+will be rejected at submit time with a `QOSGrpBilling*` error. Contact
+your PI / point of contact for the account in that case.
+
+## Per-job GPU count limits
+
+Even if your QoS allows N GPUs, a single Slurm job is bounded by the
+**physical GPU count of one node** — Slurm doesn't span GPUs across nodes
+within a single job. The maximum GPU count per job by model:
+
+| Model     | Max GPUs/job | Where it lands                         |
+|-----------|--------------|----------------------------------------|
+| `6000ada` | 4            | gpu-6000ada-[1-3] (4-GPU each)         |
+| `a40`     | 10           | gpu-a40-1                              |
+| `a6000`   | 10           | gpu-a6000-1                            |
+| `l40`     | 4            | gpu-l40-[1-2] (4-GPU each)             |
+| `pro6000` | 10           | gpu-pro6000-[5-6] (10-GPU each)        |
+| `pro6000` + `-C highmem` | 8 | gpu-pro6000-[7-10] (8-GPU, 92 GiB/GPU) |
+
+If you ask for more GPUs of a model than any single node has, the request
+is unschedulable and your job will sit pending forever.
 
 ## Directories
 

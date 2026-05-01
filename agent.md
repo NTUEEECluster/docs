@@ -98,8 +98,20 @@ workflow on a cluster that wasn't built for it.
 - Preferred: batch jobs with `sbatch <script>` (see `sbatch-example.sh`). Set `--time`, `--output/--error`, `--job-name`, `--qos` as needed.
 - Debug/interactive (`srun`/`salloc`): **strictly limited to 2 hours and 1 GPU**. Only 1 concurrent interactive job allowed. Disconnection cancels the job; do not use for long runs.
 - Job status: `squeue`; cluster state: `sinfo`; cancel: `scancel <jobid>`.
-- Default QoS has `MaxJobs=1`; use `--qos override-limits-but-killable` to run more (jobs may be preempted — checkpoint/resume). **Preemption rule**: any within-limit user QoS (the per-user class tiers `rose`/`ug`/`ug-course` and any faculty-project QoS) preempts `override-limits-but-killable` jobs by **requeueing** them.
-- **Account taxonomy**: per-user class tiers are `rose`, `phd`, `msc`, `ug`, `ug-course`. Faculty-sponsored project accounts (PI-named QoSes, e.g. `<lastname>_<year>_<NN>`) also exist with their own GPU-model allowlists and TRES-minute budgets. The agent should not assume a user is on a class tier — check `sacctmgr show assoc where user=$USER format=Account,QOS,DefaultQOS` to confirm.
+- Default QoS has `MaxJobs=1`; use `--qos override-limits-but-killable` to run more (jobs may be preempted — checkpoint/resume). **Preemption rules**:
+  - Any within-limit user QoS (per-user class tiers `rose`/`ug`/`ug-course` and any faculty-project QoS) preempts `override-limits-but-killable` jobs by **requeueing** them (not killed — Slurm restores them with state intact).
+  - Override-killable jobs do **not** preempt each other; they share idle capacity by normal priority (fairshare + age + job-size).
+- **Account taxonomy**: per-user class tiers are `rose`, `phd`, `msc`, `ug`, `ug-course`. Faculty-sponsored project accounts (PI-named QoSes, e.g. `<lastname>_<year>_<NN>`) also exist with their own GPU-model allowlists and TRES-minute budgets. The agent should not assume a user is on a class tier — check `sacctmgr show assoc where user=$USER format=Account,QOS,DefaultQOS` to confirm. To inspect a project QoS's compute budget: `sacctmgr show qos <name> -P format=Name,GrpTRESMins` (TRES-minutes; ÷60 for hours). For usage so far: `sshare -A <account>`.
+- **Per-job GPU cap is bounded by single-node hardware** (Slurm doesn't span GPUs across nodes for one job). Max GPUs per job by model:
+
+  | model | max | model | max |
+  |---|---|---|---|
+  | `6000ada` | 4 | `pro6000` | **10** (lands on pro6000-[5-6]) |
+  | `a40` | 10 | `pro6000` + `-C highmem` | **8** (lands on pro6000-[7-10]) |
+  | `l40` | 4 | | |
+  | `a6000` | 10 | | |
+
+  If a user asks for more than this, the job pends forever — flag immediately.
 - Sample `srun`: `srun --gpus a40:1 --time 1:00:00 --pty bash` (interactive shell on 1 A40, max 2h).
 - Sample `sbatch`: `sbatch --gpus 6000ada:1 --time 1-00:00:00 --job-name train --output train-%j.out run.sh` (batch script `run.sh` with 1 ADA GPU, 1 day limit).
 
