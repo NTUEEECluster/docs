@@ -173,3 +173,33 @@ format=Name,MaxTRESPerUser`.
 - Wall time: `sbatch` up to 3 days; interactive `srun`/`salloc` max 2 hours and **1 GPU** (any model) only.
 - Inspect node configs: `scontrol show nodes <node_name>`.
 - Default QoS has `MaxJobs=1` to deter abuse; you can still run more by using `--qos override-limits-but-killable` (jobs may be preempted).
+
+## Recommended models for the agent
+
+For best results, use a frontier coding agent with **at least 200k context
+window — ideally 1M**. Operational details on this cluster (QoS rules,
+RAM tables, preemption logic, account taxonomy) do not compress well, and
+shorter contexts force the agent to drop key facts mid-session.
+
+Tested and recommended:
+- **Claude Code with Sonnet 4.6 or newer** (Anthropic).
+- **GPT-5.4 / GPT-5.5 Codex** (OpenAI). Same prompting strategy applies —
+  paste this digest at session start.
+
+Not recommended without independent testing:
+- **Open-source models**. Have not been audited against this digest;
+  expect heavier hallucination, especially around Slurm flag semantics,
+  QoS naming, RAM/GPU rules, and cluster topology. If you must use one,
+  verify every command it generates before running.
+
+**Project-level prompting tip**: keep your project's `CLAUDE.md` (or
+equivalent system prompt file) short and have it **refer to this
+`agent.md`** rather than duplicating operational details. As your project
+conversation grows, system-prompt content gets compressed and
+operational details drift first; pointing at this canonical file is the
+durable way to prevent drift.
+
+**Reaffirmation of responsibility**: per the [Condition of Access](README.md),
+what your agent does equals what you do. The cluster team is not liable
+for agent behavior. If your agent hallucinates a destructive command and
+you run it, that is on you — pick a capable model and audit its actions.
