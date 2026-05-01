@@ -25,12 +25,9 @@ study/research at NTU is considered an offense.
 It is possible to [use VSCode and PyCharm to access the cluster](debugging.md).
 Other possibilities exist, but we cannot cover all of them.
 
-Key limits to be aware of upfront:
-- Login nodes: ~1.5 CPU cores and 8 GB RAM per user
-- Home directory: 50 GB; `/tmp`: 4 GB; project storage via `storagemgr`
-- 1 running job by default; interactive sessions max 2 hours and 1 GPU
-- No `sudo` access under any circumstances
-- Academic use only
+For the current limits (CPU/RAM on login nodes, storage quotas, job/GPU
+caps, supported QoS), see [Cluster Overview](cluster.md). Read it before
+your first job.
 
 ## What is the bare minimum that I need to know?
 

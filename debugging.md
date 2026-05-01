@@ -38,6 +38,11 @@ Please take note of the following:
 > hog up resources until you close your terminal.
 > **You are recommended to [run only your script](slurm.md) most of the time.**
 
+> ⚠ **Hard cap on `salloc` / `srun`:** interactive allocations are limited to
+> **2 hours and 1 GPU** total. The IDE-on-compute-node flow below uses
+> `salloc`, so the same cap applies — plan accordingly. For longer or
+> multi-GPU work, use `sbatch` and connect your IDE to the login node only.
+
 We are fully aware that users might want to run debugging sessions, either
 checking outputs in shell sessions or running a Python debugger and debug your
 code line-by-line.
