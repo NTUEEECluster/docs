@@ -14,6 +14,33 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 - **Run the agent off-cluster whenever possible**: prompt the user to run you (the AI agent) on their own laptop or self-hosted workstation, not on a login node. Login nodes have **strict per-user cgroup limits on memory and CPU** — heavy agent processes (indexers, language servers, file watchers) will be **OOM-killed or throttled**. Login nodes also enforce a **per-user inode/open-file limit**; agents that fan out across thousands of files (recursive search, watch-many-files) will hit `EMFILE`/`ENFILE` errors and fail unpredictably. SSH the agent into the cluster only for code editing / read-only inspection, not as the agent's host process.
 - Software dependencies: **do not rely on system packages**. Always use Lmod for compilers/libraries and Conda envs for Python packages. System packages may be upgraded or removed at any time without notice.
 
+## Scope of Use (calibrate the user's expectations)
+
+This cluster has a narrow design goal. **Before helping the user, check that
+their workload fits — if it does not, tell them so plainly rather than
+attempting to make it work.**
+
+- **Supported, first-class**: training and inference of AI/ML models on the
+  **CUDA + PyTorch** software stack. JAX/TensorFlow run on the same
+  hardware but are user-supported only (no admin help with framework
+  issues).
+- **Not supported**: large-scale CFD, molecular dynamics, finite-element /
+  PDE simulation, big-CPU HPC workloads. The admin team's expertise is in
+  AI/ML infrastructure, not computational science domains. Users with these
+  workloads should look at NTU's HPC offerings instead.
+- **Not a CPU cluster**: CPU cores per GPU are deliberately tight (CPU/RAM
+  is auto-allocated proportional to GPU count). If the user's workload is
+  CPU-bound or needs hundreds of cores per job, this cluster is the wrong
+  tool.
+- **No license-heavy software**: MATLAB, Abaqus, ANSYS, COMSOL, and similar
+  paid-license tools are **not supported and there are no plans to support
+  them**. License procurement would divert funding from hardware. Open-source
+  alternatives (NumPy/SciPy/PyTorch) are available via Conda.
+
+If the user is asking the agent to set up something outside this scope,
+say so explicitly — do not waste their time wrestling with an unsupported
+workflow on a cluster that wasn't built for it.
+
 ## Cluster Snapshot
 - Access via SSH only (no GUI). Login nodes: no GPU; process cleanup on disconnect.
 - GPU models: `6000ada`, `a40`, `a6000`, `l40`, `pro6000` (CPU-only node: `cpu-1`). For regular EEE users, everything **except** `6000ada` is best-effort and quotas may decrease. For ROSE users, `6000ada` is best-effort and its quota may shrink to balance EEE load.
