@@ -5,7 +5,7 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 ## 🚨 Guidelines (must enforce)
 - Support scope: admins only fix cluster-caused issues. No debugging of user code unless it works elsewhere and fails only on cluster with full logs. Invalid/RTFM requests are ignored; repeated violations can trigger suspension.
 - Availability: maintenance may kill jobs; announcements via email. Data isn't guaranteed—users must keep their own backups.
-- Fair usage: **never run heavy work on login nodes** (hard ~8GB RAM limit; processes killed on disconnect). Release resources promptly; respect equal priority within org and GPU access restrictions. Override QoS (`override-limits-but-killable`) is killable.
+- Fair usage: **never run heavy work on login nodes**. Per-user cgroup limit is **16 GB RAM** (and a CPU cap). When any one of the user's processes pushes the cgroup over the limit, **all of that user's login-node processes are killed together** (cgroup `memory.oom.group=1`) — not just the offender. All login-node processes are also terminated on disconnect. Release resources promptly; respect equal priority within org and GPU access restrictions. Override QoS (`override-limits-but-killable`) is killable.
 - Permitted use: research/project work only; no illegal/unlicensed/malicious software. Misuse or NSFW project names can lead to bans.
 - Security/privacy: home/projects default private; admins/approvers may access for support/compliance. User credentials are their responsibility.
 - Directory permissions: users must **not** leave home or project directories world-readable/writable/executable. Misconfigured permissions are the user's own responsibility; any resulting data leak or loss is on them.
@@ -58,7 +58,7 @@ format=Name,MaxTRESPerUser`.
 ## Common Issues (triage prompts)
 - "conda: command not found" → `module load Miniforge3` + `source activate`.
 - No GPUs / `nvidia-smi` missing → you're on login node or didn't request GPUs via Slurm.
-- OOM / RAM errors on login → respect ~8GB limit; kill stray IDE processes; process cleanup happens on disconnect.
+- OOM / RAM errors on login → 16 GB cgroup cap; OOM kills **all** of the user's login-node processes at once, not just the offender. Audit stray IDE/agent backends with `htop -u <user>`; process cleanup also happens on disconnect.
 - Disk quota exceeded → check `/home`, `/tmp`, `/projects`; use `du -sh ./* ./.*`; move/clean files; adjust `TMPDIR`.
 - SSH refused → ensure VPN; use login IP; GPU nodes need active job + jump host.
 - Persistent Slurm wait/fail → reduce requests, check `sinfo`/`squeue` reason; constraints or busy cluster.

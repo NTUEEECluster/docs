@@ -82,7 +82,9 @@ directories. Review your directory permissions regularly with `ls -la`.
     user. Running heavy tasks may result in:
 
     - Your shell/IDE being unusable due to CPU caps.
-    - Your processes being killed as they hit the RAM limit.
+    - **All of your login-node processes being killed at once** when any one
+      of them pushes you over the RAM cap (the OOM kill applies to the whole
+      cgroup, not just the offending process).
 
     You are recommended to use [Slurm](slurm.md) for any heavy tasks, even if
     they do not require GPUs.

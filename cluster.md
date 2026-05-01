@@ -69,9 +69,12 @@ To learn more about how to use the GPU nodes, check out
 You are reminded that each user is only allowed a small share of resources on
 login nodes as mentioned in the [Usage Guidelines](guideline.md).
 
-Currently, we enforce a hard 8 GB RAM per user limit on login nodes. Users
-exceeding this limit may see their processes killed by the kernel. This number
-may have changed and is only included here as a rough gauge.
+Currently, we enforce a per-user cgroup limit of **16 GB RAM** on login nodes,
+alongside a CPU cap. When any single process exceeds the cgroup memory limit,
+the kernel will kill **every process that user has on the login node**, not
+just the offending one (cgroup `memory.oom.group=1`). Plan accordingly — keep
+heavy IDE backends, indexers, and agent processes off login nodes; use
+[Slurm](slurm.md) for any non-trivial work.
 
 <a id="process-cleanup" />
 
