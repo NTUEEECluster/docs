@@ -85,11 +85,21 @@ workflow on a cluster that wasn't built for it.
 
 ## Running Workloads (Slurm essentials)
 - Always specify GPU type: `--gpus <model>:<n>` (e.g., `--gpus a40:1`) or constraints (`-C 'a40|a6000'`, `gpu_48g`, `gpu_96g`, etc.). Requests without type are blocked.
-- **Do not specify `--mem` or `--cpus-per-task`** — CPU and RAM are automatically assigned proportional to the number of GPUs requested. Specifying them will only produce a warning and be overridden anyway.
+- **Do not specify `--mem` or `--cpus-per-task`** — both are silently overridden with a warning. Allocations are fixed per GPU: **4 CPU cores/GPU** and a model-specific RAM/GPU. Quick reference:
+
+  | model | RAM/GPU | model | RAM/GPU |
+  |---|---|---|---|
+  | `6000ada` | 64 GiB | `pro6000` | **33 GiB** (floor) |
+  | `a40` | 40 GiB | `pro6000` + `-C highmem` | **92 GiB** (lands only on pro6000-[1-4] or [7-10]) |
+  | `l40` | 48 GiB | | |
+  | `a6000` | 24 GiB | | |
+
+  **`pro6000` caveat**: the 33 GiB floor is set by `pro6000-[5-6]` (10-GPU, 340 GiB usable). For ML jobs that need more RAM per pro6000 GPU, add `-C highmem` — that constrains scheduling to the 4-GPU and 8-GPU pro6000 hosts which have ~92 GiB/GPU. Multiply by GPU count for the job total. See `cluster.md#cpuram-enforcement` for the canonical table.
 - Preferred: batch jobs with `sbatch <script>` (see `sbatch-example.sh`). Set `--time`, `--output/--error`, `--job-name`, `--qos` as needed.
 - Debug/interactive (`srun`/`salloc`): **strictly limited to 2 hours and 1 GPU**. Only 1 concurrent interactive job allowed. Disconnection cancels the job; do not use for long runs.
 - Job status: `squeue`; cluster state: `sinfo`; cancel: `scancel <jobid>`.
-- Default QoS has `MaxJobs=1`; use `--qos override-limits-but-killable` to run more (jobs may be preempted—checkpoint/resume).
+- Default QoS has `MaxJobs=1`; use `--qos override-limits-but-killable` to run more (jobs may be preempted — checkpoint/resume). **Preemption rule**: any within-limit user QoS (the per-user class tiers `rose`/`ug`/`ug-course` and any faculty-project QoS) preempts `override-limits-but-killable` jobs by **requeueing** them.
+- **Account taxonomy**: per-user class tiers are `rose`, `phd`, `msc`, `ug`, `ug-course`. Faculty-sponsored project accounts (PI-named QoSes, e.g. `<lastname>_<year>_<NN>`) also exist with their own GPU-model allowlists and TRES-minute budgets. The agent should not assume a user is on a class tier — check `sacctmgr show assoc where user=$USER format=Account,QOS,DefaultQOS` to confirm.
 - Sample `srun`: `srun --gpus a40:1 --time 1:00:00 --pty bash` (interactive shell on 1 A40, max 2h).
 - Sample `sbatch`: `sbatch --gpus 6000ada:1 --time 1-00:00:00 --job-name train --output train-%j.out run.sh` (batch script `run.sh` with 1 ADA GPU, 1 day limit).
 

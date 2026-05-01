@@ -97,9 +97,30 @@ supports two modes of execution (different QoS):
 ### CPU/RAM Enforcement
 
 Slurm treats CPU cores and RAM as consumable resources. Over-requesting these
-will block other users' GPU requests. We enforce CPU and RAM allocations based
-on the number of GPUs requested — setting `--mem` or `--cpus-per-task`
-alongside `--gpus` will be ignored with a warning.
+would block other users' GPU requests, so we enforce both at submit time
+based on the number of GPUs you request. **Setting `--mem` or
+`--cpus-per-task` alongside `--gpus` is silently overridden with a warning
+— do not specify them.**
+
+CPU is fixed at **4 cores per GPU**. RAM per GPU depends on the GPU model:
+
+| GPU model         | RAM per GPU | Notes                                      |
+|-------------------|-------------|--------------------------------------------|
+| `6000ada`         | 64 GiB      |                                            |
+| `a40`             | 40 GiB      |                                            |
+| `l40`             | 48 GiB      |                                            |
+| `a6000`           | 24 GiB      |                                            |
+| `pro6000`         | 33 GiB      | floor across all `pro6000` nodes           |
+| `pro6000` + `-C highmem` | 92 GiB | lands only on `pro6000-[1-4]` or `pro6000-[7-10]` |
+
+**Why pro6000 has a low default**: `pro6000-[5-6]` are 10-GPU nodes with
+only ~340 GiB usable RAM (≈33 GiB/GPU), which sets the floor for any
+`pro6000` request. If you need more RAM per pro6000, add `-C highmem` —
+this both upgrades the per-GPU allocation to 92 GiB and constrains
+scheduling to the high-RAM pro6000 subset (`[1-4]` or `[7-10]`). Jobs that
+need 92 GiB/GPU on pro6000-[5-6] are not possible by design.
+
+For CPU-only (no `--gpus`) jobs, RAM defaults to 16 GiB per CPU.
 
 ### GPU Type is Required
 
@@ -154,8 +175,30 @@ killed (and later restarted) to make space for other user's jobs if required. As
 such, this effectively means that jobs with the QoS may only use idle GPUs. You
 can learn more about submitting a job in [Slurm Introduction](slurm.md).
 
+**Preemption rule**: any within-limit user job (default user QoS — `rose`,
+`ug`, `ug-course`, faculty-project QoSes, etc.) preempts
+`override-limits-but-killable` jobs. When a within-limit user submits and
+the GPUs they're entitled to are held by override-killable jobs, those
+override-killable jobs are **requeued** (not killed outright — Slurm puts
+them back in the queue with their existing state) so the within-limit job
+can run.
+
 You are recommended to save epochs and make your program check if there are
 previous epochs to resume from if you make use of this feature.
+
+### Account types
+
+The QoS table above lists the **per-user class tiers** (`rose` / `phd` /
+`msc` / `ug` / `ug-course`). The cluster also has **faculty-sponsored
+project accounts** — researchers or labs that have contributed hardware
+get a dedicated QoS (typically named after the PI, e.g.
+`<lastname>_<year>_<NN>`) with its own GPU-type allowlist and
+TRES-minute compute budget. Members of these projects are added to the
+matching account by their PI.
+
+If you don't know whether you have a project QoS, check
+`sacctmgr show assoc where user=$USER format=Account,QOS,DefaultQOS` —
+your `DefaultQOS` is what runs when you don't pass `--qos=`.
 
 ## Directories
 

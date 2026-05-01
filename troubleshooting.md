@@ -291,12 +291,20 @@ If you have not done so, please read the [Slurm guide](slurm.md).
 
 8.  Q: Why I cannot specify more/less CPU/RAM?
 
-    A: We enforce how many CPU/RAM you can get based on the actual hardware of
-       each server. The rule of thumb is that if you request all the GPUs on one
-       node, that you get all the CPU/RAM available to you. Otherwise, CPU/RAM
-       is assigned to you proportionally. This prevents you consuming all the
-       CPU/RAM on a GPU node while there are still unassigned GPUs that no one
-       can use.
+    A: CPU and RAM are fixed per GPU at submit time — **4 CPU cores per GPU**
+       and a model-specific RAM/GPU value (see the canonical table at
+       [cluster.md#cpuram-enforcement](cluster.md#cpuram-enforcement)). Setting
+       `--mem` or `--cpus-per-task` is silently overridden with a warning.
+
+       This design prevents one user consuming all the CPU/RAM on a GPU node
+       while leaving GPUs idle — the proportional binding ensures every GPU
+       on a node remains assignable.
+
+       The most common gotcha: **`pro6000` defaults to 33 GiB/GPU** because
+       `pro6000-[5-6]` are 10-GPU/340-GiB nodes that set the floor. If your
+       job needs more RAM per pro6000 GPU, add `-C highmem` — that bumps
+       the per-GPU RAM to 92 GiB and constrains scheduling to
+       `pro6000-[1-4]` or `pro6000-[7-10]`.
 
 <a id="cluster-billing"></a>
 
@@ -337,16 +345,17 @@ If you have not done so, please read the [Slurm guide](slurm.md).
        in StepId=123.0. Some of the step tasks have been OOM Killed."? How do I
        request more memory?
 
-    A: We currently tie how many GPUs you requested directly to CPU and RAM
-       given to you. Therefore, you cannot specify the number of CPU and RAM by
-       yourself. While there are limitations in this design, it comes with
-       benefits that all GPUs in a node can be assigned to users without idling.
-       The current strategy will give you the same amount of RAM as the total
-       VRAM of the GPUs that you have requested.
+    A: CPU and RAM are bound per GPU at submit time — see the table at
+       [cluster.md#cpuram-enforcement](cluster.md#cpuram-enforcement) for the
+       exact RAM/GPU per model. You cannot request more by setting `--mem`
+       (it is overridden). To get more RAM, request more GPUs, or for
+       `pro6000` add `-C highmem` to land on a node with 92 GiB/GPU instead
+       of the 33 GiB/GPU floor.
 
-       If that still OOMs, it is likely your code have a memory leak. For
-       example, opening a file in Python and never closing it will result in
-       a resource leak.
+       If your job still OOMs at the documented RAM allocation, it is
+       likely a memory leak in your code — e.g. opening files without
+       closing them, or accumulating tensors on host memory across training
+       steps.
 
 4.  Q: Why my job is killed/aborted?
 

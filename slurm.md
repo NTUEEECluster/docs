@@ -128,7 +128,7 @@ default value**:
 | `--gpus`     | `--gpus example:2`       | Request `2` GPU of type `example`.                                                                                                         |
 | `--output`   | `--output output-%j.log` | Set the filename that Slurm should put your program's output in. `%j` is replaced with your job ID.                                        |
 | `--error`    | `--error output-%j.log`  | Set the filename that Slurm should put your program's error in.                                                                            |
-| `--qos`      | `--qos rose`             | Specify what policy to run your job under. See [Cluster Overview](cluster.md#Slurm).                                                       |
+| `--qos`      | `--qos override-limits-but-killable` | Specify a non-default QoS. Most users don't need to set this — your `DefaultQOS` is applied automatically. Use this flag only to opt in to a different policy (e.g. preemptible idle-GPU access). See [Cluster Overview](cluster.md#Slurm). |
 | `--job-name` | `--job-name example`     | Set the name of the job in outputs such as `squeue` to make it easier to find.                                                             |
 
 You can see the [FAQ](troubleshooting.md#Starting-a-Job) for more details. If
