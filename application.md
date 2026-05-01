@@ -9,9 +9,7 @@ after the portal opens.
 - Requests to expedite the application process will be ignored. You are
   encouraged to apply early if you anticipate urgent need for GPUs.
 
-Outside the application window, the cluster team cannot process registrations
-because we are occupied with maintenance, monitoring, and procuring more
-hardware for the cluster.
+Outside the application window, the cluster team cannot process registrations.
 
 > NOTE: Usage is limited strictly to your assigned quota; no special quota
 > increases are available.

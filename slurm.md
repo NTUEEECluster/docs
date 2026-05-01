@@ -128,3 +128,42 @@ Usually you will see status like: `mixed`, `idle`, `maint`, `down`, `drain`.
   unexpectedly.
 - `drain` means there are active issues with the node and the node cannot be
   used.
+
+## Compiling from Source
+
+We use **Lmod** to provide compilers, libraries, and tools. Load the correct
+toolchain before compiling.
+
+### What is CUDA, why do I need it?
+
+CUDA is NVIDIA's GPU computing platform. Many open-source repositories require
+it to compile custom GPU operators or extensions. Whether you need it depends
+on how the package is built — PyTorch wheels often bundle the CUDA runtime and
+can run without a system toolkit, while other frameworks may require a locally
+installed CUDA module. Load the appropriate CUDA module before compiling if
+your package expects a system CUDA toolchain.
+
+### Finding and loading modules
+
+```sh
+module avail                      # list all available modules
+module spider <name>              # search (finds modules not shown in avail)
+module show <name>                # see dependencies and env changes
+module load GCCcore               # load a compiler toolchain
+module load CMake
+module load CUDA                  # only if your build needs CUDA
+module list                       # what is currently loaded
+module purge                      # reset everything
+```
+
+Specify versions where possible (e.g., `module load GCCcore/12.2.0`) for
+reproducibility.
+
+### Typical workflow
+
+1. Load your toolchain modules.
+2. Configure and build the package.
+3. Install into your own directory — no `sudo` available.
+
+If a module is missing, email the admins with the exact software name and
+version and we will add it to the Lmod stack.

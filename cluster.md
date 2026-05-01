@@ -19,14 +19,10 @@ See [Slurm](#Slurm) for more details.
 
 ## Nodes
 
-Most nodes that you interact with are VMs. As such, the actual hardware is not
-listed. Specifications listed below are per node.
-
-When you connect through the IP provided in the email, you will automatically be
-routed to a login node. Nodes are expected to go down for maintenance but at
-least one login node should be up at all times. Please let us know if you are
-unable to connect or run into trouble requesting a compute node so we can
-investigate.
+Specifications listed below are per node. When you connect through the IP
+provided in the email, you will automatically be routed to a login node.
+Please let us know if you are unable to connect or run into trouble requesting
+a compute node so we can investigate.
 
 - Login Nodes (login-1 to login-3)
   - **CPU:** 12 cores
@@ -38,35 +34,43 @@ investigate.
   - **GPU:** 4x NVIDIA RTX6000 ADA Generation (48GB), `6000ada`
 - gpu-v100-1
   - **CPU:** 32 cores
-  - **RAM:** 264 GiB (256 GiB requestable)
+  - **RAM:** 259 GiB (256 GiB requestable)
   - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
 - gpu-v100-2
   - **CPU:** 32 cores
-  - **RAM:** 396 GiB (384 GiB requestable)
+  - **RAM:** 387 GiB (384 GiB requestable)
   - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
-- gpu-a5000-\[1-5\]
+- gpu-a5000-\[1-2\]
   - **CPU:** 16 cores
-  - **RAM:** 112 GiB (96 GiB requestable)
+  - **RAM:** 101 GiB (96 GiB requestable)
   - **GPU:** 4x NVIDIA RTX A5000 (24GB), `a5000`
 - gpu-a6000-1
-  - **CPU:** 32 cores
-  - **RAM:** 256 GB (232 GiB requestable)
-  - **GPU:** NVIDIA RTX A6000 (48GB), `a6000`
+  - **CPU:** 40 cores
+  - **RAM:** 228 GiB (224 GiB requestable)
+  - **GPU:** 10x NVIDIA RTX A6000 (48GB), `a6000`
 - gpu-a40-1
   - **CPU:** 40 cores
-  - **RAM:** 496 GiB (≈478 GiB requestable)
+  - **RAM:** 477 GiB (≈468 GiB requestable)
   - **GPU:** 10x NVIDIA A40 (48GB), `a40`
-- gpu-a40-2
-  - **CPU:** 32 cores
-  - **RAM:** 392 GiB (≈378 GiB requestable)
-  - **GPU:** 8x NVIDIA A40 (48GB), `a40`
 - gpu-l40-\[1-2\]
   - **CPU:** 16 cores
-  - **RAM:** 208 GiB (≈201 GiB requestable)
+  - **RAM:** 201 GiB (≈196 GiB requestable)
   - **GPU:** 4x NVIDIA L40 (48GB), `l40`
+- gpu-pro6000-\[1-4\]
+  - **CPU:** 16 cores
+  - **RAM:** 387 GiB (384 GiB requestable)
+  - **GPU:** 4x NVIDIA RTX Pro 6000 (96GB), `pro6000`
+- gpu-pro6000-\[5-6\]
+  - **CPU:** 40 cores
+  - **RAM:** 341 GiB (336 GiB requestable)
+  - **GPU:** 10x NVIDIA RTX Pro 6000 (96GB), `pro6000`
+- gpu-pro6000-\[7-10\]
+  - **CPU:** 64 cores
+  - **RAM:** 743 GiB (736 GiB requestable)
+  - **GPU:** 8x NVIDIA RTX Pro 6000 (96GB), `pro6000`
 - cpu-1
   - **CPU:** 24 cores
-  - **RAM:** 396 GiB (384 GiB requestable)
+  - **RAM:** 387 GiB (384 GiB requestable)
   - **GPU: NONE**
 
 To learn more about how to use the GPU nodes, check out
@@ -85,19 +89,11 @@ may have changed and is only included here as a rough gauge.
 
 ### Auto-Termination of Processes on Login Nodes
 
-All your processes on login nodes will be terminated upon disconnection. This
-includes commands that are run with `tmux` or `nohup`.
+All your processes on login nodes will be terminated upon disconnection,
+including commands run with `tmux` or `nohup`. We will not provide support for
+bypassing this behaviour.
 
-This feature has been implemented as there are no supported methods to reliably
-reconnect to a login node after disconnection and lingering processes have led
-to numerous issues for users.
-
-We are aware of possible bypasses of this feature but we will not provide
-support for users doing so.
-
-This does not clean up any of the files left behind by your processes. We kill
-your processes with SIGINT so they have a few seconds of opportunity to cleanup
-their own files but not every process does so.
+This does not clean up files left behind by your processes.
 
 ## Slurm
 
@@ -109,14 +105,10 @@ supports two modes of execution (different QoS):
 
 ### CPU/RAM Enforcement
 
-Slurm treats CPU cores and RAM as consumable resources. As such, over-requesting
-these two will potentially block other's requests for GPUs. This has happened
-in the past and we now enforce the number of CPUs and RAM based on number of
-GPUs requested.
-
-Setting `--mem` will only give you a warning that your values are being
-overridden. Setting `--cpu-per-task` when you have GPUs specified will also
-be ignored with a warning only.
+Slurm treats CPU cores and RAM as consumable resources. Over-requesting these
+will block other users' GPU requests. We enforce CPU and RAM allocations based
+on the number of GPUs requested — setting `--mem` or `--cpus-per-task`
+alongside `--gpus` will be ignored with a warning.
 
 ### GPU Type is Required
 
@@ -138,36 +130,34 @@ The valid constraints are:
 - `gpu_16g`: Any GPU with at least 16GB of VRAM
 - `gpu_32g`: Any GPU with at least 32GB of VRAM
 - `gpu_48g`: Any GPU with at least 48GB of VRAM
+- `gpu_96g`: Any GPU with at least 96GB of VRAM
 - `<gpu_name>`: Only matches the GPU, useful for combining (e.g. `v100|a5000`)
 
 ### Job Limits
 
-We have added additional constraints on interactive jobs due to frequent
-under-utilization during an interactive job. Interactive jobs is only intended
-to be used if you need to debug a specific issue that only happens on GPU nodes.
+Interactive jobs are intended for debugging issues that only reproduce on GPU
+nodes. Additional constraints apply:
 
 These constraints are:
 
 |            | Interactive Jobs (`srun`)      | Batch Jobs (`sbatch`) |
 |------------|--------------------------------|-----------------------|
-| Time Limit | 2 hours/job                    | 7 days/job            |
+| Time Limit | 2 hours/job                    | 3 days/job            |
 | Job Limit  | 1 job total (incl. batch jobs) |                       |
 | GPU Limit  | 1 GPU                          | See table below       |
 
-Here are the details of GPU usage limit (from `sacctmgr`):
+Here are the details of GPU usage limits:
 
-| Users        | `6000ada` \[EEE\] | `a5000` \[ROSE\] | `v100` \[ROSE\] | `a6000` \[ROSE\] | `a40` \[ROSE\] | `l40` \[ROSE\] |
-|--------------|-------------------|-----------------|----------------|------------------|---------------|---------------|
-| rose         | 4                 | 16              | 16             | 8                | 8             | 4             |
-| phd          | 4                 | 4               | 8              | 4                | 4             | 4             |
-| msc          | 2                 | 2               | 4              | 2                | 2             | 2             |
-| ug-proj      | 2                 | 2               | 4              | 2                | 2             | 2             |
-| Course Users | 1                 | 1               | 1              | 1                | 1             | 1             |
+| Users      | `6000ada` \[EEE\] | `a5000` \[ROSE\] | `v100` \[ROSE\] | `a6000` \[ROSE\] | `a40` \[ROSE\] | `l40` \[ROSE\] | `pro6000` \[ROSE\] |
+|------------|-------------------|-----------------|----------------|------------------|---------------|---------------|-------------------|
+| rose       | 4                 | 8               | 8              | 4                | 8             | 4             | 4                 |
+| phd        | 4                 | 4               | 8              | 4                | 4             | 4             | 4                 |
+| msc        | 2                 | 2               | 4              | 2                | 2             | 2             | 2                 |
+| ug         | 2                 | 2               | 4              | 2                | 2             | 2             | 2                 |
+| ug-course  | 1                 | 1               | 1              | 1                | 1             | 1             | 1                 |
 
-We may occasionally tweak limits based on current usage. In general, we adjust
-values in favor of the server's owner (i.e., owner requests are considered
-first). Check `sacctmgr show qos -P format=Name,MaxTRESPerUser` for the live
-configuration.
+Limits may be adjusted based on demand. Check
+`sacctmgr show qos -P format=Name,MaxTRESPerUser` for the live configuration.
 
 The job limit and GPU limit can be overridden by using the
 `override-limits-but-killable` QoS. When you enable the QoS, your job may be
@@ -190,13 +180,13 @@ synchronized across all nodes. Notable examples are:
 - `/tmp` - Your temp directory is synchronized and each user has their own
   isolated `/tmp`. There is a **4GB limit**.
 
-| Users        | SSD Quota (`ssd`) | HDD Quota (`hdd`) |
-|--------------|-------------------|-------------------|
-| rose         | 400 GB            | 5 TB              |
-| phd          | 400 GB            | 1 TB              |
-| msc          | 50 GB             | 300 GB            |
-| ug-proj      | 50 GB             | 300 GB            |
-| Course Users | 20 GB             | Unavailable       |
+| Users     | SSD Quota (`ssd`) | HDD Quota (`hdd`) |
+|-----------|-------------------|-------------------|
+| rose      | 750 GB            | 5 TB              |
+| phd       | 750 GB            | 1 TB              |
+| msc       | 150 GB            | 400 GB            |
+| ug        | 150 GB            | 400 GB            |
+| ug-course | 20 GB             | Unavailable       |
 
 This table may lag behind actual configuration, please check the actual quota
 you are assigned using the `storagemgr` command in the cluster.

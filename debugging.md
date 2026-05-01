@@ -28,9 +28,8 @@ Please take note of the following:
    code in real time. This also means this backend eats up your memory quota.
    Backends not closed gracefully can stay in the memory and eat your memory
    quota as well.
-4. If you have any enquiries regarding IDEs, please come to the office hour
-   instead of sending emails. We regret to say that we are unable to debug such
-   issues easily without being able to reproduce ourselves.
+4. IDE-related issues are difficult to reproduce remotely. We may not be able
+   to resolve them without being able to replicate the problem ourselves.
 
 ## Running IDE on Compute Node to Debug
 

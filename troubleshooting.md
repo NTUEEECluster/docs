@@ -17,7 +17,7 @@
   - [I cannot use commands/applications that I expect to be able to use](#Shell)
   - [I ran into issues starting a job](#Starting-a-Job)
   - [I ran into trouble after starting my job](#Job-Status)
-- Use AI: Copy this document and our [AI-facing digest](copy-me-to-AI.md) to
+- Use AI: Copy this document and our [AI-facing digest](agent.md) to
   debug your specific issue.
 - [Still need help?](#Still-need-help)
 
@@ -336,13 +336,10 @@ If you have not done so, please read the [Slurm guide](slurm.md).
 2.  Q: Why are certain nodes in "weird" states different from idle, alloc, or
         mix?
 
-    A: Minor maintenance, such as powering down a single compute node or
-       rebooting machines due to NVIDIA driver updates, will not be announced
-       to keep troubleshooting fast. These minor fixes should not affect your
-       jobs, and if you have running jobs on those nodes, we will wait until
-       they complete. For major maintenance events, we reserve nodes in
-       advance. If your job overlaps with a major maintenance window, Slurm
-       will automatically place it on hold until maintenance is completed.
+    A: Nodes occasionally go offline for brief periods. Running jobs on
+       affected nodes are allowed to complete before any action is taken.
+       For scheduled maintenance, nodes are reserved in advance and Slurm
+       will hold any overlapping jobs until the window is over.
 
 3.  Q: Why do I see "slurmstepd-gpu-6000ada-1: error: Detected 1 oom_kill event
        in StepId=123.0. Some of the step tasks have been OOM Killed."? How do I

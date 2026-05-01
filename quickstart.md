@@ -27,8 +27,7 @@
     ```
     #!/bin/bash
     #SBATCH --job-name=job_name
-    #SBATCH --gpus=1
-    #SBATCH --constraint=gpu
+    #SBATCH --gpus=pro6000:1        # replace type: v100, a40, a6000, l40, 6000ada, pro6000
     #SBATCH --time=1:00:00
     #SBATCH --output=job-%j.out
     #SBATCH --error=job-%j.err

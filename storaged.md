@@ -3,8 +3,8 @@
 As we have multiple tiers of storage, we manage your storage space differently.
 Please see the details below.
 
-This document only covers the `/projects` directory. For a more holistic view,
-see [here](cluster.md#Directories).
+This document only covers the `/projects` directory. For quota limits by user
+group, see [Cluster Overview](cluster.md#Directories).
 
 ## Storage Manager (`storagemgr`)
 

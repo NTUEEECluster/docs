@@ -1,10 +1,5 @@
 # NTU EEE Cluster 02 Guide
 
-> **NOTE:** We are constantly sourcing new hardware to support our users.
-> For now, we DO NOT provide any stability guarantee. Check your emails
-> frequently for updates. We are sorry for strong words in some parts of our
-guide, but please bear with us.
-
 # Condition of Access
 
 By login to our cluster, you agree that you have fully read our guidelines and
@@ -17,17 +12,25 @@ If you still do not have access, please take a quick look through our
 
 ## What is this?
 
-This repository serves as a knowledge base to help users get started in
-[utilizing a GPU cluster](basics.md).
+This repository serves as a knowledge base to help users get started on the
+cluster. A GPU cluster is a pool of GPU servers managed by a scheduler — your
+jobs are queued and run on available nodes. Your data is synced across nodes,
+so switching machines does not change your working directory.
 
-The main use case of this cluster is to run your GPU training code, presumably
-written in Python and managed by [conda](conda.md). We DO NOT provide graphical
-access and provide only [shell access via SSH](login.md). Execution of anything
-irrelevant to your study/research at NTU is considered an offense and can lead
-to disciplinary actions and/or more.
+The main use case is to run GPU training code, typically written in Python and
+managed by [conda](conda.md). We DO NOT provide graphical access — only
+[shell access via SSH](login.md). Execution of anything irrelevant to your
+study/research at NTU is considered an offense.
 
 It is possible to [use VSCode and PyCharm to access the cluster](debugging.md).
 Other possibilities exist, but we cannot cover all of them.
+
+Key limits to be aware of upfront:
+- Login nodes: ~1.5 CPU cores and 8 GB RAM per user
+- Home directory: 50 GB; `/tmp`: 4 GB; project storage via `storagemgr`
+- 1 running job by default; interactive sessions max 2 hours and 1 GPU
+- No `sudo` access under any circumstances
+- Academic use only
 
 ## What is the bare minimum that I need to know?
 
@@ -57,14 +60,12 @@ To keep things manageable, we have split this guide into multiple files.
     - What are things that I should look out for?
       [Usage Guidelines](guideline.md)
     - How do I access more storage? [Storage Manager Usage](storaged.md)
-- What is a GPU cluster? How is it different from running codes locally on my
-  laptop/desktop? [Linux & Cluster Basics](basics.md)
 - Having trouble logging in? [Login Guide](login.md)
     - How do I run IDEs and debug? [Debugging Guide](debugging.md)
     - How do I access GPU node(s)? [Slurm Introduction](slurm.md)
     - How do I setup my environments? [Setup Conda](conda.md)
     - How do I load/compile software with Lmod?
-      [Lmod Compile Guide](compile_setup.md)
+      [Slurm Introduction — Compiling from Source](slurm.md#Compiling-from-Source)
     - What GPUs do I have access to? [Cluster Overview](cluster.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
 

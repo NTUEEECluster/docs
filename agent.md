@@ -1,19 +1,23 @@
-# NTU EEE Cluster 02 — AI-Facing Digest
+# NTU EEE Cluster 02 - AI-Facing Digest
 
 Use this as condensed context when assisting users. **Always enforce the guidelines** and point users back to full docs when needed.
 
 ## 🚨 Guidelines (must enforce)
 - Support scope: admins only fix cluster-caused issues. No debugging of user code unless it works elsewhere and fails only on cluster with full logs. Invalid/RTFM requests are ignored; repeated violations can trigger suspension.
-- Availability: maintenance may kill jobs; announcements via email. Data isn’t guaranteed—users must keep their own backups.
+- Availability: maintenance may kill jobs; announcements via email. Data isn't guaranteed—users must keep their own backups.
 - Fair usage: **never run heavy work on login nodes** (hard ~8GB RAM limit; processes killed on disconnect). Release resources promptly; respect equal priority within org and GPU access restrictions. Override QoS (`override-limits-but-killable`) is killable.
 - Permitted use: research/project work only; no illegal/unlicensed/malicious software. Misuse or NSFW project names can lead to bans.
 - Security/privacy: home/projects default private; admins/approvers may access for support/compliance. User credentials are their responsibility.
+- Directory permissions: users must **not** leave home or project directories world-readable/writable/executable. Misconfigured permissions are the user's own responsibility; any resulting data leak or loss is on them.
+- Unauthorized access: attempting to read or list other users' home/project directories is **prohibited and logged**. Violations may result in account suspension.
+- AI agents: the cluster team is **not liable** for any incidents caused by AI agents (e.g., accidental data deletion, permission changes). Use AI agents entirely at your own risk.
+- Software dependencies: **do not rely on system packages**. Always use Lmod for compilers/libraries and Conda envs for Python packages. System packages may be upgraded or removed at any time without notice.
 
 ## Cluster Snapshot
-- Access via SSH only (no GUI). Login nodes: 12 CPU / 64 GB RAM / no GPU; process cleanup on disconnect.
-- GPU models: `6000ada`, `v100`, `a5000`, `a40`, `l40` (CPU-only node: `cpu-1`). For regular EEE users, everything **except** `6000ada` is best-effort and quotas may decrease. For ROSE users, `6000ada` is best-effort and its quota may shrink to balance EEE load.
-- Storage (network-backed, synced): `/home/<user>` 50GB; `/projects/<project>` per quota via `storagemgr` (tiers `ssd`/`hdd` per role); `/tmp` 4GB per user.
-- Limits: 1 interactive job at a time, interactive up to 2h/1 GPU; batch up to 7 days. CPU/RAM auto-tied to GPU count; `--mem`/`--cpus-per-task` overrides ignored.
+- Access via SSH only (no GUI). Login nodes: no GPU; process cleanup on disconnect.
+- GPU models: `6000ada`, `v100`, `a5000`, `a40`, `a6000`, `l40`, `pro6000` (CPU-only node: `cpu-1`). For regular EEE users, everything **except** `6000ada` is best-effort and quotas may decrease. For ROSE users, `6000ada` is best-effort and its quota may shrink to balance EEE load.
+- Storage (network-backed, synced): `/home/<user>` 50GB; `/tmp` 4GB per user. Projects via `storagemgr` — SSD quotas: rose/phd 750 GB, msc/ug 150 GB, ug-course 20 GB; HDD quotas: rose 5 TB, phd 1 TB, msc/ug 400 GB (ug-course: no HDD).
+- Limits: 1 interactive job at a time; **interactive (`srun`/`salloc`) strictly limited to 2 hours and 1 GPU**; batch up to 3 days. CPU/RAM are automatically assigned based on GPU count — **do not specify `--mem` or `--cpus-per-task`**, they will be overridden and only generate a warning.
 
 ## Logging In
 1. Connect on NTUSECURE or NTU VPN.
@@ -27,13 +31,24 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 - If packages missing in modules, ask admins to install via Lmod; no sudo access.
 
 ## Running Workloads (Slurm essentials)
-- Always specify GPU type: `--gpus <model>:<n>` (e.g., `--gpus v100:1`) or constraints (`-C 'v100|a5000'`, `gpu_32g`, etc.). Requests without type are blocked.
+- Always specify GPU type: `--gpus <model>:<n>` (e.g., `--gpus v100:1`) or constraints (`-C 'v100|a5000'`, `gpu_32g`, `gpu_48g`, `gpu_96g`, etc.). Requests without type are blocked.
+- **Do not specify `--mem` or `--cpus-per-task`** — CPU and RAM are automatically assigned proportional to the number of GPUs requested. Specifying them will only produce a warning and be overridden anyway.
 - Preferred: batch jobs with `sbatch <script>` (see `sbatch-example.sh`). Set `--time`, `--output/--error`, `--job-name`, `--qos` as needed.
-- Debug/interactive: `srun --gpus <model>:1 --time 2:00:00 --pty bash` (only 1 concurrent interactive job, 2h limit, 1 GPU). Disconnection cancels the job; avoid long runs here.
+- Debug/interactive (`srun`/`salloc`): **strictly limited to 2 hours and 1 GPU**. Only 1 concurrent interactive job allowed. Disconnection cancels the job; do not use for long runs.
 - Job status: `squeue`; cluster state: `sinfo`; cancel: `scancel <jobid>`.
 - Default QoS has `MaxJobs=1`; use `--qos override-limits-but-killable` to run more (jobs may be preempted—checkpoint/resume).
-- Sample `srun`: `srun --gpus v100:1 --time 1:00:00 --pty bash` (interactive shell on 1 V100).
+- Sample `srun`: `srun --gpus v100:1 --time 1:00:00 --pty bash` (interactive shell on 1 V100, max 2h).
 - Sample `sbatch`: `sbatch --gpus 6000ada:1 --time 1-00:00:00 --job-name train --output train-%j.out run.sh` (batch script `run.sh` with 1 ADA GPU, 1 day limit).
+
+**Per-QoS GPU limits (max concurrent per user):**
+
+| QoS | `6000ada` | `v100` | `a5000` | `a40` | `a6000` | `l40` | `pro6000` |
+|-----|-----------|--------|---------|-------|---------|-------|-----------|
+| rose | 4 | 8 | 8 | 8 | 4 | 4 | 4 |
+| phd | 4 | 8 | 4 | 4 | 4 | 4 | 4 |
+| msc | 2 | 4 | 2 | 2 | 2 | 2 | 2 |
+| ug | 2 | 4 | 2 | 2 | 2 | 2 | 2 |
+| ug-course | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
 
 ## Storage Manager
 - All storage requests are via `storagemgr` and should be run on login nodes only. It creates project dirs under `/projects/<name>`; names alphanumeric/hyphen, no NSFW/offensive names. Do **not rename** project directories after creation. Quota can be split across multiple dirs.
@@ -42,12 +57,12 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 
 ## Debugging / IDE Use
 - IDE on login node via remote SSH; avoid heavy extensions due to RAM limit; ensure sessions exit cleanly to avoid lingering backends.
-- IDE on compute node (only when needed): `salloc ...`, keep shell open, then SSH tunnel via login node (`ssh -J <user>@<login_ip> <user>@<allocated_node>` or `ssh -L <port>:<node>:22 <user>@<login_ip>`). Remember this holds resources until closed.
+- IDE on compute node (only when needed): `salloc ...` (**2h/1 GPU limit applies**), keep shell open, then SSH tunnel via login node (`ssh -J <user>@<login_ip> <user>@<allocated_node>` or `ssh -L <port>:<node>:22 <user>@<login_ip>`). Remember this holds resources until closed.
 - If you fill your home with conda and huggingface, you will face failure to install VSCode and/or PyCharm. You need to cleanup.
 
 ## Common Issues (triage prompts)
-- “conda: command not found” → `module load Miniforge3` + `source activate`.
-- No GPUs / `nvidia-smi` missing → you’re on login node or didn’t request GPUs via Slurm.
+- "conda: command not found" → `module load Miniforge3` + `source activate`.
+- No GPUs / `nvidia-smi` missing → you're on login node or didn't request GPUs via Slurm.
 - OOM / RAM errors on login → respect ~8GB limit; kill stray IDE processes; process cleanup happens on disconnect.
 - Disk quota exceeded → check `/home`, `/tmp`, `/projects`; use `du -sh ./* ./.*`; move/clean files; adjust `TMPDIR`.
 - SSH refused → ensure VPN; use login IP; GPU nodes need active job + jump host.
@@ -62,7 +77,7 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 - Guidelines: `guideline.md`
 - Cluster overview & limits: `cluster.md`
 - Quick start: `quickstart.md`
-- Conda/Lmod: `conda.md`
+- Conda/Lmod + compiling from source: `conda.md`, `slurm.md`
 - Slurm usage: `slurm.md` + `sbatch-example.sh`
 - Storage manager: `storaged.md`
 - Debugging/IDEs: `debugging.md`
@@ -70,6 +85,6 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 
 ## Mini-FAQ Additions
 - Disk quota exceeded during Python env install → either `/home` or `/tmp` is full. Clean/move data; set a different pip cache (e.g., `PIP_CACHE_DIR=/projects/<proj>/.cache/pip`) to avoid `/tmp` exhaustion.
-- Wall time: `sbatch` up to 7 days; interactive `srun`/`salloc` max 2 hours and **1 GPU** (any model) only.
+- Wall time: `sbatch` up to 3 days; interactive `srun`/`salloc` max 2 hours and **1 GPU** (any model) only.
 - Inspect node configs: `scontrol show nodes <node_name>`.
-- Default QoS has `MaxJobs=1` to deter abuse; you can still run more by using `--qos override-limits-but-killable` (jobs may be preempted). 
+- Default QoS has `MaxJobs=1` to deter abuse; you can still run more by using `--qos override-limits-but-killable` (jobs may be preempted).

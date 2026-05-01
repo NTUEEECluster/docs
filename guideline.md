@@ -2,12 +2,10 @@
 
 The EEE GPU Cluster is maintained on a best-effort basis by a small group of
 administrators who also have their own academic and professional commitments.
-**Support requests, updates and/or fixes may be delayed**. Always check the
-[troubleshooting guide](troubleshooting.md) before contacting us.
-encountered by users in the past. Also, be kind to the admins, they bring you 
-this free source at the cost of their personal time and great efforts. As of 
-March 2026, this cluster is entirely free for use and this also means violation
-of our rules may face heavy penalties!
+**Support requests, updates and/or fixes may be delayed.** Always check the
+[troubleshooting guide](troubleshooting.md) before contacting us — it covers
+common issues encountered by users. The cluster is free to use; violations of
+these rules may result in account suspension or other penalties.
 
 Liability Disclaimer:
 
@@ -48,11 +46,10 @@ solutions as maintaining the cluster is not our full-time job.
 The cluster is maintained on a best-effort basis. There are no 24/7 on-calls
 monitoring the cluster. Jobs may be killed unexpectedly.
 
-### Maintenance
+### Scheduled Maintenance
 
-We aim to notify users 2-3 days prior to scheduled maintenance events via email.
-**All jobs are subject to be killed when the maintenance window starts and you
-may run into issues attempting to use the cluster during the maintenance.**
+We aim to notify users 2–3 days in advance via email. **Jobs may be killed when
+a maintenance window starts.**
 
 ## 3. Data Privacy & Availability
 
@@ -71,6 +68,11 @@ We delete your data if:
 You are responsible for activities that have been conducted using your
 credentials. Keep them secure. Sharing accounts with other people will still
 make you liable.
+
+**Do not leave your home or project directories with overly permissive access
+levels** (e.g., read/write/execute for all users). You are fully responsible
+for any data leak or loss caused by misconfigured permissions on your own
+directories. Review your directory permissions regularly with `ls -la`.
 
 ## 4. Fair Usage & Queueing
 
@@ -110,6 +112,9 @@ The cluster is strictly for **research and project-related computing** only.
   - Illegal Software: Pirated or unlicensed software.
   - Vulnerabilities: Vulnerabilities or exploits that abuse the cluster in
     unintended ways.
+  - Unauthorized Access: Attempting to read, list, or access other users'
+    home or project directories without their explicit permission. Such
+    actions are logged and may result in penalties including account suspension.
 
 - **Likely Consequences**:
   - Immediate Ban: Your access will be revoked immediately when we receive such
@@ -134,10 +139,26 @@ be subjected to more auditing if you have higher than normal usage.
 We have noticed many users are starting to use AI agents such as Claude Code, Codex,
 OpenClaw, Cursor, and so on. While we are generally supportive, the cluster admin team
 has no bandwidth to attend to issues such as installation issues, network issues, permission
-issues, etc. We also bare absolutely no responsibility should your AI agent stuck your login sessions
-or accidentally removed your data. Please use AI agents are your own risk.
+issues, etc. **The cluster team will not be liable for any incidents caused by the use of
+AI agents**, including but not limited to accidental removal of data, unintended file
+permission changes, or resource misuse. Please use AI agents at your own risk.
 
 Regarding requesting compute nodes for inference service. This is highly case by case,
 and the rule of thumb is we are strongly unsupportive of requesting compute nodes
 for your personal chatbot inference. If found, you will face immediate warning followed by
 account ban.
+
+## 8. Software Dependency Management
+
+You should **not rely on system packages** for your workflows. System packages
+may be upgraded, replaced, or removed by the cluster team at any time for
+security and stability reasons, without prior notice.
+
+Always use **Lmod** to load the software and libraries you need (e.g., CUDA,
+GCC, CMake). For Python packages, manage your dependencies within your own
+Conda environments. This ensures your environment remains reproducible and
+unaffected by system-level changes.
+
+If a required package is not available via `module spider`, please email the
+admins with the software name and version, and we will add it to the Lmod
+stack.
