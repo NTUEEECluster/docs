@@ -18,9 +18,9 @@ jobs are queued and run on available nodes. Your data is synced across nodes,
 so switching machines does not change your working directory.
 
 The main use case is to run GPU training code, typically written in Python and
-managed by [conda](conda.md). We DO NOT provide graphical access — only
-[shell access via SSH](login.md). Execution of anything irrelevant to your
-study/research at NTU is considered an offense.
+managed by [conda](slurm.md#setting-up-conda). We DO NOT provide graphical
+access — only [shell access via SSH](login.md). Execution of anything
+irrelevant to your study/research at NTU is considered an offense.
 
 It is possible to [use VSCode and PyCharm to access the cluster](debugging.md).
 Other possibilities exist, but we cannot cover all of them.
@@ -48,7 +48,7 @@ To keep things manageable, we have split this guide into multiple files.
 ### Supported Workflow
 - [Login to login node](login.md).
 - Do simple setup on login node
-  ([create your Conda env and install packages](conda.md))
+  ([create your Conda env and install packages](slurm.md#setting-up-conda))
 - [Request GPU node(s)](slurm.md) to debug/run your code.
 
 ### All Guides
@@ -56,13 +56,15 @@ To keep things manageable, we have split this guide into multiple files.
 - I have used a HPC before. What's the tl;dr? [Cluster Overview](cluster.md)
     - What are things that I should look out for?
       [Usage Guidelines](guideline.md)
-    - How do I access more storage? [Storage Manager Usage](storaged.md)
+    - How do I access more storage?
+      [Using storagemgr](cluster.md#using-storagemgr)
 - Having trouble logging in? [Login Guide](login.md)
     - How do I run IDEs and debug? [Debugging Guide](debugging.md)
     - How do I access GPU node(s)? [Slurm Introduction](slurm.md)
-    - How do I setup my environments? [Setup Conda](conda.md)
+    - How do I setup my environments?
+      [Setting up Conda](slurm.md#setting-up-conda)
     - How do I load/compile software with Lmod?
-      [Slurm Introduction — Compiling from Source](slurm.md#Compiling-from-Source)
+      [Slurm Introduction — Compiling from Source](slurm.md#compiling-from-source)
     - What GPUs do I have access to? [Cluster Overview](cluster.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
 

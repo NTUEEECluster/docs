@@ -26,9 +26,6 @@ There are a few things to consider:
 
 ### Use Lmod to load software/packages
 
-> **TIP:** Conda is provided via Lmod. See [conda.md](conda.md) for the
-> activation flow.
-
 We use Lmod to let you load the version of software that you request.
 This helps us satisfy everyone's needs as some software conflict with each
 other.
@@ -65,6 +62,30 @@ $ module load <thing>/<version> # e.g. module load Miniconda3/25.5.1-0
 # Unload all the modules.
 $ module purge
 ```
+
+### Setting up Conda
+
+Conda is provided through Lmod. To activate the base environment:
+
+```bash
+module load Miniforge3   # or Miniconda3 — do not load both
+source activate          # activates the base env
+```
+
+The base environment is read-only. To install your own packages, create a
+named environment first, then activate it:
+
+```bash
+conda create -n my_env python=3.10
+source activate my_env
+pip install <package>     # or `conda install ...`
+```
+
+In subsequent sessions, you can re-enter your environment with
+`module load Miniforge3 && source activate my_env`.
+
+We do not debug user-side package conflicts or version mismatches — see
+[Usage Guidelines](guideline.md) for support scope.
 
 ## Submit a Job
 

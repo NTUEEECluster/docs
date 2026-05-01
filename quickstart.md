@@ -16,7 +16,8 @@
 - 2. Set up your environment on the login node
 
     `sinfo` shows what GPUs are available. To install Python packages, load
-    Conda via Lmod first — see [conda.md](conda.md) for the full flow.
+    Conda via Lmod first — see [Setting up Conda](slurm.md#setting-up-conda)
+    for the full flow.
 
 - 3. Submit a batch job
 
@@ -45,8 +46,8 @@
 Another thing you MUST know:
 
 We **intentionally** limit your home disk quota to 50GB. However, you can have
-more by calling `storagemgr` in terminal. Please follow our instructions
-[here](storaged.md) if you need them.
+more by calling `storagemgr` in terminal. See
+[Using storagemgr](cluster.md#using-storagemgr) for instructions.
 
 This quick start only serve as a cheatsheet. When you email us, we assume that
 you have checked the entire documentation for your question and have knowledge

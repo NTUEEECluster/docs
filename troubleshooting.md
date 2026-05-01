@@ -167,7 +167,7 @@ contains step-by-step guide in making sure it works.
        view the sizes of individual directory/file.
 
        You are then advised to either delete them or move them into a
-       [project folder](storaged.md).
+       [project folder](cluster.md#using-storagemgr).
 
 ## Software Modules
 

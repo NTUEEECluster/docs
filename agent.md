@@ -71,9 +71,9 @@ format=Name,MaxTRESPerUser`.
 - Guidelines: `guideline.md`
 - Cluster overview & limits: `cluster.md`
 - Quick start: `quickstart.md`
-- Conda/Lmod + compiling from source: `conda.md`, `slurm.md`
+- Conda/Lmod + compiling from source: `slurm.md` (Setting up Conda + Compiling from Source)
 - Slurm usage: `slurm.md` + `sbatch-example.sh`
-- Storage manager: `storaged.md`
+- Storage manager: `cluster.md#using-storagemgr`
 - Debugging/IDEs: `debugging.md`
 - Troubleshooting/FAQ: `troubleshooting.md`
 

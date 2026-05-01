@@ -161,8 +161,9 @@ synchronized across all nodes. Notable examples are:
 
 - `/home/<username>` - All your configuration and home directory files are
   synchronized. There is a **50 GB limit**.
-- `/projects/<project_name>` - These directories can be created with
-  [storaged](storaged.md). The aggregated limit is listed below.
+- `/projects/<project_name>` - These directories can be created with the
+  `storagemgr` command (see [below](#using-storagemgr)). The aggregated limit
+  is listed below.
 - `/tmp` - Your temp directory is synchronized and each user has their own
   isolated `/tmp`. There is a **4GB limit**.
 
@@ -182,3 +183,22 @@ you are assigned using the `storagemgr` command in the cluster.
 > recommend using the `hdd` tier for most use cases. **In our testing, `ssd`
 > tier is only helpful if you have 1000s or 10000s small files.** As course
 > users do not have access to the `hdd` tier, please use the `ssd` tier.
+
+### Using `storagemgr`
+
+Run `storagemgr` from a login node to launch the interactive UI for managing
+project directories under `/projects`. Through the UI you can request
+additional project directories with quotas drawn from your account's total
+allowance. Notes:
+
+- **Naming**: alphanumeric and hyphens only. No NSFW or offensive names —
+  violations result in immediate ban. Pick something unique and recognizable
+  (only the top 5 largest folders are shown in the UI).
+- **Quotas**: split your total quota across one or more directories — e.g.
+  one 5 TB folder *or* five 1 TB folders. Duplicate names fail.
+- **Permanent name**: do not rename a project directory after creation.
+- **Permissions**: you may relax permissions to share a project directory.
+  By doing so you are fully liable for any data leak or loss.
+
+Need more storage? Discuss with your supervisor about contributing storage —
+that is the route to a higher overall quota.
