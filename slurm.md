@@ -116,18 +116,17 @@ you still have other Slurm-specific questions, kindly ask the LLM of your choice
 for help. There are plenty of resources out there and LLMs are very familiar
 with Slurm.
 
-## Job Status Check
+## Job and Node Status
 
-Use `squeue` in shell to check your job status.
-
-Usually you will see status like: `mixed`, `idle`, `maint`, `down`, `drain`.
-- `mixed` means some GPUs are used on the node.
-- `idle` means no GPU on this node is being used.
-- `maint` means there are active maintenance tasks and the node cannot be used.
-- `down` means we are experiencing issues with this node and it goes offline
-  unexpectedly.
-- `drain` means there are active issues with the node and the node cannot be
-  used.
+- **Your jobs:** `squeue` (or `squeue --me`) — shows job ID, state, and reason
+  for any pending job. `watch squeue --me` for a live view.
+- **Cluster nodes:** `sinfo` — shows per-node state. Common states:
+  - `idle` — no jobs on this node; available for allocation.
+  - `mix` — some resources allocated, some still free.
+  - `alloc` — fully allocated.
+  - `maint` — under scheduled maintenance; not available.
+  - `down` — node is offline unexpectedly.
+  - `drain` — node has an active issue and is not accepting new jobs.
 
 ## Compiling from Source
 

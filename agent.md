@@ -15,7 +15,7 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 
 ## Cluster Snapshot
 - Access via SSH only (no GUI). Login nodes: no GPU; process cleanup on disconnect.
-- GPU models: `6000ada`, `v100`, `a5000`, `a40`, `a6000`, `l40`, `pro6000` (CPU-only node: `cpu-1`). For regular EEE users, everything **except** `6000ada` is best-effort and quotas may decrease. For ROSE users, `6000ada` is best-effort and its quota may shrink to balance EEE load.
+- GPU models: `6000ada`, `a40`, `a6000`, `l40`, `pro6000` (CPU-only node: `cpu-1`). For regular EEE users, everything **except** `6000ada` is best-effort and quotas may decrease. For ROSE users, `6000ada` is best-effort and its quota may shrink to balance EEE load.
 - Storage (network-backed, synced): `/home/<user>` 50GB; `/tmp` 4GB per user. Projects via `storagemgr` — SSD quotas: rose/phd 750 GB, msc/ug 150 GB, ug-course 20 GB; HDD quotas: rose 5 TB, phd 1 TB, msc/ug 400 GB (ug-course: no HDD).
 - Limits: 1 interactive job at a time; **interactive (`srun`/`salloc`) strictly limited to 2 hours and 1 GPU**; batch up to 3 days. CPU/RAM are automatically assigned based on GPU count — **do not specify `--mem` or `--cpus-per-task`**, they will be overridden and only generate a warning.
 
@@ -31,24 +31,24 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 - If packages missing in modules, ask admins to install via Lmod; no sudo access.
 
 ## Running Workloads (Slurm essentials)
-- Always specify GPU type: `--gpus <model>:<n>` (e.g., `--gpus v100:1`) or constraints (`-C 'v100|a5000'`, `gpu_32g`, `gpu_48g`, `gpu_96g`, etc.). Requests without type are blocked.
+- Always specify GPU type: `--gpus <model>:<n>` (e.g., `--gpus a40:1`) or constraints (`-C 'a40|a6000'`, `gpu_48g`, `gpu_96g`, etc.). Requests without type are blocked.
 - **Do not specify `--mem` or `--cpus-per-task`** — CPU and RAM are automatically assigned proportional to the number of GPUs requested. Specifying them will only produce a warning and be overridden anyway.
 - Preferred: batch jobs with `sbatch <script>` (see `sbatch-example.sh`). Set `--time`, `--output/--error`, `--job-name`, `--qos` as needed.
 - Debug/interactive (`srun`/`salloc`): **strictly limited to 2 hours and 1 GPU**. Only 1 concurrent interactive job allowed. Disconnection cancels the job; do not use for long runs.
 - Job status: `squeue`; cluster state: `sinfo`; cancel: `scancel <jobid>`.
 - Default QoS has `MaxJobs=1`; use `--qos override-limits-but-killable` to run more (jobs may be preempted—checkpoint/resume).
-- Sample `srun`: `srun --gpus v100:1 --time 1:00:00 --pty bash` (interactive shell on 1 V100, max 2h).
+- Sample `srun`: `srun --gpus a40:1 --time 1:00:00 --pty bash` (interactive shell on 1 A40, max 2h).
 - Sample `sbatch`: `sbatch --gpus 6000ada:1 --time 1-00:00:00 --job-name train --output train-%j.out run.sh` (batch script `run.sh` with 1 ADA GPU, 1 day limit).
 
 **Per-QoS GPU limits (max concurrent per user):**
 
-| QoS | `6000ada` | `v100` | `a5000` | `a40` | `a6000` | `l40` | `pro6000` |
-|-----|-----------|--------|---------|-------|---------|-------|-----------|
-| rose | 4 | 8 | 8 | 8 | 4 | 4 | 4 |
-| phd | 4 | 8 | 4 | 4 | 4 | 4 | 4 |
-| msc | 2 | 4 | 2 | 2 | 2 | 2 | 2 |
-| ug | 2 | 4 | 2 | 2 | 2 | 2 | 2 |
-| ug-course | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| QoS | `6000ada` | `a40` | `a6000` | `l40` | `pro6000` |
+|-----|-----------|-------|---------|-------|-----------|
+| rose | 4 | 8 | 4 | 4 | 4 |
+| phd | 4 | 4 | 4 | 4 | 4 |
+| msc | 2 | 2 | 2 | 2 | 2 |
+| ug | 2 | 2 | 2 | 2 | 2 |
+| ug-course | 1 | 1 | 1 | 1 | 1 |
 
 ## Storage Manager
 - All storage requests are via `storagemgr` and should be run on login nodes only. It creates project dirs under `/projects/<name>`; names alphanumeric/hyphen, no NSFW/offensive names. Do **not rename** project directories after creation. Quota can be split across multiple dirs.

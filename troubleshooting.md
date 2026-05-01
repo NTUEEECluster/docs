@@ -269,14 +269,14 @@ If you have not done so, please read the [Slurm guide](slurm.md).
 
 5.  Q: I cannot see any GPUs even when I run a job. How do I get access to GPU?
 
-    A: Use the `--gpus` flag when submitting a job.
+    A: Use the `--gpus` flag when submitting a job. **GPU model must always be
+       specified** — requests without a model are rejected by the scheduler.
 
-       You will need to specify the type by doing `-C gpu --gpus 1` (any GPU) or
-       `--gpus example:1`. You can view a list of available GPUs and other
-       combinations of request [here](cluster.md#Slurm). Keep in mind your
+       Use either an explicit model (`--gpus a40:1`) or a constraint expression
+       that names allowed models (`-C 'a40|a6000' --gpus 1`). You can view the
+       list of available GPUs and constraints [here](cluster.md#Slurm). Your
        request can be fulfilled faster if you relax your constraint (e.g.
-       specifying `-C gpu` instead of `-C gpu_48g` or `-C gpu_48g` instead of
-       `6000ada:1`).
+       `-C 'a40|a6000|l40'` instead of `--gpus 6000ada:1`).
 
 6.  Q: The number of GPUs assigned is not enough. How do I get access to more?
 
@@ -314,10 +314,14 @@ If you have not done so, please read the [Slurm guide](slurm.md).
 
 9.  Q: Does the cluster have billing?
 
-    A: No. You might notice `billing` if you look into the Slurm configuration
-       but we are only using it for reporting purposes currently. Thanks to the
-       generous sponsor of multiple organizations, we are running this service
-       free of charge for eligible users.
+    A: For most users, no. The cluster is free to use thanks to multiple
+       generous sponsors. You may notice `billing` in the Slurm configuration —
+       this is currently used for reporting and accounting only.
+
+       Faculty-sponsored project accounts (e.g. dedicated lab QoSes) do have
+       enforced TRES-minute (compute-hour) budgets tied to their hardware
+       contribution. If this applies to you, your point-of-contact will have
+       been informed; baseline EEE/ROSE accounts run unbilled.
 
        While there is a non-zero chance of this changing in the future, we will
        inform you should that be the case.

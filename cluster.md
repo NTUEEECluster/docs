@@ -32,18 +32,6 @@ a compute node so we can investigate.
   - **CPU:** 16 cores
   - **RAM:** 264 GiB (256 GiB requestable)
   - **GPU:** 4x NVIDIA RTX6000 ADA Generation (48GB), `6000ada`
-- gpu-v100-1
-  - **CPU:** 32 cores
-  - **RAM:** 259 GiB (256 GiB requestable)
-  - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
-- gpu-v100-2
-  - **CPU:** 32 cores
-  - **RAM:** 387 GiB (384 GiB requestable)
-  - **GPU:** 8x NVIDIA Tesla V100 SXM2 (32GB), `v100`
-- gpu-a5000-\[1-2\]
-  - **CPU:** 16 cores
-  - **RAM:** 101 GiB (96 GiB requestable)
-  - **GPU:** 4x NVIDIA RTX A5000 (24GB), `a5000`
 - gpu-a6000-1
   - **CPU:** 40 cores
   - **RAM:** 228 GiB (224 GiB requestable)
@@ -127,11 +115,9 @@ This can be done by specifying `--gpus example:1` or through constraints
 The valid constraints are:
 
 - `gpu`: Any GPU available
-- `gpu_16g`: Any GPU with at least 16GB of VRAM
-- `gpu_32g`: Any GPU with at least 32GB of VRAM
 - `gpu_48g`: Any GPU with at least 48GB of VRAM
 - `gpu_96g`: Any GPU with at least 96GB of VRAM
-- `<gpu_name>`: Only matches the GPU, useful for combining (e.g. `v100|a5000`)
+- `<gpu_name>`: Only matches the GPU, useful for combining (e.g. `a40|a6000`)
 
 ### Job Limits
 
@@ -148,13 +134,13 @@ These constraints are:
 
 Here are the details of GPU usage limits:
 
-| Users      | `6000ada` \[EEE\] | `a5000` \[ROSE\] | `v100` \[ROSE\] | `a6000` \[ROSE\] | `a40` \[ROSE\] | `l40` \[ROSE\] | `pro6000` \[ROSE\] |
-|------------|-------------------|-----------------|----------------|------------------|---------------|---------------|-------------------|
-| rose       | 4                 | 8               | 8              | 4                | 8             | 4             | 4                 |
-| phd        | 4                 | 4               | 8              | 4                | 4             | 4             | 4                 |
-| msc        | 2                 | 2               | 4              | 2                | 2             | 2             | 2                 |
-| ug         | 2                 | 2               | 4              | 2                | 2             | 2             | 2                 |
-| ug-course  | 1                 | 1               | 1              | 1                | 1             | 1             | 1                 |
+| Users      | `6000ada` \[EEE\] | `a6000` \[ROSE\] | `a40` \[ROSE\] | `l40` \[ROSE\] | `pro6000` \[ROSE\] |
+|------------|-------------------|------------------|----------------|----------------|--------------------|
+| rose       | 4                 | 4                | 8              | 4              | 4                  |
+| phd        | 4                 | 4                | 4              | 4              | 4                  |
+| msc        | 2                 | 2                | 2              | 2              | 2                  |
+| ug         | 2                 | 2                | 2              | 2              | 2                  |
+| ug-course  | 1                 | 1                | 1              | 1              | 1                  |
 
 Limits may be adjusted based on demand. Check
 `sacctmgr show qos -P format=Name,MaxTRESPerUser` for the live configuration.
