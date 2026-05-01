@@ -41,6 +41,31 @@ If the user is asking the agent to set up something outside this scope,
 say so explicitly — do not waste their time wrestling with an unsupported
 workflow on a cluster that wasn't built for it.
 
+## Cluster Architecture
+
+- **Entry point**: a single IP fronts a router that dynamically assigns the
+  user to one of **3 login nodes**. The router prefers session continuity —
+  while the user has an active session, subsequent SSH attempts tend to land
+  on the same login node. After **full disconnection**, the next login-node
+  assignment is **random and not predictable**.
+- **Storage is shared**: login nodes and compute nodes mount the **same
+  network filesystem**. A path like `/home/<user>/foo` resolves to the
+  exact same file from any node — **no manual sync, no scp between nodes**.
+  Anything written from a login node is immediately visible to a compute
+  node and vice versa.
+- **Login nodes are for submission and editing only**. The expected workflow
+  is: prepare your code and `sbatch` script on a login node, submit, let
+  the job run on a compute node. Heavy work on the login node will hit the
+  cgroup caps (see Guidelines).
+- **Compute nodes are heterogeneous**: GPU model, core count, and RAM
+  differ per node and **may change over time**. The agent should verify
+  live specs with `scontrol show nodes <node_name>` rather than trusting
+  documentation, which can lag actual hardware.
+- **Slurm queue visibility is limited**: users see only their own jobs in
+  `squeue`; other users' jobs are hidden. Use `sinfo` to gauge per-node
+  utilization (`idle` / `mix` / `alloc`) and decide whether to wait or
+  relax constraints (e.g. switch from `pro6000:1` to `-C 'a40|a6000|l40'`).
+
 ## Cluster Snapshot
 - Access via SSH only (no GUI). Login nodes: no GPU; process cleanup on disconnect.
 - GPU models: `6000ada`, `a40`, `a6000`, `l40`, `pro6000` (CPU-only node: `cpu-1`). For regular EEE users, everything **except** `6000ada` is best-effort and quotas may decrease. For ROSE users, `6000ada` is best-effort and its quota may shrink to balance EEE load.
@@ -67,6 +92,22 @@ workflow on a cluster that wasn't built for it.
 - Default QoS has `MaxJobs=1`; use `--qos override-limits-but-killable` to run more (jobs may be preempted—checkpoint/resume).
 - Sample `srun`: `srun --gpus a40:1 --time 1:00:00 --pty bash` (interactive shell on 1 A40, max 2h).
 - Sample `sbatch`: `sbatch --gpus 6000ada:1 --time 1-00:00:00 --job-name train --output train-%j.out run.sh` (batch script `run.sh` with 1 ADA GPU, 1 day limit).
+
+**Job-size and queueing notes the agent must surface:**
+
+- **Larger jobs queue longer.** 1-GPU jobs typically start within minutes.
+  4- or 8-GPU jobs can sit pending for hours because the scheduler must
+  coalesce that many free GPUs on a single node. **Before the user submits
+  a multi-GPU job, encourage them to first debug the code on a small,
+  short interactive job** (`srun --gpus a40:1 --time 30:00 --pty bash`).
+  Re-queueing a multi-GPU job because of a typo or an import error wastes
+  the user's time and the cluster's capacity.
+- **Slurm does not snapshot code at submission.** Once a job is pending,
+  **do not modify the script or any code paths it loads.** When Slurm
+  eventually starts the job, it re-reads whatever is on disk at that
+  moment — editing mid-pending can silently change the job's behavior or
+  break it outright. If a change is needed, `scancel` and re-`sbatch`
+  rather than editing in-place.
 
 **Per-QoS GPU limits (max concurrent per user):** see canonical table in
 [cluster.md#Slurm](cluster.md#slurm). Live config: `sacctmgr show qos -P
