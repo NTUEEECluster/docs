@@ -8,18 +8,17 @@
 
 - 1. Login
 
-    `ssh your_name@login_IP` open your local commandline, terminal, MobaXterm,
-    or Putty to remote into our login node. The IP is included in email we sent
-    you, please check.
+    `ssh your_name@login_IP` from any terminal client (Linux/macOS Terminal,
+    Windows MobaXterm/Putty/WSL). The login IP is in the email we sent. First
+    login forces a password change — see [login.md](login.md) for the exact
+    sequence.
 
-- 2. Request an interactive session on a compute node
+- 2. Set up your environment on the login node
 
-    `sinfo` to check what GPU we offer.
+    `sinfo` shows what GPUs are available. To install Python packages, load
+    Conda via Lmod first — see [conda.md](conda.md) for the full flow.
 
-    `module load Miniforge3` to load conda. Then `source activate` to activate
-    the base environment of conda.
-
-- 3. Request an instance for batch job
+- 3. Submit a batch job
 
     Save the following as a file. You can use `vim` or `nano`, or any other
     Linux text editor.

@@ -26,9 +26,8 @@ There are a few things to consider:
 
 ### Use Lmod to load software/packages
 
-> **TIP:** To use Conda, do `module load Miniconda3` or
-> `module load Miniforge3` followed by `source activate`. Skipping
-> `source activate` will cause errors while activating your environment.
+> **TIP:** Conda is provided via Lmod. See [conda.md](conda.md) for the
+> activation flow.
 
 We use Lmod to let you load the version of software that you request.
 This helps us satisfy everyone's needs as some software conflict with each

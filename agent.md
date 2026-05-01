@@ -16,7 +16,7 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 ## Cluster Snapshot
 - Access via SSH only (no GUI). Login nodes: no GPU; process cleanup on disconnect.
 - GPU models: `6000ada`, `a40`, `a6000`, `l40`, `pro6000` (CPU-only node: `cpu-1`). For regular EEE users, everything **except** `6000ada` is best-effort and quotas may decrease. For ROSE users, `6000ada` is best-effort and its quota may shrink to balance EEE load.
-- Storage (network-backed, synced): `/home/<user>` 50GB; `/tmp` 4GB per user. Projects via `storagemgr` — SSD quotas: rose/phd 750 GB, msc/ug 150 GB, ug-course 20 GB; HDD quotas: rose 5 TB, phd 1 TB, msc/ug 400 GB (ug-course: no HDD).
+- Storage (network-backed, synced): `/home/<user>` 50GB; `/tmp` 4GB per user. Projects via `storagemgr` — see [cluster.md#Directories](cluster.md#directories) for current SSD/HDD quotas per user class.
 - Limits: 1 interactive job at a time; **interactive (`srun`/`salloc`) strictly limited to 2 hours and 1 GPU**; batch up to 3 days. CPU/RAM are automatically assigned based on GPU count — **do not specify `--mem` or `--cpus-per-task`**, they will be overridden and only generate a warning.
 
 ## Logging In
@@ -40,15 +40,9 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 - Sample `srun`: `srun --gpus a40:1 --time 1:00:00 --pty bash` (interactive shell on 1 A40, max 2h).
 - Sample `sbatch`: `sbatch --gpus 6000ada:1 --time 1-00:00:00 --job-name train --output train-%j.out run.sh` (batch script `run.sh` with 1 ADA GPU, 1 day limit).
 
-**Per-QoS GPU limits (max concurrent per user):**
-
-| QoS | `6000ada` | `a40` | `a6000` | `l40` | `pro6000` |
-|-----|-----------|-------|---------|-------|-----------|
-| rose | 4 | 8 | 4 | 4 | 4 |
-| phd | 4 | 4 | 4 | 4 | 4 |
-| msc | 2 | 2 | 2 | 2 | 2 |
-| ug | 2 | 2 | 2 | 2 | 2 |
-| ug-course | 1 | 1 | 1 | 1 | 1 |
+**Per-QoS GPU limits (max concurrent per user):** see canonical table in
+[cluster.md#Slurm](cluster.md#slurm). Live config: `sacctmgr show qos -P
+format=Name,MaxTRESPerUser`.
 
 ## Storage Manager
 - All storage requests are via `storagemgr` and should be run on login nodes only. It creates project dirs under `/projects/<name>`; names alphanumeric/hyphen, no NSFW/offensive names. Do **not rename** project directories after creation. Quota can be split across multiple dirs.

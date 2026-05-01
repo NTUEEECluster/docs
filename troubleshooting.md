@@ -30,17 +30,11 @@ If you have not done so, please follow the [login guide](login.md) carefully.
 
 1.  Q: What should I do with the activation password sent to me?
 
-    A: The activation password sent to you is to help system recognize it is you
-       logging into your own account. Typically, when you attempt to login the
-       first time, you will be prompted to enter your password, and it is this
-       activation password. Then, the system will prompt you to enter the
-       `current password`, which is **still the activation password**! Next, the
-       system will prompt you to enter the `new password` and let you confirm
-       again. Once all 4 steps are done, you will be logged out. Then, you can
-       try to login with your new password.
-
-       For a more detailed guide, read the [login guide](login.md) where we
-       include examples.
+    A: On first login you will be prompted four times: type the activation
+       password as both your initial **password** and the **current password**,
+       then your new password twice. After that you'll be logged out and can
+       reconnect with the new password. See [login.md](login.md) for an
+       annotated example transcript.
 
 2.  Q: I am getting "ssh: connect to host &lt;IP&gt; port 22: Connection
        refused".
@@ -280,16 +274,10 @@ If you have not done so, please read the [Slurm guide](slurm.md).
 
 6.  Q: The number of GPUs assigned is not enough. How do I get access to more?
 
-    A: We allow users to access GPUs beyond their limits as long as you agree to
-       allow your jobs to be killed. To acknowledge this, use
-       `--qos override-limits-but-killable` when submitting your job.
-
-       When idle resources are available, we will let your job be run on it but
-       we will kill your job when those resources are needed by someone else
-       that is not using resources outside their limit.
-
-       You are recommended to save epochs and make your program check if there
-       are previous epochs to resume from if you make use of this feature.
+    A: Submit with `--qos override-limits-but-killable` to use idle GPUs beyond
+       your normal cap. Your job may be killed when its resources are needed by
+       a within-limit user, so checkpoint and resume. See
+       [cluster.md#Slurm](cluster.md#slurm) for full details.
 
 7.  Q: Can I occupy a node via `sbatch` to workaround the interactive job time
         limit?
