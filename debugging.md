@@ -63,7 +63,7 @@ GPU node, allowing you to “directly” interact with it.
     ```
     - **Example:**
       ```bash
-      salloc --gpus=v100:1 --time=0:30:00
+      salloc --gpus=a40:1 --time=0:30:00
       ```
     - This starts a shell. **Do not exit this shell** — it will cancel the job.
 

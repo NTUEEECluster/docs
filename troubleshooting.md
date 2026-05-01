@@ -43,16 +43,16 @@ If you have not done so, please follow the [login guide](login.md) carefully.
        [NTU VPN](https://vpngate-student.ntu.edu.sg). The cluster is not
        accessible outside the VPN.
 
-3.  Q: How do I SSH into a GPU node? I am getting "ssh: connect to host
-       11.11.11.X port 22: Connection refused"
+3.  Q: How do I SSH into a GPU node? I am getting "Connection refused" when
+       I try to ssh directly.
 
-    A: GPU nodes are not accessible from outside except via the login node. To
-       access a GPU node, ensure you have a running job at the GPU node and
-       route SSH through the login node using the following command:
-       `ssh -J <username>@<login_node_IP> <node_you_want_to_access>`
+    A: GPU nodes are not directly reachable from outside the cluster. To
+       access a GPU node, ensure you have a running job on it and route SSH
+       through the login node:
+       `ssh -J <username>@<login_node_IP> <username>@<gpu_node_name>`
 
-       An example of the command is `ssh -J example@127.0.0.1 gpu-v100-1`.
-       Your connection will be refused if no jobs are running on the specified
+       An example: `ssh -J example@127.0.0.1 example@gpu-a40-1`. Your
+       connection will be refused if no jobs are running on the specified
        node.
 
 4.  Q: I am just getting "Connection to &lt;IP&gt; closed."
