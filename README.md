@@ -7,6 +7,14 @@ agree to our usage terms, including but not limited to our fairshare and queuing
 policy. Violating our [Usage Guidelines](guideline.md) with or without knowledge
 will lead to account suspension and/or disciplinary actions.
 
+We **encourage** the use of AI coding agents (Claude Code, Codex, Cursor, etc.)
+to flatten the learning curve and help you work more effectively on the
+cluster. However, **we require** that you provide your agent with our
+[AI-Facing Digest](agent.md) at the start of each session. This ensures the
+agent enforces our guidelines, respects login-node resource limits, and
+aligns its behavior with how the cluster is designed to be used. Misbehaving
+agents that violate the guidelines are still your responsibility as the user.
+
 If you still do not have access, please take a quick look through our
 [Application Process](application.md).
 
