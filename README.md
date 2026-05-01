@@ -80,6 +80,9 @@ To keep things manageable, we have split this guide into multiple files.
     - How do I load/compile software with Lmod?
       [Slurm Introduction — Compiling from Source](slurm.md#compiling-from-source)
     - What GPUs do I have access to? [Cluster Overview](cluster.md)
+    - How is my usage billed, and which account pays for which job?
+      [Slurm Accounting](slurm-accounting.md) — important if you have both
+      a personal QoS and a project tag.
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
 - I am running an AI coding agent (Claude Code, Codex, Cursor, etc.) and want
   it to behave correctly on the cluster. [AI-Facing Digest](agent.md) — a

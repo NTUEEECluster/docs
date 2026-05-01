@@ -222,6 +222,12 @@ If your project is on a TRES-minute budget and you've exhausted it, jobs
 will be rejected at submit time with a `QOSGrpBilling*` error. Contact
 your PI / point of contact for the account in that case.
 
+If you belong to both a per-user tier (e.g. `rose`) and a faculty project,
+**which account you pass to `sbatch -A` decides which budget pays.** See
+[Slurm Accounting](slurm-accounting.md) for the rules and the recommended
+sbatch-script header pattern — picking the wrong account is the most
+common way users accidentally drain the wrong budget.
+
 ## Per-job GPU count limits
 
 Even if your QoS allows N GPUs, a single Slurm job is bounded by the
