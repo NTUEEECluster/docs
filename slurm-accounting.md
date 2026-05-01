@@ -45,7 +45,7 @@ specifically.
 Every job has both:
 
 - **Account** (`-A`, also called assoc): *which budget pocket pays for this job.*
-  Examples: `rose`, `dso`, `faculty-proj`, a per-PI project account, etc.
+  Examples: `rose`, `faculty-proj`, a per-PI project account, etc.
 - **QoS** (`--qos=`): *which queueing/limit policy applies, and which
   group-level budget pool the job draws from.* Examples: `rose`, `phd`, `ug`,
   `<pi>_2026_05`, `override-limits-but-killable`.
@@ -114,18 +114,18 @@ project work (`-A <project_account>`) until the project's pool runs out.
 ## The `override-limits-but-killable` escape hatch
 
 This QoS is a special "free preemptible scavenger" path. Jobs submitted with
-`--qos=override-limits-but-killable` (often shortened to *OLBK*):
+`--qos=override-limits-but-killable`:
 
 - Run on **idle GPUs only** — they don't preempt anyone else.
 - Are **preempted (requeued) by any within-limit job** that wants the GPUs.
 - **Cost zero SU** — no drain on either your account budget or any QoS pool.
 
-OLBK is intended for backfill: chip away at a long sweep when GPUs sit idle,
+This QoS is intended for backfill: chip away at a long sweep when GPUs sit idle,
 without burning quota. The tradeoff is that your job can be requeued at any
 time, so make sure to checkpoint frequently and use `--requeue` semantics
 correctly.
 
-OLBK works on *any* account you have access to. Submitting `-A rose
+It works on *any* account you have access to. Submitting `-A rose
 --qos=override-limits-but-killable` and `-A <project_account>
 --qos=override-limits-but-killable` are equivalent — both run free.
 
@@ -181,9 +181,9 @@ contact your PI or the cluster admins. Don't try to bypass via `--qos=rose`
    but the *account* (`-A`) is what selects whose ledger pays. They're
    independent dimensions; both matter.
 
-3. **Forgetting OLBK is free.** Long sweeps that don't have a hard deadline
-   are perfect candidates for `--qos=override-limits-but-killable` — no
-   quota drain, just the requeue risk.
+3. **Forgetting `override-limits-but-killable` is free.** Long sweeps that
+   don't have a hard deadline are perfect candidates for it — no quota
+   drain, just the requeue risk.
 
 4. **Multi-project users** with two project accounts: each project has its
    own independent budget. There is no "this human's total cluster usage"
