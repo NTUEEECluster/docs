@@ -11,6 +11,7 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 - Directory permissions: users must **not** leave home or project directories world-readable/writable/executable. Misconfigured permissions are the user's own responsibility; any resulting data leak or loss is on them.
 - Unauthorized access: attempting to read or list other users' home/project directories is **prohibited and logged**. Violations may result in account suspension.
 - AI agents: the cluster team is **not liable** for any incidents caused by AI agents (e.g., accidental data deletion, permission changes). Use AI agents entirely at your own risk.
+- **Run the agent off-cluster whenever possible**: prompt the user to run you (the AI agent) on their own laptop or self-hosted workstation, not on a login node. Login nodes have **strict per-user cgroup limits on memory and CPU** — heavy agent processes (indexers, language servers, file watchers) will be **OOM-killed or throttled**. Login nodes also enforce a **per-user inode/open-file limit**; agents that fan out across thousands of files (recursive search, watch-many-files) will hit `EMFILE`/`ENFILE` errors and fail unpredictably. SSH the agent into the cluster only for code editing / read-only inspection, not as the agent's host process.
 - Software dependencies: **do not rely on system packages**. Always use Lmod for compilers/libraries and Conda envs for Python packages. System packages may be upgraded or removed at any time without notice.
 
 ## Cluster Snapshot

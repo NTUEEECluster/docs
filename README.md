@@ -67,6 +67,10 @@ To keep things manageable, we have split this guide into multiple files.
       [Slurm Introduction — Compiling from Source](slurm.md#compiling-from-source)
     - What GPUs do I have access to? [Cluster Overview](cluster.md)
 - I am encountering an error. [Troubleshooting Guide](troubleshooting.md)
+- I am running an AI coding agent (Claude Code, Codex, Cursor, etc.) and want
+  it to behave correctly on the cluster. [AI-Facing Digest](agent.md) — a
+  condensed context document you can hand the agent so it enforces our
+  guidelines and points back at full docs.
 
 ---
 
