@@ -18,7 +18,11 @@ responsible for whatever action your agents have taken, i.e., what your agents
 have done equals to what you have done.
 
 If you still do not have access, please take a quick look through our
-[Application Process](application.md).
+[Application Process](application.md). We currently only accept applications
+during the application window that opens every semester — most applications
+submitted within this window will be accepted. Applications outside the
+window are strictly not accepted, due to the high maintenance effort
+required to keep the cluster operational.
 
 ## What is this?
 
