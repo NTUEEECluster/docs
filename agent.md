@@ -359,16 +359,23 @@ window — ideally 1M**. Operational details on this cluster (QoS rules,
 RAM tables, preemption logic, account taxonomy) do not compress well, and
 shorter contexts force the agent to drop key facts mid-session.
 
-Tested and recommended:
+Most recommended LLM:
+- **Claude Code Opus 4.6 or 4.7 with 1M context** Verified to be able to
+  follow long structured markdown documentation.
+
+Partially validated commerical LLMs:
 - **Claude Code with Sonnet 4.6 or newer** (Anthropic).
 - **GPT-5.4 / GPT-5.5 Codex** (OpenAI). Same prompting strategy applies —
-  paste this digest at session start.
+  paste this digest at session start. Higher level of hallucination and
+  worse context understanding capability is expected.
 
 Not recommended without independent testing:
 - **Open-source models**. Have not been audited against this digest;
   expect heavier hallucination, especially around Slurm flag semantics,
   QoS naming, RAM/GPU rules, and cluster topology. If you must use one,
   verify every command it generates before running.
+- Again, the cluster team is not liable for any loss caused by use
+  of AI Agents.
 
 **Project-level prompting tip**: keep your project's `CLAUDE.md` (or
 equivalent system prompt file) short and have it **refer to this
