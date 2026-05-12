@@ -8,23 +8,20 @@ after the portal opens.
   Mondays. Only email admins if you still cannot login on Tuesday.
 - Requests to expedite the application process will be ignored. You are
   encouraged to apply early if you anticipate urgent need for GPUs.
+- Applications will be processed in batch and will not accomodate any urgency.
 
 Outside the application window, the cluster team cannot process registrations.
 
 > NOTE: Usage is limited strictly to your assigned quota; no special quota
 > increases are available.
 
+For faculties, we are launching faculty calls for the first time in 2026 May, while
+we do anticipate that there be another round of calls, we do not have a firm timeline 
+at this moment. If the cluster proves to have additional capacity, we will announce later 
+on subsequent calls. Do notice that we only serve students/staffs/faculties from EEE.
+Inmmediate ban will be applicable if found to be used by personels outside EEE or used 
+for research irrelevant activities.
+
 ## Exceptions
 
-We always welcome new stakeholders who are able to directly contribute hardware
-as we believe this will benefit our existing users as well.
-
-We understand that new stakeholders will typically need to retain access to
-their own hardware. As such, we will expedite user creation in this case to
-facilitate the hardware transfer.
-
-As a rough guideline, we are looking for the following types of hardware:
-- Professional GPUs (to deploy more compute nodes)
-- 15.36 TB Gen5 SSDs (to increase user/project storage)
-- Enterprise Network Switches/Cables/NICs (ideally capable of 100Gbe)
-- Enterprise CPU Servers (to spread the load of our control plane)
+There is no exception to these rules.
