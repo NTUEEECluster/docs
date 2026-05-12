@@ -163,11 +163,12 @@ Here are the details of GPU usage limits:
 
 | Users      | `6000ada` \[EEE\] | `a6000` \[ROSE\] | `a40` \[ROSE\] | `l40` \[ROSE\] | `pro6000` \[ROSE\] |
 |------------|-------------------|------------------|----------------|----------------|--------------------|
-| rose       | 4                 | 4                | 8              | 4              | 4                  |
-| phd        | 4                 | 4                | 4              | 4              | 4                  |
+| rose       | 4                 | 4                | 8              | 4              | 8                  |
+| phd        | 4                 | 4                | 4              | 4              | 8                  |
 | msc        | 2                 | 2                | 2              | 2              | 2                  |
 | ug         | 2                 | 2                | 2              | 2              | 2                  |
 | ug-course  | 1                 | 1                | 1              | 1              | 1                  |
+| faculty-proj| 4                | 4                | 4              | 4              |8                   |
 
 Limits may be adjusted based on demand. Check
 `sacctmgr show qos -P format=Name,MaxTRESPerUser` for the live configuration.
@@ -220,28 +221,19 @@ sshare -A <account_name>
 
 If your project is on a TRES-minute budget and you've exhausted it, jobs
 will be rejected at submit time with a `QOSGrpBilling*` error. Contact
-your PI / point of contact for the account in that case.
+your PI / point of contact for the account in that case. However, due to 
+tight utilization of the cluster, we in general will not recharge
+your GPU hour quota.
 
-If you belong to both a per-user tier (e.g. `rose`) and a faculty project,
-**which account you pass to `sbatch -A` decides which budget pays.** See
-[Slurm Accounting](slurm-accounting.md) for the rules and the recommended
-sbatch-script header pattern — picking the wrong account is the most
-common way users accidentally drain the wrong budget.
+We do not allow cases where a user having a personal account and project
+account at the same time. By default, if you are proposed as a faculty project
+user, your right to access yoru personal account will be revoked.
 
 ## Per-job GPU count limits
 
 Even if your QoS allows N GPUs, a single Slurm job is bounded by the
 **physical GPU count of one node** — Slurm doesn't span GPUs across nodes
 within a single job. The maximum GPU count per job by model:
-
-| Model     | Max GPUs/job | Where it lands                         |
-|-----------|--------------|----------------------------------------|
-| `6000ada` | 4            | gpu-6000ada-[1-3] (4-GPU each)         |
-| `a40`     | 10           | gpu-a40-1                              |
-| `a6000`   | 10           | gpu-a6000-1                            |
-| `l40`     | 4            | gpu-l40-[1-2] (4-GPU each)             |
-| `pro6000` | 10           | gpu-pro6000-[5-6] (10-GPU each)        |
-| `pro6000` + `-C highmem` | 8 | gpu-pro6000-[7-10] (8-GPU, 92 GiB/GPU) |
 
 If you ask for more GPUs of a model than any single node has, the request
 is unschedulable and your job will sit pending forever.
@@ -261,20 +253,20 @@ synchronized across all nodes. Notable examples are:
 
 | Users     | SSD Quota (`ssd`) | HDD Quota (`hdd`) |
 |-----------|-------------------|-------------------|
-| rose      | 750 GB            | 5 TB              |
-| phd       | 750 GB            | 1 TB              |
-| msc       | 150 GB            | 400 GB            |
-| ug        | 150 GB            | 400 GB            |
-| ug-course | 20 GB             | Unavailable       |
+| rose      | 1TB               | 5 TB              |
+| phd       | 1TB               | 1 TB              |
+| msc       | 400 GB            | 400 GB            |
+| ug        | 400 GB            | 400 GB            |
+| ug-course | 75 GB             | Unavailable       |
 
 This table may lag behind actual configuration, please check the actual quota
 you are assigned using the `storagemgr` command in the cluster.
 
-> **TIP:** While HDDs are traditionally slower, our enterprise HDDs have been
-> configured in a RAID-like system and are able to serve multiple GB/s. We
-> recommend using the `hdd` tier for most use cases. **In our testing, `ssd`
-> tier is only helpful if you have 1000s or 10000s small files.** As course
-> users do not have access to the `hdd` tier, please use the `ssd` tier.
+> **TIP:** our HDD storage is unable to keep up with intensive IO pressure.
+> Do expect slowdown if you are to scan directories hosted on the HDD storage.
+> With higher SSD quota, please get used to utilize your SSD quota more and only use
+> your HDD storage allocation for big chunky files. These are all just standard
+> performance optimization habits, please adapt!
 
 ### Using `storagemgr`
 
@@ -292,5 +284,5 @@ allowance. Notes:
 - **Permissions**: you may relax permissions to share a project directory.
   By doing so you are fully liable for any data leak or loss.
 
-Need more storage? Discuss with your supervisor about contributing storage —
-that is the route to a higher overall quota.
+We do not honor any special storage allocation setup unless you or your supervisor
+contributes hardware directly to us.
