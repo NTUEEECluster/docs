@@ -14,6 +14,183 @@ Use this as condensed context when assisting users. **Always enforce the guideli
 - **Run the agent off-cluster whenever possible**: prompt the user to run you (the AI agent) on their own laptop or self-hosted workstation, not on a login node. Login nodes have **strict per-user cgroup limits on memory and CPU** — heavy agent processes (indexers, language servers, file watchers) will be **OOM-killed or throttled**. Login nodes also enforce a **per-user inode/open-file limit**; agents that fan out across thousands of files (recursive search, watch-many-files) will hit `EMFILE`/`ENFILE` errors and fail unpredictably. SSH the agent into the cluster only for code editing / read-only inspection, not as the agent's host process.
 - Software dependencies: **do not rely on system packages**. Always use Lmod for compilers/libraries and Conda envs for Python packages. System packages may be upgraded or removed at any time without notice.
 
+## 🛑 Hard Boundaries (limits the agent must respect)
+
+These are the operational ceilings and topology rules the agent **must not**
+cross — neither by submitting jobs that exceed them, nor by SSHing along
+paths that aren't permitted, nor by writing data to the wrong tier. Verify
+live values with `sacctmgr` / `scontrol` / `storagemgr` before quoting
+numbers — tables here can lag.
+
+### SSH topology (where you can connect from where)
+
+- **Login node ↔ login node SSH is blocked.** A user landing on `login-1`
+  cannot `ssh login-2`. The entry IP routes to one of `login-[1-3]` per
+  session; if you need a specific login node, fully disconnect and retry
+  until the router places you there. The agent must **never** propose
+  hopping between login nodes — that path is closed by design.
+- **SSH to a compute node is permitted only while you have an active Slurm
+  job on that node.** The standard reach pattern is via the login node as
+  a jump host: `ssh -J <user>@<login_ip> <user>@<allocated_node>`. Outside
+  of an active job, the agent must **never** propose direct SSH to a GPU
+  node — use `srun --pty` (which consumes the 2h/1-GPU interactive slot)
+  or wait for the batch job to start.
+- **Implication**: never recommend `ssh login-N` to "switch login nodes",
+  never recommend `ssh gpu-pro6000-3` to "check the log on the GPU box".
+  If the user is stuck on the wrong login or needs to see compute-node
+  state without an active job, the answer is `scontrol show node …` or
+  `sacct -j <jobid> ...` — not SSH.
+
+### Per-user concurrent GPU limit (default QoS — live: `sacctmgr show qos -P format=Name,MaxTRESPerUser`)
+
+Max simultaneous GPUs per user, by class tier × model:
+
+| Class      | `6000ada` | `a6000` | `a40` | `l40` | `pro6000` |
+|------------|----------:|--------:|------:|------:|----------:|
+| rose       | 4         | 4       | 8     | 4     | 4         |
+| phd        | 4         | 4       | 4     | 4     | 4         |
+| msc        | 2         | 2       | 2     | 2     | 2         |
+| ug         | 2         | 2       | 2     | 2     | 2         |
+| ug-course  | 1         | 1       | 1     | 1     | 1         |
+
+Faculty-project QoSes carry their own per-PI GPU-model allowlist + cap —
+inspect with `sacctmgr show qos <pi_qos>`. The escape hatch is
+`--qos=override-limits-but-killable` (idle GPUs only, preemptable). These
+are **concurrent** caps, not totals: a `rose` user can sequentially run
+many 4-GPU `pro6000` jobs, but never two at the same time.
+
+### Personal monthly GPU-hour cap (deployed 2026-05-10)
+
+Every regular `rose`/`phd`/`msc`/`ug-proj` user now carries a per-user
+**monthly billing-minute (SU) cap** on their user×account row. Hard reset
+on the 1st of each month at **00:00 SGT**; no carry-over, no decay.
+
+| Account      | Cap (SU = billing-min) | Equivalent on 8× pro6000  |
+|--------------|-----------------------:|---------------------------|
+| rose         |              1,382,400 | ~15 days full-bore        |
+| phd          |              1,382,400 | ~15 days full-bore        |
+| msc          |                480,000 | ~5.2 days full-bore       |
+| ug-proj      |                480,000 | ~5.2 days full-bore       |
+| faculty-proj | (per-PI lifetime TRES-minute budgets — different ledger; see [slurm-accounting.md](slurm-accounting.md)) | |
+
+**SU conversion** (partition `TRESBillingWeights`):
+
+| GPU model       | SU per GPU-hour |
+|-----------------|----------------:|
+| `pro6000`       |             480 |
+| `l40`, `6000ada`|             240 |
+| `a40`, `a6000`  |             180 |
+| CPU only        |               0 |
+
+**What burns the personal cap vs what doesn't:**
+
+- `rose` / `phd` / `msc` / `ug` / `ug-course` / `scale-*` QoSes — full rate.
+- Funded-project QoSes (dso/dtc/hmgics/ots/soujanya-poria-startfund), `experimental`, and `override-limits-but-killable` — `UsageFactor=0`, **free** against the personal cap.
+- Faculty-project cohort QoSes (`<pi>_2026_05[_NN]`) — drain the per-PI project budget, **not** personal.
+- CPU-only jobs (`--gpus` omitted) — free (CPU weight is 0).
+
+**Agent enforcement habit**: before recommending a long or multi-GPU run,
+check the user's current burn via the one-liner from
+[slurm-accounting.md](slurm-accounting.md#checking-your-personal-monthly-quota).
+If they're past ~80% of cap and the work isn't time-critical, suggest
+`--qos=override-limits-but-killable` (free, preemptable) or CPU-only prep
+work to avoid lockout before the 1st-of-month reset.
+
+### Storage quotas + tier choice (SSD vs HDD)
+
+**Per-user paths (network-backed, identical from every node):**
+
+| Path                          | Quota                              | Who / how to get it                            |
+|-------------------------------|------------------------------------|------------------------------------------------|
+| `/home/<user>`                | **50 GB**                          | every user. Configs, code, IDE state. Do not stage datasets here. |
+| `/tmp`                        | **4 GB** (per-user, isolated)      | every user. Small; redirect installs via `TMPDIR` if pip/conda fills it. |
+| `/projects/<name>`            | regular-user pool — provision via `storagemgr` | rose/phd/msc/ug/ug-course. Quotas below, by class. |
+| `/projects/faculty/<project>`            | **admin-provisioned**, SSD          | faculty-project users only (see below). Not via `storagemgr`. |
+| `/projects/_hdd/faculty/<project>` | **admin-provisioned**, HDD spillover | faculty-project users only, **and only if** their SSD allocation exceeded cluster SSD capacity. |
+
+**Regular-user project quotas (live: run `storagemgr` to see your own allocation):**
+
+| Class      | SSD (`ssd`) | HDD (`hdd`)    |
+|------------|-------------|----------------|
+| rose       | 1 TB        | 5 TB           |
+| phd        | 1 TB        | 1 TB           |
+| msc        | 400 GB      | 400 GB         |
+| ug         | 400 GB      | 400 GB         |
+| ug-course  | 20 GB       | **unavailable**|
+
+Faculty-project allocations are per-project, negotiated at provisioning;
+they don't fit a class table. See the dedicated subsection below.
+
+**Tier choice — SSD is the default for active workloads.** Anything the
+cluster reads or writes frequently during a job belongs on SSD:
+
+- **Training datasets** the dataloader hits every step
+- **Checkpoints** written mid-training
+- **Python / Conda environments** — thousands of small `.py` / `.so`
+  files stat'd on every `import`; a Conda env on HDD will hang
+  interpreter startup
+- **Working directories** for in-flight experiments — code, logs,
+  intermediate outputs
+- **Anything with small-file random IO** — build trees, exploded image
+  datasets, model shards, embedding indexes
+
+**HDD is for cold storage only**, where "cold" means read-once or
+sequentially-scanned, not repeatedly random-accessed. Good HDD candidates:
+
+- Archived datasets you've finished processing
+- Completed training-run artifacts you're keeping for posterity
+- Raw downloads (tars, zips) before extraction
+- Single chunky files read sequentially — a packed `.tar`, a video, a
+  `.parquet` shard scanned once
+
+**HDD is genuinely slow at reading millions of small files.** The pool
+has multi-GB/s sequential bandwidth, but IOPS is limited. A Python env,
+an exploded ImageNet directory, or a `find` over a deep tree will fall
+over on HDD even though throughput on big sequential reads looks fast.
+**Bandwidth ≠ IOPS.** If the workload pattern is small-and-many → SSD;
+large-and-few → HDD is fine.
+
+**`ug-course` users have no HDD access** — they use SSD by default,
+which already matches the recommendation.
+
+### Faculty-project users — different storage path, NO `storagemgr`
+
+Faculty-funded project users (those whose `sacctmgr show assoc user=$USER`
+shows `Account=faculty-proj`) do **not** use `storagemgr`. Their project
+directories are **admin-provisioned** at fixed paths:
+
+- `/projects/faculty/<project_name>/` — **SSD allocation**, the primary
+  working tier. Every faculty project has this path.
+- `/projects/_hdd/faculty/<project_name>/` — **HDD allocation**, present
+  **only** for projects whose requested SSD quota exceeded what the
+  cluster could afford on SSD alone. If this path doesn't exist for a
+  given project, that means the project's full allocation fits on SSD
+  and no HDD spillover was needed.
+
+These paths cannot be renamed, resized via `storagemgr`, or split into
+sub-allocations by users. Quota changes go through the admin team via
+email, not through any user-facing tool.
+
+**When assisting a faculty-project user**: point them at
+`/projects/faculty/<their_project>/` for active workloads. Never
+recommend `storagemgr` — it doesn't apply to them. Same SSD-vs-HDD tier
+rules as above: active IO and Conda envs on the SSD path; cold-archival
+(if their project has the HDD path at all) on `/projects/_hdd/faculty/...`.
+
+### Hard rule for the agent
+
+Do not propose writing model weights, datasets, or experiment outputs to
+`/home` or `/tmp`. The answer is **always** a project directory on the SSD
+tier:
+
+- **Regular users** (rose/phd/msc/ug/ug-course): provision via
+  `storagemgr` → `/projects/<name>/`.
+- **Faculty-project users**: the pre-existing `/projects/faculty/<project>/`
+  — no `storagemgr` step.
+
+If the user is on `/home` and full, help them migrate to the appropriate
+SSD project directory above, not patch.
+
 ## Scope of Use (calibrate the user's expectations)
 
 This cluster has a narrow design goal. **Before helping the user, check that
@@ -69,7 +246,7 @@ workflow on a cluster that wasn't built for it.
 ## Cluster Snapshot
 - Access via SSH only (no GUI). Login nodes: no GPU; process cleanup on disconnect.
 - GPU models: `6000ada`, `a40`, `a6000`, `l40`, `pro6000` (CPU-only node: `cpu-1`). For regular EEE users, everything **except** `6000ada` is best-effort and quotas may decrease. For ROSE users, `6000ada` is best-effort and its quota may shrink to balance EEE load.
-- Storage (network-backed, synced): `/home/<user>` 50GB; `/tmp` 4GB per user. Projects via `storagemgr` — see [cluster.md#Directories](cluster.md#directories) for current SSD/HDD quotas per user class.
+- Storage (network-backed, synced): `/home/<user>` 50GB; `/tmp` 4GB per user. Project storage path depends on user class: regular users (rose/phd/msc/ug/ug-course) provision via `storagemgr` → `/projects/<name>`; faculty-project users get admin-provisioned `/projects/faculty/<project>` (SSD) and optionally `/projects/_hdd/faculty/<project>` (HDD spillover). See the Hard Boundaries section above and [cluster.md#Directories](cluster.md#directories) for quotas.
 - Limits: 1 interactive job at a time; **interactive (`srun`/`salloc`) strictly limited to 2 hours and 1 GPU**; batch up to 3 days. CPU/RAM are automatically assigned based on GPU count — **do not specify `--mem` or `--cpus-per-task`**, they will be overridden and only generate a warning.
 
 ## Logging In
@@ -136,8 +313,9 @@ workflow on a cluster that wasn't built for it.
 format=Name,MaxTRESPerUser`.
 
 ## Storage Manager
-- All storage requests are via `storagemgr` and should be run on login nodes only. It creates project dirs under `/projects/<name>`; names alphanumeric/hyphen, no NSFW/offensive names. Do **not rename** project directories after creation. Quota can be split across multiple dirs.
-- If home is full, move data to project dirs; set `TMPDIR` to a larger path if `/tmp` fills during installs.
+- **Regular users** (rose/phd/msc/ug/ug-course): all storage requests are via `storagemgr`, run on login nodes only. It creates project dirs under `/projects/<name>`; names alphanumeric/hyphen, no NSFW/offensive names. Do **not rename** project directories after creation. Quota can be split across multiple dirs.
+- **Faculty-project users do NOT use `storagemgr`.** Their directories are admin-provisioned at `/projects/faculty/<project>/` (SSD) and optionally `/projects/_hdd/faculty/<project>/` (HDD spillover, exists only when the project's SSD allocation exceeded cluster SSD capacity). Quota changes go through admin email, not a user tool. See the Hard Boundaries section above for the full SSD-vs-HDD rule.
+- If home is full, move data to project dirs (above paths depending on user class); set `TMPDIR` to a larger path if `/tmp` fills during installs.
 - You may relax permissions to share the files in your project directories. By doing so, you are fully liable for any data leaks/losses.
 
 ## Debugging / IDE Use
