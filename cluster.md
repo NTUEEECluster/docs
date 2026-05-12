@@ -284,5 +284,14 @@ allowance. Notes:
 - **Permissions**: you may relax permissions to share a project directory.
   By doing so you are fully liable for any data leak or loss.
 
+For faculty project users, you are expected to use a predefined directory that is
+separately emailed to you when we are allocating the accounts. Do take note that
+`storagemgr` does not apply to you. You are expected to share the directory with 
+your colleagues. Please note by default when you create a directory, your colleagues 
+will not be able to visit it. You may choose to loosen to access level such as
+`chmod 770` which allows users from the same group to see your files. These are standard
+Linux access conrtol mechanisms, so please do search internet to learn how to manage
+access level of your directories and files.
+
 We do not honor any special storage allocation setup unless you or your supervisor
 contributes hardware directly to us.
