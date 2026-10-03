@@ -179,8 +179,13 @@ Read the [Slurm Guide](slurm-guide.md) first.
 4.  Q: Why can I not choose my own CPU/RAM?
 
     A: Each GPU comes with a fixed **4 CPUs** and a model-specific amount of
-       RAM, so every GPU on a node stays usable. `--mem` and `--cpus-per-task`
-       are overridden with a notice.
+       RAM, so every GPU on a node stays usable. `--mem` is overridden with a
+       notice.
+
+       - Do not set `-c`/`--cpus-per-task` on GPU jobs. A value other than 4
+         per GPU makes every `srun` inside the job fail with
+         `srun: fatal: cpus_per_task set by two different environment variables`.
+         Remove the option, or add `unset SLURM_TRES_PER_TASK` before `srun`.
 
        - On `pro6000`, add `-C highmem` or `-C midmem` for more RAM per GPU on
          the nodes that have it.

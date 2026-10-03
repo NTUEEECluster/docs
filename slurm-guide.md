@@ -89,7 +89,7 @@ If the IDE only takes a host and port, forward one on your own computer with
 | Rule | Detail |
 |---|---|
 | Name one GPU model | `--gres=gpu:<model>:<N>`. Untyped (`--gres=gpu:2`) or mixed models are rejected. |
-| CPUs and RAM come with the GPUs | 4 CPUs per GPU plus a fixed RAM per GPU for each model; `--mem` and `--cpus-per-task` are overridden. `-C highmem` or `-C midmem` gives more RAM on some `pro6000` nodes. |
+| CPUs and RAM come with the GPUs | 4 CPUs per GPU plus a fixed RAM per GPU for each model; `--mem` is overridden. Do not set `-c`/`--cpus-per-task` on GPU jobs: a value other than 4 per GPU makes every `srun` inside the job fail with `cpus_per_task set by two different environment variables`. `-C highmem` or `-C midmem` gives more RAM on some `pro6000` nodes. |
 | Time | Batch: default 1 h, max 3 days. Interactive: max 2 h. |
 | Not allowed | `--exclusive`, `--cpus-per-gpu`, `--gpus-per-socket`, `--ntasks-per-gpu/core/socket`, `salloc` |
 | No changes after submission | Resources, QoS, account and time limit are fixed; cancel and resubmit. |
