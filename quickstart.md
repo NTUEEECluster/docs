@@ -22,6 +22,17 @@ SHA256:AhYlWQBTsN/4GAzYTVTiZzrVhPhcurFMu1sBMglqvdM
 The first login forces a password change. Nothing is shown while you type.
 
 ```
+
+Your password is temporary and must be changed the first time you log in by SSH.
+You will be asked for passwords in this order:
+
+  1. Password:          your temporary password
+  2. Current password:  your temporary password AGAIN (this is normal)
+  3. New password:      your new password
+  4. Retype new password: your new password again
+
+What you will see:
+
 (username@login_IP) Password: <default password>
 Password expired. Change your password now.
 (username@login_IP) Current Password: <default password again>
@@ -32,6 +43,19 @@ Password expired. Change your password now.
 You may be disconnected; reconnect with the new password. Passwords also
 expire periodically and are changed the same way. Log in once from a terminal
 before using an IDE, which cannot handle the password change.
+
+Your new password must:
+  - be at least 12 characters long
+  - use at least 3 of: lowercase letters, uppercase letters, digits, symbols
+  - not contain your username
+  - not be one of your last 24 passwords
+
+If the new password is refused, you are asked again. If you are disconnected
+after the change, log in again with your new password.
+
+Five wrong passwords in a row lock the account for 15 minutes. Wait, then try again.
+
+
 
 | Problem | Fix |
 |---|---|
