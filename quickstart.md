@@ -21,8 +21,6 @@ SHA256:AhYlWQBTsN/4GAzYTVTiZzrVhPhcurFMu1sBMglqvdM
 
 The first login forces a password change. Nothing is shown while you type.
 
-```
-
 Your password is temporary and must be changed the first time you log in by SSH.
 You will be asked for passwords in this order:
 
@@ -32,7 +30,7 @@ You will be asked for passwords in this order:
   4. Retype new password: your new password again
 
 What you will see:
-
+```
 (username@login_IP) Password: <default password>
 Password expired. Change your password now.
 (username@login_IP) Current Password: <default password again>
