@@ -92,9 +92,50 @@ For a short interactive session on a GPU (up to 2 h, 1 GPU):
 srun --gres=gpu:a40:1 --time=1:00:00 --pty bash
 ```
 
+
+## 5. Configure VS Code (if using Remote SSH)
+
+VS Code's scans and file watchers can put pressure on CephFS metadata caches,
+slowing shared filesystem I/O and triggering cache-recall warnings.
+
+1. Connect to the cluster in VS Code. Press `F1` and select
+   **Preferences: Open Remote Settings (JSON)**. This edits
+   `~/.vscode-server/data/Machine/settings.json` on the cluster.
+2. Merge these settings into the existing JSON object and save:
+
+   ```json
+   {
+     "files.watcherExclude": { "**": true },
+     "search.exclude": { "**": true },
+     "search.followSymlinks": false
+   }
+   ```
+
+3. Save your work, run **Remote: Close Remote Connection** from the Command
+   Palette, then reconnect.
+
+These settings disable workspace file watching and exclude all files from
+workspace search by default; automatic detection of external file changes
+may be affected. Extensions can scan independently: disable unnecessary
+remote extensions and their indexing. Open only your code folder, not your
+entire home, datasets or Conda environments.
+
+**If VS Code hangs or causes the shared filesystem to stall, we will kill
+all of your VS Code processes on the affected cluster node. Unsaved work
+may be lost.**
+
+## 6. Avoid broad filesystem scans
+
+We strongly discourage recursive commands such as `grep -r`, `du` and `find`
+over entire dataset directories. Do not scan the whole filesystem: large
+scans can overwhelm shared storage, stall commands and slow I/O for everyone.
+Limit searches and size checks to specific files or small subdirectories.
+
 ## Next
 
 - [Cluster Guide](cluster-guide.md): nodes and how to look them up
 - [Slurm Guide](slurm-guide.md): job templates, limits, billing
 - [Storage Guide](storage-guide.md): where to keep what
 - [Container Guide](container-guide.md): Docker/NGC images (advanced)
+- [FAQ](FQA.md): common questions and troubleshooting
+
